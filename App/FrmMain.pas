@@ -25,6 +25,7 @@ uses
   System.Classes,
   System.Math.Vectors,
   System.UIConsts,
+  RiggVar.FB.DefConst,
   RiggVar.FB.Equation,
   RiggVar.FB.MeshParams,
   RiggVar.Mesh.BuilderMesh,
@@ -236,6 +237,9 @@ begin
   MeshParams.PlusCap := True;
   MeshParams.WantSlicePulling := False;
   MeshParams.SlicePullingMode := 3;
+  MeshParams.WantFlippedHands := True;
+  MeshParams.WantUniqueVertices := True;
+  MeshParams.UniqueMode := 2;
 
   MeshBuilder := TFederMeshBuilder.Create;
   MeshBuilder.vp := MeshParams;
@@ -268,31 +272,33 @@ begin
 
   BackLight := TLight.Create(Self);
   BackLight.LightType := TLightType.Point;
-  BackLight.Position.Z := 80;
+  BackLight.Position.Z := LightConst.Back;
   BackLight.Color := claWhite;
   Viewport.AddObject(BackLight);
 
   WestLight := TLight.Create(Self);
   WestLight.LightType := TLightType.Point;
-  WestLight.Position.X := -100;
+  WestLight.Position.X := LightConst.West;
+  WestLight.Position.Z := LightConst.WestZ;
   WestLight.Color := claLime;
   Viewport.AddObject(WestLight);
 
   EastLight := TLight.Create(Self);
   EastLight.LightType := TLightType.Point;
-  EastLight.Position.X := 100;
+  EastLight.Position.X := LightConst.East;
+  EastLight.Position.Z := LightConst.WestZ;
   EastLight.Color := claFuchsia;
   Viewport.AddObject(EastLight);
 
   NorthLight := TLight.Create(Self);
   NorthLight.LightType := TLightType.Point;
-  NorthLight.Position.Y := 150;
+  NorthLight.Position.Y := LightConst.North;
   NorthLight.Color := claWhite;
   Viewport.AddObject(NorthLight);
 
   SouthLight := TLight.Create(Self);
   SouthLight.LightType := TLightType.Point;
-  SouthLight.Position.Y := -150;
+  SouthLight.Position.Y := LightConst.South;
   SouthLight.Color := claWhite;
   Viewport.AddObject(SouthLight);
 end;
@@ -334,7 +340,7 @@ begin
 
   Camera.Position.X := 0.0;
   Camera.Position.Y := 0.0;
-  Camera.Position.Z := 5.0;
+  Camera.Position.Z := 8.0;
 
   Camera.ResetRotationAngle;
   Camera.RotationAngle.X := 180;

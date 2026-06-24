@@ -28,6 +28,9 @@ uses
   System.RTLConsts,
   FMX.Types,
   FMX.Types3D,
+  RiggVar.Mesh.Stitcher,
+  RiggVar.Poly.Rack,
+  RiggVar.FB.Def,
   RiggVar.FB.MeshParams;
 
 type
@@ -99,6 +102,8 @@ type
     xmin, ymin, zmin: single;
     procedure BingoLog(s: string);
     procedure InitTE; virtual;
+    function IsInHandFlippedArea(i: Integer): Boolean; virtual;
+    procedure MakeUniqueVertices; virtual;
     procedure UpdateIB(IB: TIndexBuffer); virtual;
     procedure UpdateTE(VB: TVertexBuffer); virtual;
     procedure UpdateTexCoord(VB: TVertexBuffer);
@@ -113,12 +118,18 @@ type
     te2: single;
     WantNormals: Boolean;
     WantTexCoord: Boolean;
+    WantUniqueVertices: Boolean;
     WantUpdateTE: Boolean;
     constructor Create;
     destructor Destroy; override;
+    function AddData(MV: TMeshVisitor; AVertexOffset: Integer = 0): Integer; virtual;
     procedure ApplyExportOffsetZ(Value: single); virtual;
+    procedure GetMeshDataMatrixReport(ML: TStrings; ReportID: Integer); virtual;
+    function GetMeshDataName: string; virtual;
+    function GetMeshDataReport(ReportID: Integer = 0): string; virtual;
     procedure GetMinMax;
     procedure InitData; virtual;
+    procedure Normalize(f: single); virtual;
     procedure Update3DBuffers(VB: TVertexBuffer; IB: TIndexBuffer); virtual;
     property Center: TPoint3D read GetCenter;
     property Depth: single read GetDepth;
@@ -138,12 +149,18 @@ type
     H3: TList<Integer>;
     SL: TStringList;
     TL: TList<TTriangleInfo>;
+    UV: TList<TPoint3D>; // unique vertices
     procedure AddBingoInfo(LongVersion: Boolean = False);
     procedure Bango;
     procedure Bengo;
     procedure Bingo;
     procedure Bongo;
     procedure Bungo;
+    procedure MakeUniqueH;
+    procedure MakeUniqueH1;
+    procedure MakeUniqueH2;
+    procedure MakeUniqueT;
+    procedure MakeUniqueVertices; override;
     procedure Reduce; virtual;
     procedure ResetBingoCounter;
     function SkipTest3(az1, az2, az3: single): Boolean;
@@ -152,13 +169,17 @@ type
   public
     CapValue: single;
     FlatMesh: Boolean;
+    IsBottom: Boolean;
     IsFlippedHand: Boolean;
     IsLeftHand: Boolean;
     PartOffsetZ: single;
     ReducedMesh: Boolean;
     ReduceMode: Integer;
     SliceHeight: single;
+    UniqueMode: Integer;
     WantDetailPulling: Boolean;
+    WantMirroredBottom: Boolean;
+    WantFlippedHands: Boolean;
     WantLimitPulling: Boolean;
     WantRightPulling: Boolean;
     WantSlicePulling: Boolean;
@@ -167,8 +188,10 @@ type
     WantZeroPulling: Boolean;
     constructor Create;
     destructor Destroy; override;
+    function AddData(MV: TMeshVisitor; AVertexOffset: Integer = 0): Integer; override;
     procedure ApplyExportOffsetZ(Value: single); override;
     procedure FlattenToCapValue(Value: single);
+    procedure Update3DBuffers(VB: TVertexBuffer; IB: TIndexBuffer); override;
   end;
 
   TFederMeshBuilder = class(TMeshBuilder)
@@ -203,6 +226,9 @@ type
     P: TPoint3D; // contains u, v, and w
     P1, P2, P3: TPoint3D; // for limit pulling of segment
     QA: TList<TVertexQuad>;
+    PolyRack: TPolyRack;
+    R1: TPolyRadBase;
+    R2: TPolyRadBase;
     u, v, w: single;
     vi1, vi3: Integer; // vertex indices of segment endpoints
     procedure AddLoopCounterInfo(LongVersion: Boolean = False);
@@ -233,27 +259,33 @@ type
     procedure ResetGD;
     procedure SavePulling(VI: Integer);
     procedure SetLoopFaktor(const Value: single);
+    function SkipFlippedHands: Boolean;
     procedure UpdateFedergraphSize;
     procedure UpdateFromMeshParams(vp: TMeshParams);
+    procedure UpdateHandArea;
     function UpdateTrianglesQA(NI: Integer; vq: TVertexQuad): Integer;
   protected
     procedure InitTE; override;
+    function IsInHandFlippedArea(i: Integer): Boolean; override;
+    procedure UpdateVB(VB: TVertexBuffer); override;
     function VertexIndex(x, y: Integer): Integer;
   public
     SlicePullingMode: Integer;
     TriangleCount: Integer;
     VertexCount: Integer;
     vp: TMeshParams; // injected
+    OuterOptionZ: TVertexOptionZ;
     constructor Create;
     destructor Destroy; override;
     function CheckForData(fn: string): Boolean;
     procedure GetMeshDataInfo;
-    procedure GetMeshDataMatrixReport(ML: TStrings; ReportID: Integer = 0);
-    function GetMeshDataName: string;
-    function GetMeshDataReport(ReportID: Integer = 0): string;
+    procedure GetMeshDataMatrixReport(ML: TStrings; ReportID: Integer = 0); override;
+    function GetMeshDataName: string; override;
+    function GetMeshDataReport(ReportID: Integer = 0): string; override;
     procedure InitData; override;
-    procedure Normalize(f: single);
+    procedure Normalize(f: single); override;
     procedure NormalizeRelative(f: single);
+    procedure Update3DBuffers(VB: TVertexBuffer; IB: TIndexBuffer); override;
     procedure UpdateSize(VBL, IBL: Integer);
     property LoopFaktor: single read FLoopFaktor write SetLoopFaktor;
     property SliceBC: Integer read BungoCounter;
@@ -356,6 +388,28 @@ begin
   inherited;
 end;
 
+function TMeshBuilderBase.AddData(MV: TMeshVisitor; AVertexOffset: Integer = 0): Integer;
+var
+  i: Integer;
+  o: Integer;
+begin
+  if ObjectName <> '' then
+    MV.AddObjectName(ObjectName);
+
+  result := FV.Count;
+
+  for i := 0 to FV.Count - 1 do
+    MV.AddVertex(FV[i]);
+
+  if MaterialName <> '' then
+    MV.AddMaterialName(MaterialName);
+
+  o := AVertexOffset;
+
+  for i := 0 to T1.Count - 1 do
+    MV.AddTriangle(T1[i] + o, T2[i] + o, T3[i] + o);
+end;
+
 procedure TMeshBuilderBase.ApplyExportOffsetZ(Value: single);
 begin
   { virtual }
@@ -379,6 +433,20 @@ end;
 function TMeshBuilderBase.GetHeight: single;
 begin
   result := ymax - ymin;
+end;
+
+procedure TMeshBuilderBase.GetMeshDataMatrixReport(ML: TStrings; ReportID: Integer);
+begin
+end;
+
+function TMeshBuilderBase.GetMeshDataName: string;
+begin
+  result := self.ClassName;
+end;
+
+function TMeshBuilderBase.GetMeshDataReport(ReportID: Integer): string;
+begin
+  result := '';
 end;
 
 procedure TMeshBuilderBase.GetMinMax;
@@ -428,8 +496,28 @@ begin
   te2 := 300;
 end;
 
+function TMeshBuilderBase.IsInHandFlippedArea(i: Integer): Boolean;
+begin
+  result := False;
+end;
+
+procedure TMeshBuilderBase.MakeUniqueVertices;
+begin
+
+end;
+
+procedure TMeshBuilderBase.Normalize(f: single);
+begin
+
+end;
+
 procedure TMeshBuilderBase.Update3DBuffers(VB: TVertexBuffer; IB: TIndexBuffer);
 begin
+  if WantUniqueVertices then
+  begin
+    MakeUniqueVertices;
+  end;
+
   UpdateVB(VB);
 
   if WantUpdateTE then
@@ -445,14 +533,14 @@ procedure TMeshBuilderBase.UpdateIB(IB: TIndexBuffer);
 var
   i, j: Integer;
 begin
-  IB.Length := T1.Count * 3;
-  for i := 0 to T1.Count - 1 do
-  begin
-    j := i * 3;
-    IB[j] := T1[i];
-    IB[j+1] := T2[i];
-    IB[j+2] := T3[i];
-  end;
+    IB.Length := T1.Count * 3;
+    for i := 0 to T1.Count - 1 do
+    begin
+      j := i * 3;
+      IB[j] := T1[i];
+      IB[j+1] := T2[i];
+      IB[j+2] := T3[i];
+    end;
 end;
 
 procedure TMeshBuilderBase.UpdateTE(VB: TVertexBuffer);
@@ -504,6 +592,8 @@ begin
   te1 := 0;
   te2 := 1;
 
+  UV := TList<TPoint3D>.Create;
+
   H1 := TList<Integer>.Create;
   H2 := TList<Integer>.Create;
   H3 := TList<Integer>.Create;
@@ -513,6 +603,8 @@ end;
 
 destructor TMeshBuilder.Destroy;
 begin
+  UV.Free;
+
   TL.Free;
 
   H1.Free;
@@ -537,6 +629,32 @@ begin
   else
     SL_Add(Format('Bingo = %d; %d; %d; %d; %d',
       [BangoCounter, BengoCounter, BingoCounter, BongoCounter, BungoCounter]));
+end;
+
+function TMeshBuilder.AddData(MV: TMeshVisitor; AVertexOffset: Integer = 0): Integer;
+var
+  i: Integer;
+  o: Integer;
+begin
+  if ObjectName <> '' then
+    MV.AddObjectName(ObjectName);
+
+  result := FV.Count;
+
+    for i := 0 to FV.Count - 1 do
+    MV.AddVertex(FV[i]);
+
+  if MaterialName <> '' then
+    MV.AddMaterialName(MaterialName);
+
+  o := AVertexOffset;
+
+  if ReducedMesh then
+    for i := 0 to H1.Count - 1 do
+      MV.AddTriangle(H1[i] + o, H2[i] + o, H3[i] + o)
+  else
+    for i := 0 to T1.Count - 1 do
+      MV.AddTriangle(T1[i] + o, T2[i] + o, T3[i] + o);
 end;
 
 procedure TMeshBuilder.ApplyExportOffsetZ(Value: single);
@@ -594,6 +712,133 @@ begin
       FV[i] := cr;
     end;
   end;
+end;
+
+procedure TMeshBuilder.MakeUniqueH;
+begin
+  case UniqueMode of
+    1: MakeUniqueH1;
+    2: MakeUniqueH2;
+    else
+      MakeUniqueH2;
+  end;
+end;
+
+procedure TMeshBuilder.MakeUniqueH1;
+var
+  i, j: Integer;
+  i1, i2, i3: Integer;
+begin
+  for i := 0 to H1.Count - 1 do
+  begin
+    UV.Add(TPoint3D.Zero);
+    UV.Add(TPoint3D.Zero);
+    UV.Add(TPoint3D.Zero);
+
+    j := i * 3;
+
+    i1 := H1[i];
+    i2 := H2[i];
+    i3 := H3[i];
+
+    H1[i] := j;
+    H2[i] := j + 1;
+    H3[i] := j + 2;
+
+    UV[j]   := FV[i1];
+    UV[j+1] := FV[i2];
+    UV[j+2] := FV[i3];
+  end;
+end;
+
+procedure TMeshBuilder.MakeUniqueH2;
+var
+  i, j: Integer;
+  i1, i2, i3: Integer;
+  compareValue: single;
+begin
+   { UV has been cleared already }
+  Assert(UV.Count = 0);
+
+  { keep all existing vertices }
+  for i := 0 to FV.Count - 1 do
+    UV.Add(FV[i]);
+
+  { add new vertices only for triangles near zero (where needed) }
+
+  compareValue := 0.1;
+  j := UV.Count;
+  for i := 0 to H1.Count - 1 do
+  begin
+    i1 := H1[i];
+    i2 := H2[i];
+    i3 := H3[i];
+
+    if (Abs(FV[i1].Z) < compareValue) then
+    begin
+      H1[i] := j;
+      UV.Add(FV[i1]);
+      Inc(j);
+    end;
+
+    if (Abs(FV[i2].Z) < compareValue) then
+    begin
+      H2[i] := j;
+      UV.Add(FV[i2]);
+      Inc(j);
+    end;
+
+    if (Abs(FV[i3].Z) < compareValue) then
+    begin
+      H3[i] := j;
+      UV.Add(FV[i3]);
+      Inc(j);
+    end;
+
+  end;
+end;
+
+procedure TMeshBuilder.MakeUniqueT;
+var
+  i, j: Integer;
+  i1, i2, i3: Integer;
+begin
+  for i := 0 to T1.Count - 1 do
+  begin
+    UV.Add(TPoint3D.Zero);
+    UV.Add(TPoint3D.Zero);
+    UV.Add(TPoint3D.Zero);
+
+    i1 := T1[i];
+    i2 := T2[i];
+    i3 := T3[i];
+
+    j := i * 3;
+
+    T1[i] := j;
+    T2[i] := j + 1;
+    T3[i] := j + 2;
+
+    UV[j]   := FV[i1];
+    UV[j+1] := FV[i2];
+    UV[j+2] := FV[i3];
+  end;
+end;
+
+procedure TMeshBuilder.MakeUniqueVertices;
+var
+  i: Integer;
+begin
+  UV.Clear;
+
+  if ReducedMesh then
+    MakeUniqueH
+  else
+    MakeUniqueT;
+
+  FV.Clear;
+  for i := 0 to UV.Count - 1 do
+    FV.Add(UV[i]);
 end;
 
 procedure TMeshBuilder.Reduce;
@@ -736,9 +981,18 @@ begin
     for i := 0 to H1.Count - 1 do
     begin
       j := i * 3;
-      IB[j] := H1[i];
-      IB[j+1] := H2[i];
-      IB[j+2] := H3[i];
+      if IsBottom then
+      begin
+        IB[j] := H1[i];
+        IB[j+1] := H3[i];
+        IB[j+2] := H2[i];
+      end
+      else
+      begin
+        IB[j] := H1[i];
+        IB[j+1] := H2[i];
+        IB[j+2] := H3[i];
+      end;
     end;
   end
   else
@@ -750,6 +1004,9 @@ end;
 constructor TFederMeshBuilder.Create;
 begin
   inherited;
+
+  WantMirroredBottom := False;
+  WantUpdateTE := True;
 
   LoopMax := DefaultLoopMax;
   LoopTarget := DefaultLoopTarget;
@@ -763,10 +1020,15 @@ begin
 
   WantTargetPulling := True;
   WantRightPulling := False;
+
+  PolyRack := TPolyRack.Create(1);
+  R1 := PolyRack.Poly1;
+  R2 := PolyRack.Poly2;
 end;
 
 destructor TFederMeshBuilder.Destroy;
 begin
+  PolyRack.Free;
   GN.Free;
   GD.Free;
   QA.Free;
@@ -810,9 +1072,9 @@ begin
 
   if LongVersion then
   begin
-    SL_Add(Format('Pulled Total   = %4d', [CounterPulledTotal]));
-    SL_Add(Format('LoopCounterMax = %4d', [LoopCounterMax]));
-    SL_Add(Format('LoopCounterAvg = %.2f', [LoopCounterAvg]));
+  SL_Add(Format('Pulled Total   = %4d', [CounterPulledTotal]));
+  SL_Add(Format('LoopCounterMax = %4d', [LoopCounterMax]));
+  SL_Add(Format('LoopCounterAvg = %.2f', [LoopCounterAvg]));
   end
   else
     SL_Add(Format('LoopStats = %d; %d; %.2f;',
@@ -827,22 +1089,41 @@ var
   temp: Boolean;
 begin
   if vp.EQ.TakesAbsolute then
-    for i := 0 to FV.Count - 1 do
+  for i := 0 to FV.Count - 1 do
+  begin
+    cr := FV[i];
+
+    cr2 := cr;
+    cr2.Z := Abs(cr.Z);
+
+    pf := TPointF.Create(cr.X, cr.Y);
+
+    temp := False;
+    if WantFlippedHands then
     begin
-      cr := FV[i];
+      if R1.Contains(pf) then
+      begin
+        if cr.Z > 0 then
+        begin
+          temp := False;
+          cr2.Z := -cr2.Z;
+        end;
+      end;
 
-      cr2 := cr;
-      cr2.Z := Abs(cr.Z);
-
-      pf := TPointF.Create(cr.X, cr.Y);
-
-      temp := False;
-
-      if temp then
-        FV[i] := cr
-      else
-        FV[i] := cr2;
+      if R2.Contains(pf) then
+      begin
+        if cr.Z < 0 then
+        begin
+          temp := True;
+        end;
+      end;
     end;
+
+    if temp then
+      FV[i] := cr
+    else
+      FV[i] := cr2;
+  end;
 end;
 
 procedure TFederMeshBuilder.ApplyBottomCapping(CapValue: single);
@@ -970,7 +1251,8 @@ begin
   else
     ApplyAbsolute;
 
-  ApplyTopCapping(FederLimits.SliceLimitP);
+  if not WantFlippedHands then
+    ApplyTopCapping(FederLimits.SliceLimitP);
   ApplyBottomCapping(FederLimits.PCapLimit);
 end;
 
@@ -1106,6 +1388,10 @@ begin
   P1 := GN[vi1];
   P3 := GN[vi3];
   CurrentPullDirection := DirTag;
+
+  { SkipFlippedHands uses P1 and P3 }
+  if SkipFlippedHands then
+      Exit;
 
   if CheckCrossing(P1, P3, Soll) then
   begin
@@ -1327,6 +1613,8 @@ begin
 
   vp.EQ.PrepareCalc;
 
+  UpdateHandArea;
+
   Init2;
   ResetGD;
   ResetBingoCounter;
@@ -1504,8 +1792,16 @@ begin
   ti := 0;
   for vq in QA do
   begin
-    ti := UpdateTrianglesQA(ti, vq);
+      ti := UpdateTrianglesQA(ti, vq);
   end;
+end;
+
+function TFederMeshBuilder.IsInHandFlippedArea(i: Integer): Boolean;
+var
+  p: TPointF;
+begin
+  p := TPointF.Create(FV[i].X, FV[i].Y);
+  result := R1.Contains(p) or R2.contains(p);
 end;
 
 procedure TFederMeshBuilder.Normalize(f: single);
@@ -1633,6 +1929,37 @@ begin
   end;
 end;
 
+function TFederMeshBuilder.SkipFlippedHands: Boolean;
+var
+  pf1, pf2: TPointF;
+begin
+  result := False;
+  if WantFlippedHands then
+  begin
+    pf1 := TPointF.Create(P1.X, P1.Y);
+    pf2 := TPointF.Create(P3.X, P3.Y);
+    result :=
+      R1.Contains(pf1) or
+      R2.Contains(pf1) or
+      R1.Contains(pf2) or
+      R2.Contains(pf2);
+  end;
+end;
+
+procedure TMeshBuilder.Update3DBuffers(VB: TVertexBuffer; IB: TIndexBuffer);
+begin
+  UV.Clear;
+
+  inherited;
+end;
+
+procedure TFederMeshBuilder.Update3DBuffers(VB: TVertexBuffer; IB: TIndexBuffer);
+begin
+  inherited;
+
+  VertexCount := FV.Count;
+end;
+
 procedure TFederMeshBuilder.UpdateFedergraphSize;
 var
   vc, ic: Integer;
@@ -1649,6 +1976,14 @@ end;
 
 procedure TFederMeshBuilder.UpdateFromMeshParams(vp: TMeshParams);
 begin
+  WantFlippedHands := vp.WantFlippedHands;
+  WantMirroredBottom := vp.WantMirroredBottom;
+  IsFlippedHand := WantFlippedHands;
+  OuterOptionZ := vp.OuterOptionZ;
+
+  WantUniqueVertices := vp.WantUniqueVertices;
+  UniqueMode := vp.UniqueMode;
+
   ReducedMesh := vp.ReducedMesh;
   ReduceMode := vp.ReduceMode;
 
@@ -1660,6 +1995,11 @@ begin
 
   te1 := vp.te1;
   te2 := vp.te2;
+end;
+
+procedure TFederMeshBuilder.UpdateHandArea;
+begin
+  PolyRack.Compute;
 end;
 
 procedure TFederMeshBuilder.UpdateSize(VBL, IBL: Integer);
@@ -1702,13 +2042,33 @@ end;
 
 function TFederMeshBuilder.UpdateTrianglesQA(NI: Integer; vq: TVertexQuad): Integer;
 begin
-  T1[NI] := vq.A1;
-  T2[NI] := vq.A2;
-  T3[NI] := vq.A3;
-  T1[NI+1] := vq.A3;
-  T2[NI+1] := vq.A0;
-  T3[NI+1] := vq.A1;
-  result := NI + 2;
+      T1[NI] := vq.A1;
+      T2[NI] := vq.A2;
+      T3[NI] := vq.A3;
+      T1[NI+1] := vq.A3;
+      T2[NI+1] := vq.A0;
+      T3[NI+1] := vq.A1;
+      result := NI + 2;
+end;
+
+procedure TFederMeshBuilder.UpdateVB(VB: TVertexBuffer);
+var
+  i: Integer;
+  p: TPoint3D;
+begin
+  VB.Length := FV.Count;
+
+  { 1. Assign Vertices }
+  for i := 0 to FV.Count - 1 do
+  begin
+    p := FV[i];
+    case OuterOptionZ of
+      TVertexOptionZ.Normal: ;
+      TVertexOptionZ.FlatBottom: p.Z := vp.CapValue;
+      TVertexOptionz.MirroredBottom: p.Z := vp.CapValue + (vp.CapValue - p.Z);
+    end;
+    VB.Vertices[i] := p;
+  end;
 end;
 
 function TFederMeshBuilder.VertexIndex(x, y: Integer): Integer;

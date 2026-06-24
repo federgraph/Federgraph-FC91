@@ -19,6 +19,7 @@
 interface
 
 uses
+  RiggVar.FB.DefConst,
   RiggVar.FB.Equation;
 
 type
@@ -35,7 +36,15 @@ type
     Index3: Integer;
   end;
 
+  TVertexOptionZ = (
+    Normal,
+    FlatBottom,
+    MirroredBottom
+  );
+
   TMeshParams = class
+  private
+    procedure InitOnce;
   public
     EQ: TFederEquation;
 
@@ -57,13 +66,13 @@ type
     ReduceMode: Integer;
 
     WantZeroPulling: Boolean;
-    WantLimitPulling: Boolean;
-    WantDetailPulling: Boolean;
-    WantTargetPulling: Boolean;
     WantSlicePulling: Boolean;
-    WantRightPulling: Boolean;
 
+    UniqueMode: Integer;
+    WantUniqueVertices: Boolean;
     WantFlippedHands: Boolean;
+    WantMirroredBottom: Boolean;
+    OuterOptionZ: TVertexOptionZ;
 
     SlicePullingMode: Integer;
 
@@ -74,20 +83,36 @@ type
     PlusCap: Boolean;
 
     NormScale: Integer;
+    GlobalScale: single;
+    ModelGroupScale: single;
 
     T1: single;
     T2: single;
     te1: single;
     te2: single;
+    BigMapFactorT2: single;
+    ot1: single;
+    ot2: single;
+
+    SpringCount: Integer;
+    Figure: Integer;
+    Attenuation: single;
+    CapFactor: single;
+    CapOverride: Boolean;
+
+    MeshMode: Integer;
 
     fcap: single;
     pcap: single;
     mcap: single;
 
+    WantLux: Boolean;
+
     constructor Create(AEQ: TFederEquation);
     procedure Reset;
 
     procedure InitTE;
+    procedure SaveTE;
     procedure PrepareCalc;
     procedure Update;
 
@@ -104,23 +129,16 @@ constructor TMeshParams.Create(AEQ: TFederEquation);
 begin
   EQ := AEQ;
 
-  range := 120;
-  rangex := range;
-  rangey := range;
+  Figure := 2;
+  SpringCount := 3;
+
+  range := ModelConst.Range;
 
   ox := 0;
-  oy := -30;
+  oy := -ModelConst.OffsetY;
   oz := 0;
 
-  mc := 256;
-  sx := -range;
-  sy := -range;
-  ex := range;
-  ey := range;
-
-  ms := 2 * range / mc;
-  msx := ms;
-  msy := ms;
+  mc := 128;
 
   CapValue := 60;
   SliceHeight := 25;
@@ -137,6 +155,9 @@ begin
   pcap := CapValue;
   mcap := -CapValue;
 
+  BigMapFactorT2 := 1;
+
+  InitOnce;
   Reset;
   Update;
 end;
@@ -144,7 +165,7 @@ end;
 procedure TMeshParams.InitTE;
 begin
   te1 := T1 / 10;
-  te2 := Abs(T2);
+  te2 := Abs(T2 * BigMapFactorT2);
 
   te2 := te2 * 2;
   te1 := te1 + (te2 / 2);
@@ -152,9 +173,51 @@ begin
     te2 := 0.1;
 end;
 
-procedure TMeshParams.PrepareCalc;
+procedure TMeshParams.SaveTE;
 begin
-  fcap := 500000;
+  ot1 := te1;
+  ot2 := te2;
+end;
+
+procedure TMeshParams.PrepareCalc;
+var
+  gain1: single;
+  gain2: single;
+  gain3: single;
+  gain4: single;
+begin
+  gain1 := Abs(Attenuation);
+
+  if gain1 < 1000 then
+    gain2 := sqr(gain1 / 100) * 100 * 1000
+  else
+    gain2 := sqr(10) * 100 * 1000;
+
+  case SpringCount of
+    1: gain3 := 0.005;
+    2: gain3 := 1;
+    3: gain3 := 500;
+    4: gain3 := 25;
+    else
+      gain3 := 1;
+  end;
+
+  gain4 := (1000 + gain2) * gain3;
+
+  if CapOverride then
+  begin
+    fcap := fcap * CapFactor;
+    CapOverride := False;
+  end
+  else
+  case Figure of
+    1: fcap := gain4 * 0.1;
+    2: fcap := gain4 * 1;
+    3: fcap := gain4 * 10;
+    4: fcap := gain4 * 100;
+    5: fcap := gain4 * 1000;
+  end;
+
   pcap := CapValue;
   mcap := -pcap;
 end;
@@ -173,8 +236,16 @@ begin
   msx := ms;
   msy := ms;
 
+  SaveTE;
   InitTE;
   PrepareCalc;
+end;
+
+procedure TMeshParams.InitOnce;
+begin
+  MeshMode := 1;
+  ModelGroupScale := 1.0;
+  GlobalScale := 8;
 end;
 
 procedure TMeshParams.Reset;
@@ -184,16 +255,15 @@ begin
   PlusCap := False;
   MinusCap := False;
 
-  WantDetailPulling := True;
-  WantTargetPulling := True;
-  WantRightPulling := False;
-
   WantZeroPulling := True;
-  WantLimitPulling := True;
   WantSlicePulling := False;
 
-  WantFlippedHands := False;
+  WantLux := True;
 
+  WantFlippedHands := False;
+  WantMirroredBottom := False;
+  WantUniqueVertices := True;
+  OuterOptionZ := TVertexOptionZ.Normal;
 end;
 
 end.
