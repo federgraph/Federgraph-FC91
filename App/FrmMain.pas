@@ -28,9 +28,8 @@ uses
   RiggVar.FB.DefConst,
   RiggVar.FB.Equation,
   RiggVar.FB.MeshParams,
-  RiggVar.Mesh.BuilderMesh,
   RiggVar.Mesh.MeshBuilder,
-  RiggVar.FederModel.Material,
+  RiggVar.Mesh.SolidPart,
   FMX.Controls3D,
   FMX.Objects3D,
   FMX.Viewport3D,
@@ -42,14 +41,6 @@ uses
   FMX.Dialogs;
 
 type
-  TFederMessageKind = (
-    fmkTX,
-    fmkTY,
-    fmkRX,
-    fmkRY,
-    fmkRZ
-  );
-
   TFormMain = class(TForm)
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -59,9 +50,6 @@ type
     Down: TPointF;
     MouseDown: Boolean;
     FormShown: Boolean;
-    FederMaterial: TFederMaterial;
-    Mesh: TBuilderMesh;
-    MeshBuilder: TFederMeshBuilder;
     FrontLight: TLight;
     BackLight: TLight;
     WestLight: TLight;
@@ -75,7 +63,6 @@ type
     procedure Init;
     procedure InitCamera;
     procedure InitLight;
-    procedure InitMaterial;
     procedure InitMesh;
     procedure InitViewport;
     procedure ResetCamera;
@@ -88,8 +75,6 @@ type
     Camera: TCamera;
     CameraDummy: TDummy;
     CameraDummyRotationAngle: TPoint3D;
-    FederEquation: TFederEquation;
-    MeshParams: TMeshParams;
     Viewport: TViewport3D;
     procedure HandleKey(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
   end;
@@ -100,6 +85,9 @@ var
 implementation
 
 {$R *.fmx}
+
+uses
+  RiggVar.App.Main;
 
 { TFormMain }
 
@@ -112,12 +100,12 @@ begin
   begin
     CameraZ := Camera.Position.Z;
 
-    l := CameraZ + Delta * 3;
+    l := CameraZ - Delta;
 
-    if l < 4 then
-      l := 4;
-    if l > 16 then
-      l := 16;
+    if l < 5 then
+      l := 5;
+    if l > 30 then
+      l := 30;
 
     Camera.Position.Z := l;
     ZoomText := IntToStr(Round(l));
@@ -131,10 +119,7 @@ end;
 
 procedure TFormMain.FormDestroy(Sender: TObject);
 begin
-  MeshParams.Free;
-  FederEquation.Free;
-  MeshBuilder.Free;
-  FederMaterial.Free;
+  Main.Free;
 end;
 
 procedure TFormMain.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
@@ -207,46 +192,12 @@ begin
 
   claBackground := StringToAlphaColor('#FF333333');
 
+  Main := TMain.Create;
+
   InitViewport;
   InitCamera;
   InitLight;
-  InitMaterial;
   InitMesh;
-end;
-
-procedure TFormMain.InitMaterial;
-begin
-  FederMaterial := TFederMaterial.Create;
-end;
-
-procedure TFormMain.InitMesh;
-begin
-  Mesh := TBuilderMesh.Create(Self);
-  Mesh.Parent := Viewport;
-  Mesh.WrapMode := TMeshWrapMode.Original;
-  Mesh.HitTest := False;
-  Mesh.TwoSide := True;
-  Mesh.Scale.Point := TPoint3D.Create(0.02, 0.02, 0.02);
-  Mesh.MaterialSource := FederMaterial.MaterialSource;
-
-  FederEquation := TFederEquation.Create;
-
-  MeshParams := TMeshParams.Create(FederEquation);
-  MeshParams.ReducedMesh := True;
-  MeshParams.ReduceMode := 3;
-  MeshParams.PlusCap := True;
-  MeshParams.WantSlicePulling := False;
-  MeshParams.SlicePullingMode := 3;
-  MeshParams.WantFlippedHands := True;
-  MeshParams.WantUniqueVertices := True;
-  MeshParams.UniqueMode := 2;
-
-  MeshBuilder := TFederMeshBuilder.Create;
-  MeshBuilder.vp := MeshParams;
-  MeshBuilder.WantUpdateTE := True;
-  MeshBuilder.InitData;
-  MeshBuilder.Update3DBuffers(Mesh.Data.VertexBuffer, Mesh.Data.IndexBuffer);
-  Mesh.Data.CalcFaceNormals;
 end;
 
 procedure TFormMain.InitCamera;
@@ -303,6 +254,11 @@ begin
   Viewport.AddObject(SouthLight);
 end;
 
+procedure TFormMain.InitMesh;
+begin
+  Main.AddMeshesToScene(Viewport);
+end;
+
 procedure TFormMain.InitViewport;
 begin
   Viewport := TViewport3D.Create(self);
@@ -340,7 +296,7 @@ begin
 
   Camera.Position.X := 0.0;
   Camera.Position.Y := 0.0;
-  Camera.Position.Z := 8.0;
+  Camera.Position.Z := 20.0;
 
   Camera.ResetRotationAngle;
   Camera.RotationAngle.X := 180;
@@ -359,8 +315,8 @@ begin
 
   if KeyChar = ' ' then
   begin
-    Mesh.ShowEdges := not Mesh.ShowEdges;
-    Mesh.Repaint;
+    MainVar.ShowEdges := not MainVar.ShowEdges;
+    Main.SolidPart.Repaint;
     Exit;
   end
 

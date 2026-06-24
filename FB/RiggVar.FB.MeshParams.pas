@@ -125,12 +125,15 @@ type
 
 implementation
 
+uses
+  RiggVar.App.Main;
+
 constructor TMeshParams.Create(AEQ: TFederEquation);
 begin
   EQ := AEQ;
 
   Figure := 2;
-  SpringCount := 3;
+  SpringCount := EQ.SpringCount;
 
   range := ModelConst.Range;
 
@@ -245,7 +248,7 @@ procedure TMeshParams.InitOnce;
 begin
   MeshMode := 1;
   ModelGroupScale := 1.0;
-  GlobalScale := 8;
+  GlobalScale := MainVar.Transform3D.GlobalScale;
 end;
 
 procedure TMeshParams.Reset;

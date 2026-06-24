@@ -147,7 +147,7 @@ type
 implementation
 
 uses
-  FrmMain, //  RiggVar.App.Main,
+  RiggVar.App.Main,
   RiggVar.Poly.Rad;
 
 { TPolyRadBase }
@@ -541,7 +541,7 @@ end;
 function TPolyRack.GetNamePart: string;
 begin
   if CurrentSet = 0 then
-    result := Format('S%d-Z%.2d', [CurrentSet, Round(FormMain.MeshParams.CapValue)])
+    result := Format('S%d-Z%.2d', [CurrentSet, Round(Main.CapValue)])
   else
     result := Format('M%d-S%d', [CurrentMode, CurrentSet]);
 end;
@@ -592,7 +592,7 @@ begin
     18: cla := claBeige;
     19: cla := claTeal;
     else
-      cla := FormMain.claBackground;
+      cla := claSilver;
   end;
   result := cla;
 end;

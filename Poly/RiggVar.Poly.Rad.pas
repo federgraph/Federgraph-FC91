@@ -67,7 +67,7 @@ type
 implementation
 
 uses
-  FrmMain; //RiggVar.App.Main;
+  RiggVar.App.Main;
 
 { TPolyRad }
 
@@ -391,7 +391,7 @@ begin
   T := (P2 - P1).Normalize * 4;
   for i := 0 to LoopMax do
   begin
-    z := FormMain.FederEquation.GetValueN(P.X, P.Y);
+    z := Main.vp.EQ.GetValueN(P.X, P.Y);
 
     if Abs(z - CapValue) < TargetDiff then
     begin
