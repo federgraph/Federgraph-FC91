@@ -77,6 +77,8 @@ FCXX
 # C++ object files produced when C/C++ Output file generation is configured.
 # Uncomment this if you are not using external objects (zlib library for example).
 *.obj
+# federgraph.obj is an exception!
+!federgraph.obj
 #
 # Delphi project metatdata files.
 # Uncomment this if you want to recreate them in every workspace.

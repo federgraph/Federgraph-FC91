@@ -25,7 +25,10 @@ uses
   System.Classes,
   System.Math.Vectors,
   System.UIConsts,
+  RiggVar.Util.AppUtils,
+  RiggVar.Mesh.BuilderMesh,
   RiggVar.FederModel.Material,
+  RiggVar.Mesh.ReaderOBJ,
   FMX.Controls3D,
   FMX.Objects3D,
   FMX.Viewport3D,
@@ -37,11 +40,6 @@ uses
   FMX.Dialogs;
 
 type
-  TMyCustomMesh = class(TCustomMesh)
-  public
-    property Data;
-  end;
-
   TFederMessageKind = (
     fmkTX,
     fmkTY,
@@ -61,6 +59,8 @@ type
     MouseDown: Boolean;
     FormShown: Boolean;
     FederMaterial: TFederMaterial;
+    MeshReader: TMeshReaderOBJ;
+    Mesh: TBuilderMesh;
     FrontLight: TLight;
     BackLight: TLight;
     WestLight: TLight;
@@ -76,6 +76,8 @@ type
     procedure InitCube;
     procedure InitLight;
     procedure InitMaterial;
+    procedure InitMesh;
+    procedure InitMeshReader(fn: string);
     procedure InitViewport;
     procedure ResetCamera;
     procedure UpdateRotation;
@@ -88,6 +90,8 @@ type
     CameraDummy: TDummy;
     CameraDummyRotationAngle: TPoint3D;
     Viewport: TViewport3D;
+    procedure HandleKey(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+    procedure UpdateMesh;
   end;
 
 var
@@ -128,6 +132,7 @@ end;
 procedure TFormMain.FormDestroy(Sender: TObject);
 begin
   FederMaterial.Free;
+  MeshReader.Free;
 end;
 
 procedure TFormMain.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
@@ -205,11 +210,54 @@ begin
   InitLight;
   InitMaterial;
   InitCube;
+  UpdateMesh;
 end;
 
 procedure TFormMain.InitMaterial;
 begin
   FederMaterial := TFederMaterial.Create;
+end;
+
+procedure TFormMain.InitMesh;
+begin
+  if MeshReader = nil then
+    Exit;
+
+  if Mesh = nil then
+  begin
+    Mesh := TBuilderMesh.Create(Self);
+    Mesh.Parent := Viewport;
+    Mesh.WrapMode := TMeshWrapMode.Original;
+    Mesh.HitTest := False;
+    Mesh.TwoSide := False;
+    Mesh.Scale.Point := TPoint3D.Create(0.02, 0.02, 0.02);
+    Mesh.MaterialSource := FederMaterial.MaterialSource;
+  end;
+
+  MeshReader.Update3DBuffers(Mesh.Data.VertexBuffer, Mesh.Data.IndexBuffer);
+  Mesh.Data.CalcFaceNormals;
+end;
+
+procedure TFormMain.InitMeshReader(fn: string);
+begin
+  if MeshReader = nil then
+  begin
+  MeshReader := TMeshReaderOBJ.Create;
+  end;
+
+  MeshReader.LoadFromFile(fn);
+  MeshReader.Parse;
+end;
+
+procedure TFormMain.UpdateMesh;
+var
+  fn: string;
+begin
+  Cube.Visible := False;
+  fn := TAppUtils.GetProjectDir + 'federgraph.obj';
+  InitMeshReader(fn);
+  InitMesh;
+  Caption := Format('%s - %s', [Application.Title.ToUpper, ExtractFileName(fn)]);
 end;
 
 procedure TFormMain.InitCube;
@@ -285,6 +333,13 @@ begin
   Viewport.UsingDesignCamera := False;
   Viewport.Align := TAlignLayout.Client; // set Alignment after setting Parent
 
+{$ifdef MSWindows}
+  Viewport.OnKeyUp := HandleKey;
+{$endif}
+{$ifdef MacOS}
+  Viewport.OnKeyDown := HandleKey;
+{$endif}
+
   Viewport.OnMouseDown := ViewportMouseDown;
   Viewport.OnMouseMove := ViewportMouseMove;
   Viewport.OnMouseUp := ViewportMouseUp;
@@ -315,6 +370,18 @@ procedure TFormMain.UpdateRotation;
 begin
   CameraDummy.ResetRotationAngle;
   CameraDummy.RotationAngle.Point := CameraDummyRotationAngle;
+end;
+
+procedure TFormMain.HandleKey(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+
+  if KeyChar = ' ' then
+  begin
+    Mesh.ShowEdges := not Mesh.ShowEdges;
+    Mesh.Repaint;
+    Exit;
+  end
+
 end;
 
 procedure TFormMain.ViewportMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
