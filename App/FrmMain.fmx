@@ -12,4 +12,16 @@ object FormMain: TFormMain
   OnMouseWheel = FormMouseWheel
   OnShow = FormShow
   DesignerMasterStyle = 0
+  object MainMenu: TMainMenu
+    Left = 304
+    Top = 224
+    object FileMenu: TMenuItem
+      Text = 'File'
+      object OpenItem: TMenuItem
+        Locked = True
+        Text = 'Open...'
+        OnClick = OpenBtnClick
+      end
+    end
+  end
 end

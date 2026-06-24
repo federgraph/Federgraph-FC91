@@ -25,10 +25,10 @@ uses
   System.Classes,
   System.Math.Vectors,
   System.UIConsts,
-  RiggVar.Util.AppUtils,
   RiggVar.Mesh.BuilderMesh,
-  RiggVar.FederModel.Material,
   RiggVar.Mesh.ReaderOBJ,
+  RiggVar.FederModel.Material,
+  RiggVar.App.OpenSave,
   FMX.Controls3D,
   FMX.Objects3D,
   FMX.Viewport3D,
@@ -37,7 +37,11 @@ uses
   FMX.Controls,
   FMX.Forms,
   FMX.Graphics,
-  FMX.Dialogs;
+  FMX.Dialogs,
+  FMX.Controls.Presentation,
+  FMX.StdCtrls,
+  FMX.Layouts,
+  FMX.Menus;
 
 type
   TFederMessageKind = (
@@ -49,10 +53,14 @@ type
   );
 
   TFormMain = class(TForm)
+    MainMenu: TMainMenu;
+    FileMenu: TMenuItem;
+    OpenItem: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
     procedure FormShow(Sender: TObject);
+    procedure OpenBtnClick(Sender: TObject);
   private
     Cube: TCube;
     Down: TPointF;
@@ -68,6 +76,7 @@ type
     NorthLight: TLight;
     SouthLight: TLight;
     ZoomText: string;
+    MeshOpener: TOpenOBJ;
     procedure DoZoom(Delta: single);
     procedure HandleMouseDown(Shift: TShiftState; X, Y: Single);
     procedure HandleMouseMove(Shift: TShiftState; X, Y: Single);
@@ -133,6 +142,7 @@ procedure TFormMain.FormDestroy(Sender: TObject);
 begin
   FederMaterial.Free;
   MeshReader.Free;
+  MeshOpener.Free;
 end;
 
 procedure TFormMain.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
@@ -210,7 +220,6 @@ begin
   InitLight;
   InitMaterial;
   InitCube;
-  UpdateMesh;
 end;
 
 procedure TFormMain.InitMaterial;
@@ -242,7 +251,7 @@ procedure TFormMain.InitMeshReader(fn: string);
 begin
   if MeshReader = nil then
   begin
-  MeshReader := TMeshReaderOBJ.Create;
+    MeshReader := TMeshReaderOBJ.Create;
   end;
 
   MeshReader.LoadFromFile(fn);
@@ -254,7 +263,7 @@ var
   fn: string;
 begin
   Cube.Visible := False;
-  fn := TAppUtils.GetProjectDir + 'federgraph.obj';
+  fn := MeshOpener.FileName;
   InitMeshReader(fn);
   InitMesh;
   Caption := Format('%s - %s', [Application.Title.ToUpper, ExtractFileName(fn)]);
@@ -399,6 +408,16 @@ end;
 procedure TFormMain.ViewportMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
 begin
   MouseDown := False;
+end;
+
+procedure TFormMain.OpenBtnClick(Sender: TObject);
+begin
+  if MeshOpener = nil then
+  begin
+    MeshOpener := TOpenOBJ.Create;
+  end;
+
+  MeshOpener.Open;
 end;
 
 end.
