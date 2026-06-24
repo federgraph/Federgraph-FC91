@@ -25,10 +25,11 @@ uses
   System.Classes,
   System.Math.Vectors,
   System.UIConsts,
+  RiggVar.FB.Equation,
+  RiggVar.FB.MeshParams,
   RiggVar.Mesh.BuilderMesh,
-  RiggVar.Mesh.ReaderOBJ,
+  RiggVar.Mesh.MeshBuilder,
   RiggVar.FederModel.Material,
-  RiggVar.App.OpenSave,
   FMX.Controls3D,
   FMX.Objects3D,
   FMX.Viewport3D,
@@ -37,11 +38,7 @@ uses
   FMX.Controls,
   FMX.Forms,
   FMX.Graphics,
-  FMX.Dialogs,
-  FMX.Controls.Presentation,
-  FMX.StdCtrls,
-  FMX.Layouts,
-  FMX.Menus;
+  FMX.Dialogs;
 
 type
   TFederMessageKind = (
@@ -53,22 +50,17 @@ type
   );
 
   TFormMain = class(TForm)
-    MainMenu: TMainMenu;
-    FileMenu: TMenuItem;
-    OpenItem: TMenuItem;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
     procedure FormShow(Sender: TObject);
-    procedure OpenBtnClick(Sender: TObject);
   private
-    Cube: TCube;
     Down: TPointF;
     MouseDown: Boolean;
     FormShown: Boolean;
     FederMaterial: TFederMaterial;
-    MeshReader: TMeshReaderOBJ;
     Mesh: TBuilderMesh;
+    MeshBuilder: TFederMeshBuilder;
     FrontLight: TLight;
     BackLight: TLight;
     WestLight: TLight;
@@ -76,17 +68,14 @@ type
     NorthLight: TLight;
     SouthLight: TLight;
     ZoomText: string;
-    MeshOpener: TOpenOBJ;
     procedure DoZoom(Delta: single);
     procedure HandleMouseDown(Shift: TShiftState; X, Y: Single);
     procedure HandleMouseMove(Shift: TShiftState; X, Y: Single);
     procedure Init;
     procedure InitCamera;
-    procedure InitCube;
     procedure InitLight;
     procedure InitMaterial;
     procedure InitMesh;
-    procedure InitMeshReader(fn: string);
     procedure InitViewport;
     procedure ResetCamera;
     procedure UpdateRotation;
@@ -98,9 +87,10 @@ type
     Camera: TCamera;
     CameraDummy: TDummy;
     CameraDummyRotationAngle: TPoint3D;
+    FederEquation: TFederEquation;
+    MeshParams: TMeshParams;
     Viewport: TViewport3D;
     procedure HandleKey(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
-    procedure UpdateMesh;
   end;
 
 var
@@ -140,9 +130,10 @@ end;
 
 procedure TFormMain.FormDestroy(Sender: TObject);
 begin
+  MeshParams.Free;
+  FederEquation.Free;
+  MeshBuilder.Free;
   FederMaterial.Free;
-  MeshReader.Free;
-  MeshOpener.Free;
 end;
 
 procedure TFormMain.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
@@ -219,7 +210,7 @@ begin
   InitCamera;
   InitLight;
   InitMaterial;
-  InitCube;
+  InitMesh;
 end;
 
 procedure TFormMain.InitMaterial;
@@ -229,58 +220,29 @@ end;
 
 procedure TFormMain.InitMesh;
 begin
-  if MeshReader = nil then
-    Exit;
+  Mesh := TBuilderMesh.Create(Self);
+  Mesh.Parent := Viewport;
+  Mesh.WrapMode := TMeshWrapMode.Original;
+  Mesh.HitTest := False;
+  Mesh.TwoSide := True;
+  Mesh.Scale.Point := TPoint3D.Create(0.02, 0.02, 0.02);
+  Mesh.MaterialSource := FederMaterial.MaterialSource;
 
-  if Mesh = nil then
-  begin
-    Mesh := TBuilderMesh.Create(Self);
-    Mesh.Parent := Viewport;
-    Mesh.WrapMode := TMeshWrapMode.Original;
-    Mesh.HitTest := False;
-    Mesh.TwoSide := False;
-    Mesh.Scale.Point := TPoint3D.Create(0.02, 0.02, 0.02);
-    Mesh.MaterialSource := FederMaterial.MaterialSource;
-  end;
+  FederEquation := TFederEquation.Create;
 
-  MeshReader.Update3DBuffers(Mesh.Data.VertexBuffer, Mesh.Data.IndexBuffer);
+  MeshParams := TMeshParams.Create(FederEquation);
+  MeshParams.ReducedMesh := True;
+  MeshParams.ReduceMode := 3;
+  MeshParams.PlusCap := True;
+  MeshParams.WantSlicePulling := False;
+  MeshParams.SlicePullingMode := 3;
+
+  MeshBuilder := TFederMeshBuilder.Create;
+  MeshBuilder.vp := MeshParams;
+  MeshBuilder.WantUpdateTE := True;
+  MeshBuilder.InitData;
+  MeshBuilder.Update3DBuffers(Mesh.Data.VertexBuffer, Mesh.Data.IndexBuffer);
   Mesh.Data.CalcFaceNormals;
-end;
-
-procedure TFormMain.InitMeshReader(fn: string);
-begin
-  if MeshReader = nil then
-  begin
-    MeshReader := TMeshReaderOBJ.Create;
-  end;
-
-  MeshReader.LoadFromFile(fn);
-  MeshReader.Parse;
-end;
-
-procedure TFormMain.UpdateMesh;
-var
-  fn: string;
-begin
-  Cube.Visible := False;
-  fn := MeshOpener.FileName;
-  InitMeshReader(fn);
-  InitMesh;
-  Caption := Format('%s - %s', [Application.Title.ToUpper, ExtractFileName(fn)]);
-end;
-
-procedure TFormMain.InitCube;
-begin
-  Cube := TCube.Create(Self);
-  Cube.Parent := Viewport;
-  Cube.WrapMode := TMeshWrapMode.Original;
-  Cube.HitTest := False;
-  Cube.TwoSide := True;
-  Cube.Width := 120;
-  Cube.Height := 240;
-  Cube.Depth := 60;
-  Cube.Scale.Point := TPoint3D.Create(0.02, 0.02, 0.02);
-  Cube.MaterialSource := FederMaterial.MaterialSource;
 end;
 
 procedure TFormMain.InitCamera;
@@ -370,9 +332,14 @@ begin
 
   { Camera }
 
+  Camera.Position.X := 0.0;
+  Camera.Position.Y := 0.0;
+  Camera.Position.Z := 5.0;
+
   Camera.ResetRotationAngle;
-  Camera.Position.Point := TPoint3D.Create(0, 0, 8);
-  Camera.RotationAngle.Point := TPoint3D.Create(180, 0, 0);
+  Camera.RotationAngle.X := 180;
+  Camera.RotationAngle.Y := 0;
+  Camera.RotationAngle.Z := 0;
 end;
 
 procedure TFormMain.UpdateRotation;
@@ -408,16 +375,6 @@ end;
 procedure TFormMain.ViewportMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
 begin
   MouseDown := False;
-end;
-
-procedure TFormMain.OpenBtnClick(Sender: TObject);
-begin
-  if MeshOpener = nil then
-  begin
-    MeshOpener := TOpenOBJ.Create;
-  end;
-
-  MeshOpener.Open;
 end;
 
 end.
