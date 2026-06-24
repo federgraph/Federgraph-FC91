@@ -222,17 +222,14 @@ begin
   Inc(CountF);
 
   t := s.Substring(2);
-//  FLog.Add(t);
 
   a := t.Split([' '], 3);
   l := Length(a);
-//  FLog.Add(Format('l = %d', [l]));
   if l = 3 then
   begin
     sx := a[0];
     sy := a[1];
     sz := a[2];
-//    FLog.Add(Format('x = %s, y = %s, z = %s', [sx, sy, sz]));
 
     OldErrorCount := ErrorV;
     if not TryStrToFloat(sx, x) then
@@ -271,19 +268,15 @@ var
 begin
   Inc(CountV);
 
-//  ML.Add('v -7.50 -150.00 44.40');
   t := s.Substring(2);
-//  FLog.Add(t);
 
   a := t.Split([' '], 3);
   l := Length(a);
-//  FLog.Add(Format('l = %d', [l]));
   if l = 3 then
   begin
     s1 := a[0].Trim;
     s2 := a[1].Trim;
     s3 := a[2].Trim;
-//    FLog.Add(Format('f1 = ''%s'', f2 = %s, f3 = %s', [s1, s2, s3]));
 
     f1 := StrToIntDef(s1, 0);
     f2 := StrToIntDef(s2, 0);
