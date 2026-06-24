@@ -28,6 +28,8 @@ uses
   RiggVar.FB.ListArray,
   RiggVar.FB.DefConst;
 
+{$I App\RiggVar.App.Defs.inc}
+
 const
   BoolStr: array[Boolean] of string = ('False', 'True');
   BoolInt: array[Boolean] of Integer = (0, 1);
@@ -64,6 +66,10 @@ const
 
 type
   TConnectionStatus = (csRed, csYellow, csGreen);
+
+{$ifdef OriginalFMX}
+  TViewType = (Perspective, Orthographic);
+{$endif}
 
   TGuiAction = (
     gaAnimationStop,

@@ -592,7 +592,7 @@ begin
     18: cla := claBeige;
     19: cla := claTeal;
     else
-      cla := claSilver;
+      cla := MainVar.ColorScheme.claBackground;
   end;
   result := cla;
 end;

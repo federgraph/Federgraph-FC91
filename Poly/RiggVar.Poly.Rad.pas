@@ -391,7 +391,7 @@ begin
   T := (P2 - P1).Normalize * 4;
   for i := 0 to LoopMax do
   begin
-    z := Main.vp.EQ.GetValueN(P.X, P.Y);
+    z := Main.FederModel.EQ.GetValueN(P.X, P.Y);
 
     if Abs(z - CapValue) < TargetDiff then
     begin
