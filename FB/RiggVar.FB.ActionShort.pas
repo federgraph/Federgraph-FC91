@@ -53,6 +53,12 @@ begin
     faShowActions: result := 'FA';
     faShowColor: result := 'FF';
     faShowBambu: result := 'FB';
+    faShowAnim: result := 'FG';
+    faEditText: result := 'ET';
+    faEditConn: result := 'EC';
+    faEditHost: result := 'EH';
+    faEditPort: result := 'EP';
+    faShowRepo: result := 'FR';
     faShowInfo: result := 'FI';
 
     { TouchLayout }
@@ -449,6 +455,17 @@ begin
     faCycleColorSchemeM: result := 'c-';
     faCycleColorSchemeP: result := 'c+';
 
+    { AnimatedRotations }
+    faRotX: result := 'rX';
+    faRotY: result := 'rY';
+    faRotZ: result := 'rZ';
+    faRotXM: result := 'X+';
+    faRotXP: result := 'X-';
+    faRotYM: result := 'Y-';
+    faRotYP: result := 'Y+';
+    faRotZM: result := 'Z-';
+    faRotZP: result := 'Z+';
+
     { Step }
     faStepRXM: result := 'rxm';
     faStepRXP: result := 'rxp';
@@ -459,10 +476,23 @@ begin
     faStepCZM: result := 'czm';
     faStepCZP: result := 'czp';
 
+    { Keyboard }
+    faKeyboard01: result := 'kb1';
+    faKeyboard02: result := 'kb2';
+    faSetShift: result := '[s]';
+    faSetCtrl: result := '[c]';
+    faClearShift: result := '[_]';
+
     { UI }
+    faParamLabelTextX: result := 'ltx';
+    faParamLabelTextY: result := 'lty';
+    faParamLabelTextZ: result := 'ltz';
     faToggleColorPanel: result := 'cp';
     faColorPanelOn: result := 'CPA';
     faColorPanelOff: result := 'cpa';
+    faShowEditField: result := 'sef';
+    faFocusEditField: result := 'fef';
+    faInitSpecial: result := 'is';
     faPaletteOn: result := 'PAL';
     faPaletteOff: result := 'pal';
 
@@ -479,6 +509,10 @@ begin
     faOpacityOn: result := 'op1';
     faOpacityOff: result := 'op0';
 
+    { MainMenuActivation }
+    faMainMenuHide: result := 'mH';
+    faMainMenuShow: result := 'mS';
+
     { FederText }
     faToggleAllText: result := 'tat';
     faToggleTouchFrame: result := 'fra';
@@ -491,6 +525,11 @@ begin
     faParamCZ: result := 'cz';
 
     { ViewParamsFC }
+    faRotStep0: result := 'rs0';
+    faRotStep1: result := 'rs1';
+    faRotStep2: result := 'rs2';
+    faRotStep3: result := 'rs3';
+    faRotStepA: result := 'rsa';
     faParamTRS: result := 'trs';
     faParamTRT: result := 'trt';
     faParamTRX: result := 'trx';
@@ -574,6 +613,35 @@ begin
     faParamBahnCylinderD: result := 'bcd';
     faParamBahnCylinderZ: result := 'bcz';
 
+    { AnimationStore }
+    faRecall1: result := 'R1';
+    faRecall2: result := 'R2';
+    faMemory1: result := 'M1';
+    faMemory2: result := 'M2';
+    faTransit: result := 'TR';
+
+    { AnimPlay }
+    faPlay: result := 'ply';
+    faExecute: result := 'exe';
+    faAnimationStop: result := 'as';
+    faAnimationStartA: result := 'a1';
+    faAnimationStartD: result := 'a2';
+    faAnimationStartF: result := 'a3';
+    faAnimationStartS: result := 'a4';
+    faAnimationStartT: result := 'a5';
+
+    { Transit }
+    faTransitionAll: result := 'tA';
+    faTransitionScript: result := 'tS';
+
+    { Connect }
+    faConnect: result := 'con';
+    faDisconnect: result := 'dis';
+    faDownload: result := 'dow';
+    faAutoSend: result := 'asd';
+    faAutoSendOn: result := 'as1';
+    faAutoSendOff: result := 'as0';
+
     { ExampleData }
     faExample01: result := 'e01';
     faExample02: result := 'e02';
@@ -600,6 +668,14 @@ begin
     faSampleP: result := 'S+';
     faGotoSample0: result := 'gs0';
     faGotoSample1: result := 'gs1';
+
+    { DebugOptions }
+    faTestBtnClick: result := 'tbc';
+    faRunBinPixelTest: result := 'bpt';
+
+    { EmptyLastLine }
+    faELLOn: result := 'ell';
+    faELLOff: result := 'nll';
 
     { Help }
     faToggleHelp: result := 'th';
@@ -663,6 +739,9 @@ begin
     faResetRotation: result := 'rro';
     faResetZoom: result := 'rzo';
 
+    { DropTarget }
+    faToggleDropTarget: result := 'tdt';
+
     { Language }
     faToggleLanguage: result := 'lan';
 
@@ -677,6 +756,7 @@ begin
     faToggleMoveMode: result := 'tmm';
     faLinearMove: result := 'lmm';
     faExpoMove: result := 'emm';
+    faToggleQuickMesh: result := 'qm';
     faToggleOrbitMode: result := 'omt';
 
     { BitmapCycle }

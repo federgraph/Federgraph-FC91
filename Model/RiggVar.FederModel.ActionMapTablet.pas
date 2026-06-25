@@ -415,7 +415,7 @@ begin
       InitAC(cl, 8, faParamCapValue, claParam);
 
       cl := BottomLeft;
-      InitAC(cl, 1, faBandWidthRelative, claParam);
+      InitAC(cl, 1, faShowEditField, claOption);
       InitAC(cl, 2, faToggleColorPanel, claOption);
       InitAC(cl, 3, faToggleColorSwat, claOption);
       InitAC(cl, 4, faParamT1, claParam);
@@ -439,16 +439,16 @@ begin
 
       cl := TopLeft;
       //InitAC(cl, 1, faActionPageM, claPage);
-      InitAC(cl, 2, faNoop, claNoop);
-      InitAC(cl, 3, faNoop, claNoop);
-      InitAC(cl, 4, faNoop, claNoop);
-      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 2, faCycleX, claParam);
+      InitAC(cl, 3, faCycleY, claParam);
+      InitAC(cl, 4, faCycleZ, claParam);
+      InitAC(cl, 5, faCycleL, claParam);
       InitAC(cl, 6, faPan, claParam);
 
       cl := TopRight;
-      InitAC(cl, 1, faNoop, claNoop);
-      InitAC(cl, 2, faNoop, claNoop);
-      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 1, faMeshSize64, cla);
+      InitAC(cl, 2, faMeshSize128, cla);
+      InitAC(cl, 3, faMeshSize256, cla);
       InitAC(cl, 4, faToggleZeroPulling, claOption);
       //InitAC(cl, 5, faActionPageP, claPage);
       InitAC(cl, 6, faToggleLimitPulling, claOption);
@@ -458,16 +458,16 @@ begin
       cl := BottomLeft;
       InitAC(cl, 1, faShowInfo, claForm);
       InitAC(cl, 2, faShowActions, claForm);
-      InitAC(cl, 3, faNoop, claNoop);
-      InitAC(cl, 4, faNoop, claNoop);
-      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 3, faNorthCap, claParam);
+      InitAC(cl, 4, faSouthCap, claParam);
+      InitAC(cl, 5, faParamCapValue, claParam);
       InitAC(cl, 6, faShowMemo, claForm);
       InitAC(cl, 7, faCyclePlotM, cla);
       InitAC(cl, 8, faCyclePlotP, cla);
 
       cl := BottomRight;
       InitAC(cl, 1, faGotoSample1, claSample);
-      InitAC(cl, 2, faActionPageE, claPage);
+      InitAC(cl, 2, faNoop, claNoop);
       InitAC(cl, 3, faSampleM, claSample);
       InitAC(cl, 4, faSampleP, claSample);
       InitAC(cl, 5, faActionPage1, claPage);
@@ -682,11 +682,11 @@ begin
 
       cl := TopLeft;
       //InitAC(cl, 1, faActionPageM, claPage);
-      InitAC(cl, 2, faCycleBitmapM, cla);
-      InitAC(cl, 3, faCycleBitmapP, cla);
-      InitAC(cl, 4, faBitmapEscape, cla);
-      InitAC(cl, 5, faBitmapOne, cla);
-      InitAC(cl, 6, faCLA, TBambuColors.PLABasic_Blue);
+      InitAC(cl, 2, faPolarMesh, claOption);
+      InitAC(cl, 3, faOpenMesh, claOption);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faNoop, claNoop);
 
       cl := TopRight;
       InitAC(cl, 1, faReducedMesh, claOption);
@@ -1103,7 +1103,7 @@ begin
       InitAC(cl, 3, faNoop, claNoop);
       InitAC(cl, 4, faNoop, claNoop);
       //InitAC(cl, 5, faActionPageP, claPage);
-      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 6, faNoop, claSample);
       InitAC(cl, 7, faSwapBundle, claSample);
       InitAC(cl, 8, faGotoSample1, claSample);
 
@@ -1111,8 +1111,8 @@ begin
       InitAC(cl, 1, faActionPage1, claPage);
       InitAC(cl, 2, faNoop, claNoop);
       InitAC(cl, 3, faNoop, claNoop);
-      InitAC(cl, 4, faNoop, claNoop);
-      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 4, faLevelM, claSample);
+      InitAC(cl, 5, faLevelP, claSample);
       InitAC(cl, 6, faNoop, claNoop);
       InitAC(cl, 7, faNoop, claNoop);
       InitAC(cl, 8, faShowInfo, cla);
@@ -1141,7 +1141,7 @@ begin
       InitAC(cl, 1, faWantMaterial, claExporter);
       InitAC(cl, 2, faWantSimpleName, claExporter);
       InitAC(cl, 3, faWantAutoFolder, claExporter);
-      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 4, faWantAngularDir, claExporter);
       //InitAC(cl, 5, faActionPageP, claYellow);
       InitAC(cl, 6, faWantNormals, claExporter);
       InitAC(cl, 7, faWantUVs, claExporter);

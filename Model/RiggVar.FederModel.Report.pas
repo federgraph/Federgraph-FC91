@@ -82,6 +82,9 @@ begin
   SL.Add(Format(fs, [p.X, p.Y, p.Z, f]));
 {$endif}
 
+  SL.Add('');
+  SL.Add(Format('SetValueCounter = %d', [Main.ParallelAnimation.SetValueCounter]));
+
   SL.Insert(0, 'Zoom Info');
   result := SL.Text;
 end;
@@ -391,7 +394,8 @@ begin
 
   s1 := 'Bitmap ' + IntToStr(Main.FederScene.Bitmap);
   s2 := 'Param ' + IntToStr(Main.FederModel.Param);
-  s := s1 + '; ' + s2 + ';';
+  s3 := 'SVC ' + IntToStr(Main.ParallelAnimation.SetValueCounter);
+  s := s1 + '; ' + s2 + '; ' + s3 + ';';
   SL.Add(s);
 
   SL.Add('');

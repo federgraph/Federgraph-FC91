@@ -144,10 +144,13 @@ begin
   AddSpecial(ActionGroupWheel, 'Wheel');
   AddSpecial(ActionGroupWheelFrequency, 'WheelFrequency');
   AddSpecial(ActionGroupColorScheme, 'ColorScheme');
+  AddSpecial(ActionGroupAnimatedRotations, 'AnimatedRotations');
   AddSpecial(ActionGroupStep, 'Step');
+  AddSpecial(ActionGroupKeyboard, 'Keyboard');
   AddSpecial(ActionGroupUI, 'UI');
   AddSpecial(ActionGroupLocks, 'Locks');
   AddSpecial(ActionGroupOpacity, 'Opacity');
+  AddSpecial(ActionGroupMainMenuActivation, 'MainMenuActivation');
 
   { View }
   AddSpecial(ActionGroupFederText, 'FederText');
@@ -168,12 +171,22 @@ begin
   AddSpecial(ActionGroupGraphOptions, 'GraphOptions');
   AddSpecial(ActionGroupBahn, 'Bahn');
 
+  { Animation }
+  AddSpecial(ActionGroupAnimationStore, 'AnimationStore');
+  AddSpecial(ActionGroupAnimPlay, 'AnimPlay');
+  AddSpecial(ActionGroupTransit, 'Transit');
+
+  { Connnection }
+  AddSpecial(ActionGroupConnect, 'Connect');
+
   { DB }
   AddSpecial(ActionGroupExampleData, 'ExampleData');
   AddSpecial(ActionGroupRepo, 'Repo');
   AddSpecial(ActionGroupSampleNavigation, 'SampleNavigation');
 
   { App }
+  AddSpecial(ActionGroupDebugOptions, 'DebugOptions');
+  AddSpecial(ActionGroupEmptyLastLine, 'LastLine');
   AddSpecial(ActionGroupHelp, 'Help');
 
   { TouchFrame Buttons }
@@ -182,6 +195,7 @@ begin
   AddSpecial(ActionGroupTouchBarLegend, 'TouchBarLegend');
 
   AddSpecial(ActionGroupReset, 'Reset');
+  AddSpecial(ActionGroupDropTarget, 'DropTarget');
   AddSpecial(ActionGroupLanguage, 'Language');
   AddSpecial(ActionGroupCopyPaste, 'CopyPaste');
 

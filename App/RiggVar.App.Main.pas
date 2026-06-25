@@ -46,7 +46,7 @@ type
     LineFigureCount = 9;
     DefaultMeshSize = 128;
     MaxMeshSize = 512;
-    ColorSchemeCount = 8;
+    ColorSchemeCount = 9;
     DefaultBtnFontSize = 24;
     FC = True;
     RG = False;
@@ -85,6 +85,7 @@ type
     WantUniqueVertices: Boolean;
     UniqueMode: Integer;
     WantAutoFolder: Boolean;
+    WantEditField: Boolean;
 
     RG: Boolean;
     FC: Boolean;
@@ -117,7 +118,7 @@ begin
   ShiftState := [];
 
   AppIsClosing := False;
-  AppTitle := 'FC91H'; // sometimes initialized in FormMain, from Application.Title set in dpr
+  AppTitle := 'FC91A'; // sometimes initialized in FormMain, from Application.Title set in dpr
   AppFolder := 'FC';
   BatchStopRequested := False;
   WantTextureRepeat := False;
@@ -126,6 +127,7 @@ begin
   WantUniqueVertices := True;
   UniqueMode := 2;
   ShowEdges := False;
+  WantEditField := True;
 
   ColorScheme := TColorScheme.Create(6);
 

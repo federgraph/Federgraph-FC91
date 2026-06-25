@@ -46,6 +46,7 @@ type
 
     function GetFormat(idx: Integer): TSize;
 
+    procedure PrepareForDroppingMeme;
     procedure GotoNormal;
     procedure GotoLandscape;
     procedure GotoPortrait;
@@ -145,6 +146,11 @@ begin
     result.Width := FormMain.Width;
     result.Height := FormMain.Height;
   end;
+end;
+
+procedure TFormatManager.PrepareForDroppingMeme;
+begin
+  FormMain.PrepareForDroppingMeme;
 end;
 
 procedure TFormatManager.GotoNormal;

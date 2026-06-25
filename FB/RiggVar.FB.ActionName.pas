@@ -53,6 +53,12 @@ begin
     faShowActions: result := 'faShowActions';
     faShowColor: result := 'faShowColor';
     faShowBambu: result := 'faShowBambu';
+    faShowAnim: result := 'faShowAnim';
+    faEditText: result := 'faEditText';
+    faEditConn: result := 'faEditConn';
+    faEditHost: result := 'faEditHost';
+    faEditPort: result := 'faEditPort';
+    faShowRepo: result := 'faShowRepo';
     faShowInfo: result := 'faShowInfo';
 
     { TouchLayout }
@@ -449,6 +455,17 @@ begin
     faCycleColorSchemeM: result := 'faCycleColorSchemeM';
     faCycleColorSchemeP: result := 'faCycleColorSchemeP';
 
+    { AnimatedRotations }
+    faRotX: result := 'faRotX';
+    faRotY: result := 'faRotY';
+    faRotZ: result := 'faRotZ';
+    faRotXM: result := 'faRotXM';
+    faRotXP: result := 'faRotXP';
+    faRotYM: result := 'faRotYM';
+    faRotYP: result := 'faRotYP';
+    faRotZM: result := 'faRotZM';
+    faRotZP: result := 'faRotZP';
+
     { Step }
     faStepRXM: result := 'faStepRXM';
     faStepRXP: result := 'faStepRXP';
@@ -459,10 +476,23 @@ begin
     faStepCZM: result := 'faStepCZM';
     faStepCZP: result := 'faStepCZP';
 
+    { Keyboard }
+    faKeyboard01: result := 'faKeyboard01';
+    faKeyboard02: result := 'faKeyboard02';
+    faSetShift: result := 'faSetShift';
+    faSetCtrl: result := 'faSetCtrl';
+    faClearShift: result := 'faClearShift';
+
     { UI }
+    faParamLabelTextX: result := 'faParamLabelTextX';
+    faParamLabelTextY: result := 'faParamLabelTextY';
+    faParamLabelTextZ: result := 'faParamLabelTextZ';
     faToggleColorPanel: result := 'faToggleColorPanel';
     faColorPanelOn: result := 'faColorPanelOn';
     faColorPanelOff: result := 'faColorPanelOff';
+    faShowEditField: result := 'faShowEditField';
+    faFocusEditField: result := 'faFocusEditField';
+    faInitSpecial: result := 'faInitSpecial';
     faPaletteOn: result := 'faPaletteOn';
     faPaletteOff: result := 'faPaletteOff';
 
@@ -479,6 +509,10 @@ begin
     faOpacityOn: result := 'faOpacityOn';
     faOpacityOff: result := 'faOpacityOff';
 
+    { MainMenuActivation }
+    faMainMenuHide: result := 'faMainMenuHide';
+    faMainMenuShow: result := 'faMainMenuShow';
+
     { FederText }
     faToggleAllText: result := 'faToggleAllText';
     faToggleTouchFrame: result := 'faToggleTouchFrame';
@@ -491,6 +525,11 @@ begin
     faParamCZ: result := 'faParamCZ';
 
     { ViewParamsFC }
+    faRotStep0: result := 'faRotStep0';
+    faRotStep1: result := 'faRotStep1';
+    faRotStep2: result := 'faRotStep2';
+    faRotStep3: result := 'faRotStep3';
+    faRotStepA: result := 'faRotStepA';
     faParamTRS: result := 'faParamTRS';
     faParamTRT: result := 'faParamTRT';
     faParamTRX: result := 'faParamTRX';
@@ -574,6 +613,35 @@ begin
     faParamBahnCylinderD: result := 'faParamBahnCylinderD';
     faParamBahnCylinderZ: result := 'faParamBahnCylinderZ';
 
+    { AnimationStore }
+    faRecall1: result := 'faRecall1';
+    faRecall2: result := 'faRecall2';
+    faMemory1: result := 'faMemory1';
+    faMemory2: result := 'faMemory2';
+    faTransit: result := 'faTransit';
+
+    { AnimPlay }
+    faPlay: result := 'faPlay';
+    faExecute: result := 'faExecute';
+    faAnimationStop: result := 'faAnimationStop';
+    faAnimationStartA: result := 'faAnimationStartA';
+    faAnimationStartD: result := 'faAnimationStartD';
+    faAnimationStartF: result := 'faAnimationStartF';
+    faAnimationStartS: result := 'faAnimationStartS';
+    faAnimationStartT: result := 'faAnimationStartT';
+
+    { Transit }
+    faTransitionAll: result := 'faTransitionAll';
+    faTransitionScript: result := 'faTransitionScript';
+
+    { Connect }
+    faConnect: result := 'faConnect';
+    faDisconnect: result := 'faDisconnect';
+    faDownload: result := 'faDownload';
+    faAutoSend: result := 'faAutoSend';
+    faAutoSendOn: result := 'faAutoSendOn';
+    faAutoSendOff: result := 'faAutoSendOff';
+
     { ExampleData }
     faExample01: result := 'faExample01';
     faExample02: result := 'faExample02';
@@ -600,6 +668,14 @@ begin
     faSampleP: result := 'faSampleP';
     faGotoSample0: result := 'faGotoSample0';
     faGotoSample1: result := 'faGotoSample1';
+
+    { DebugOptions }
+    faTestBtnClick: result := 'faTestBtnClick';
+    faRunBinPixelTest: result := 'faRunBinPixelTest';
+
+    { EmptyLastLine }
+    faELLOn: result := 'faELLOn';
+    faELLOff: result := 'faELLOff';
 
     { Help }
     faToggleHelp: result := 'faToggleHelp';
@@ -663,6 +739,9 @@ begin
     faResetRotation: result := 'faResetRotation';
     faResetZoom: result := 'faResetZoom';
 
+    { DropTarget }
+    faToggleDropTarget: result := 'faToggleDropTarget';
+
     { Language }
     faToggleLanguage: result := 'faToggleLanguage';
 
@@ -677,6 +756,7 @@ begin
     faToggleMoveMode: result := 'faToggleMoveMode';
     faLinearMove: result := 'faLinearMove';
     faExpoMove: result := 'faExpoMove';
+    faToggleQuickMesh: result := 'faToggleQuickMesh';
     faToggleOrbitMode: result := 'faToggleOrbitMode';
 
     { BitmapCycle }

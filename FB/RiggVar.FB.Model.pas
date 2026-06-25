@@ -1319,6 +1319,8 @@ begin
     fp8: _fp8 := FParamValue;
     fp9: _fp9 := FParamValue;
 
+    fppa: Main.DoParallelUpdate(FParamValue);
+
     fpParamCapValue: CapValue := FParamValue;
 
     fpbpr:

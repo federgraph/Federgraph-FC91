@@ -69,13 +69,13 @@ begin
       result := faOpen
 
     else if Key = vkLeft then
-//      result := faRotYP
+      result := faRotYP
     else if Key = vkRight then
-//      result := faRotYM
+      result := faRotYM
     else if Key = vkUp then
-//      result := faRotXP
+      result := faRotXP
     else if Key = vkDown then
-//      result := faRotXM
+      result := faRotXM
     else if KeyChar = ' ' then
       result := faLabelBatchM
     else if Key = vkSpace then
@@ -246,7 +246,7 @@ begin
       result := faCycleColorSchemeM
 
     else if KeyChar = 'd' then
-
+      result := faToggleDropTarget
     else if KeyChar = 'D' then
       result := faParamTRT
 

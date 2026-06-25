@@ -28,6 +28,8 @@ uses
 
 type
   TActionHelper = class(TFederActionHandler)
+  protected
+    procedure WriteActionTable; override;
   public
     WantEnumName: Boolean;
     WantCategoryColumn: Boolean;
@@ -202,6 +204,11 @@ begin
   ML.Add('</table>');
   ML.Add('</body>');
   ML.Add('</html>');
+end;
+
+procedure TActionHelper.WriteActionTable;
+begin
+  Main.WriteActionTable;
 end;
 
 function TActionHelper.GetShortcutReport(ML: TStrings): string;

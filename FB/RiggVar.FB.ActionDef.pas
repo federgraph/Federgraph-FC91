@@ -43,6 +43,12 @@ const
   fagShowActions = 16;
   fagShowColor = 1446;
   fagShowBambu = 1661;
+  fagShowAnim = 30;
+  fagEditText = 31;
+  fagEditConn = 32;
+  fagEditHost = 33;
+  fagEditPort = 34;
+  fagShowRepo = 38;
   fagShowInfo = 21;
 
   { TouchLayout }
@@ -439,6 +445,17 @@ const
   fagCycleColorSchemeM = 504;
   fagCycleColorSchemeP = 505;
 
+  { AnimatedRotations }
+  fagRotX = 562;
+  fagRotY = 563;
+  fagRotZ = 515;
+  fagRotXM = 564;
+  fagRotXP = 565;
+  fagRotYM = 566;
+  fagRotYP = 567;
+  fagRotZM = 513;
+  fagRotZP = 514;
+
   { Step }
   fagStepRXM = 516;
   fagStepRXP = 517;
@@ -449,10 +466,23 @@ const
   fagStepCZM = 522;
   fagStepCZP = 523;
 
+  { Keyboard }
+  fagKeyboard01 = 524;
+  fagKeyboard02 = 525;
+  fagSetShift = 526;
+  fagSetCtrl = 527;
+  fagClearShift = 528;
+
   { UI }
+  fagParamLabelTextX = 529;
+  fagParamLabelTextY = 530;
+  fagParamLabelTextZ = 531;
   fagToggleColorPanel = 534;
   fagColorPanelOn = 535;
   fagColorPanelOff = 536;
+  fagShowEditField = 538;
+  fagFocusEditField = 539;
+  fagInitSpecial = 540;
   fagPaletteOn = 532;
   fagPaletteOff = 533;
 
@@ -469,6 +499,10 @@ const
   fagOpacityOn = 548;
   fagOpacityOff = 549;
 
+  { MainMenuActivation }
+  fagMainMenuHide = 550;
+  fagMainMenuShow = 551;
+
   { FederText }
   fagToggleAllText = 552;
   fagToggleTouchFrame = 553;
@@ -481,6 +515,11 @@ const
   fagParamCZ = 561;
 
   { ViewParamsFC }
+  fagRotStep0 = 568;
+  fagRotStep1 = 569;
+  fagRotStep2 = 570;
+  fagRotStep3 = 571;
+  fagRotStepA = 572;
   fagParamTRS = 577;
   fagParamTRT = 578;
   fagParamTRX = 579;
@@ -564,6 +603,35 @@ const
   fagParamBahnCylinderD = 721;
   fagParamBahnCylinderZ = 722;
 
+  { AnimationStore }
+  fagRecall1 = 733;
+  fagRecall2 = 734;
+  fagMemory1 = 735;
+  fagMemory2 = 736;
+  fagTransit = 737;
+
+  { AnimPlay }
+  fagPlay = 738;
+  fagExecute = 739;
+  fagAnimationStop = 740;
+  fagAnimationStartA = 741;
+  fagAnimationStartD = 742;
+  fagAnimationStartF = 743;
+  fagAnimationStartS = 744;
+  fagAnimationStartT = 745;
+
+  { Transit }
+  fagTransitionAll = 746;
+  fagTransitionScript = 747;
+
+  { Connect }
+  fagConnect = 748;
+  fagDisconnect = 749;
+  fagDownload = 750;
+  fagAutoSend = 751;
+  fagAutoSendOn = 752;
+  fagAutoSendOff = 753;
+
   { ExampleData }
   fagExample01 = 1526;
   fagExample02 = 1527;
@@ -590,6 +658,14 @@ const
   fagSampleP = 769;
   fagGotoSample0 = 770;
   fagGotoSample1 = 771;
+
+  { DebugOptions }
+  fagTestBtnClick = 796;
+  fagRunBinPixelTest = 799;
+
+  { EmptyLastLine }
+  fagELLOn = 800;
+  fagELLOff = 801;
 
   { Help }
   fagToggleHelp = 802;
@@ -653,6 +729,9 @@ const
   fagResetRotation = 1035;
   fagResetZoom = 1036;
 
+  { DropTarget }
+  fagToggleDropTarget = 1040;
+
   { Language }
   fagToggleLanguage = 1041;
 
@@ -667,6 +746,7 @@ const
   fagToggleMoveMode = 1048;
   fagLinearMove = 1049;
   fagExpoMove = 1050;
+  fagToggleQuickMesh = 1051;
   fagToggleOrbitMode = 1708;
 
   { BitmapCycle }

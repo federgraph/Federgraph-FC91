@@ -158,6 +158,7 @@ begin
     faToggleMarker: result := M.FederScene.ShowKugel;
     faToggleGrid: result := M.FederScene.ShowGrid;
     faToggleGridFrequency: result := M.FederScene.GridFrequency <> 10;
+    faToggleQuickMesh: result := M.FederScene.QuickMesh;
     faToggleParamLock: result := M.FederData.ParamLock;
     faToggleReportLock: result := M.ReportLock;
     faToggleTextureLock: result := M.FederData.TextureLock;
@@ -196,6 +197,14 @@ begin
     faWheelFrequency001: result := M.WheelFrequency = 5;
     faWheelFrequency0001: result := M.WheelFrequency = 6;
 
+    faSetShift: result := ssShift in MainVar.ShiftState;
+    faSetCtrl: result := ssCtrl in MainVar.ShiftState;
+    faClearShift: result := MainVar.ShiftState = [];
+
+    faKeyboard01: result := M.KeyBinding = 1;
+    faKeyboard02: result := M.KeyBinding = 2;
+
+    faAutoSend: result := M.AutoSend = faAutoSendOn;
     faToggleShirtColor: result := M.HasShirtColor;
     faShirtColorOn: result := M.HasShirtColor;
     faShirtColorOff: result := not M.HasShirtColor;
@@ -206,6 +215,7 @@ begin
 
     faToggleLinearForce: result := M.Federmodel.EQ.LinearForce;
     faToggleColorPanel: result := M.ShowColorPanel;
+    faToggleDropTarget: result := M.DropTargetVisible;
     faToggleForceLock: result := M.FederData.ForceLock;
 
     faShowCurrentBand0: result := not M.ShowCurrentBand;
@@ -381,8 +391,8 @@ begin
     faMenu80: result := M.MenubarLayout = 80;
     faMenu90: result := M.MenubarLayout = 90;
 
-    faLayout0 .. faLayout9: result := M.TransitBarLayout = fa - faLayout0;
-    faLayout10 .. faLayout99: result := M.TransitBarLayout = fa - faLayout0;
+    faLayout0 .. faLayout99: result := M.TransitBarLayout = fa - faLayout0;
+    faShowEditField: result := M.ShowEditField;
 
     faExportCoordsNative: result := M.ExportCoords = TExportCoords.Native;
     faExportCoordsBlender: result := M.ExportCoords = TExportCoords.App_Blender;

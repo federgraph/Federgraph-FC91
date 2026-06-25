@@ -6,4 +6,4 @@
 //{$define GPUCalc}
 //{$define Laurana}
 //{$define InputClient}
-//{$define OutputClient}
+{$define OutputClient}

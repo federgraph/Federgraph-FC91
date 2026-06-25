@@ -57,6 +57,12 @@ begin
     faShowActions: result := fagShowActions;
     faShowColor: result := fagShowColor;
     faShowBambu: result := fagShowBambu;
+    faShowAnim: result := fagShowAnim;
+    faEditText: result := fagEditText;
+    faEditConn: result := fagEditConn;
+    faEditHost: result := fagEditHost;
+    faEditPort: result := fagEditPort;
+    faShowRepo: result := fagShowRepo;
     faShowInfo: result := fagShowInfo;
 
     { TouchLayout }
@@ -453,6 +459,17 @@ begin
     faCycleColorSchemeM: result := fagCycleColorSchemeM;
     faCycleColorSchemeP: result := fagCycleColorSchemeP;
 
+    { AnimatedRotations }
+    faRotX: result := fagRotX;
+    faRotY: result := fagRotY;
+    faRotZ: result := fagRotZ;
+    faRotXM: result := fagRotXM;
+    faRotXP: result := fagRotXP;
+    faRotYM: result := fagRotYM;
+    faRotYP: result := fagRotYP;
+    faRotZM: result := fagRotZM;
+    faRotZP: result := fagRotZP;
+
     { Step }
     faStepRXM: result := fagStepRXM;
     faStepRXP: result := fagStepRXP;
@@ -463,10 +480,23 @@ begin
     faStepCZM: result := fagStepCZM;
     faStepCZP: result := fagStepCZP;
 
+    { Keyboard }
+    faKeyboard01: result := fagKeyboard01;
+    faKeyboard02: result := fagKeyboard02;
+    faSetShift: result := fagSetShift;
+    faSetCtrl: result := fagSetCtrl;
+    faClearShift: result := fagClearShift;
+
     { UI }
+    faParamLabelTextX: result := fagParamLabelTextX;
+    faParamLabelTextY: result := fagParamLabelTextY;
+    faParamLabelTextZ: result := fagParamLabelTextZ;
     faToggleColorPanel: result := fagToggleColorPanel;
     faColorPanelOn: result := fagColorPanelOn;
     faColorPanelOff: result := fagColorPanelOff;
+    faShowEditField: result := fagShowEditField;
+    faFocusEditField: result := fagFocusEditField;
+    faInitSpecial: result := fagInitSpecial;
     faPaletteOn: result := fagPaletteOn;
     faPaletteOff: result := fagPaletteOff;
 
@@ -483,6 +513,10 @@ begin
     faOpacityOn: result := fagOpacityOn;
     faOpacityOff: result := fagOpacityOff;
 
+    { MainMenuActivation }
+    faMainMenuHide: result := fagMainMenuHide;
+    faMainMenuShow: result := fagMainMenuShow;
+
     { FederText }
     faToggleAllText: result := fagToggleAllText;
     faToggleTouchFrame: result := fagToggleTouchFrame;
@@ -495,6 +529,11 @@ begin
     faParamCZ: result := fagParamCZ;
 
     { ViewParamsFC }
+    faRotStep0: result := fagRotStep0;
+    faRotStep1: result := fagRotStep1;
+    faRotStep2: result := fagRotStep2;
+    faRotStep3: result := fagRotStep3;
+    faRotStepA: result := fagRotStepA;
     faParamTRS: result := fagParamTRS;
     faParamTRT: result := fagParamTRT;
     faParamTRX: result := fagParamTRX;
@@ -578,6 +617,35 @@ begin
     faParamBahnCylinderD: result := fagParamBahnCylinderD;
     faParamBahnCylinderZ: result := fagParamBahnCylinderZ;
 
+    { AnimationStore }
+    faRecall1: result := fagRecall1;
+    faRecall2: result := fagRecall2;
+    faMemory1: result := fagMemory1;
+    faMemory2: result := fagMemory2;
+    faTransit: result := fagTransit;
+
+    { AnimPlay }
+    faPlay: result := fagPlay;
+    faExecute: result := fagExecute;
+    faAnimationStop: result := fagAnimationStop;
+    faAnimationStartA: result := fagAnimationStartA;
+    faAnimationStartD: result := fagAnimationStartD;
+    faAnimationStartF: result := fagAnimationStartF;
+    faAnimationStartS: result := fagAnimationStartS;
+    faAnimationStartT: result := fagAnimationStartT;
+
+    { Transit }
+    faTransitionAll: result := fagTransitionAll;
+    faTransitionScript: result := fagTransitionScript;
+
+    { Connect }
+    faConnect: result := fagConnect;
+    faDisconnect: result := fagDisconnect;
+    faDownload: result := fagDownload;
+    faAutoSend: result := fagAutoSend;
+    faAutoSendOn: result := fagAutoSendOn;
+    faAutoSendOff: result := fagAutoSendOff;
+
     { ExampleData }
     faExample01: result := fagExample01;
     faExample02: result := fagExample02;
@@ -604,6 +672,14 @@ begin
     faSampleP: result := fagSampleP;
     faGotoSample0: result := fagGotoSample0;
     faGotoSample1: result := fagGotoSample1;
+
+    { DebugOptions }
+    faTestBtnClick: result := fagTestBtnClick;
+    faRunBinPixelTest: result := fagRunBinPixelTest;
+
+    { EmptyLastLine }
+    faELLOn: result := fagELLOn;
+    faELLOff: result := fagELLOff;
 
     { Help }
     faToggleHelp: result := fagToggleHelp;
@@ -667,6 +743,9 @@ begin
     faResetRotation: result := fagResetRotation;
     faResetZoom: result := fagResetZoom;
 
+    { DropTarget }
+    faToggleDropTarget: result := fagToggleDropTarget;
+
     { Language }
     faToggleLanguage: result := fagToggleLanguage;
 
@@ -681,6 +760,7 @@ begin
     faToggleMoveMode: result := fagToggleMoveMode;
     faLinearMove: result := fagLinearMove;
     faExpoMove: result := fagExpoMove;
+    faToggleQuickMesh: result := fagToggleQuickMesh;
     faToggleOrbitMode: result := fagToggleOrbitMode;
 
     { BitmapCycle }

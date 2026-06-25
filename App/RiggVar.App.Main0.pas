@@ -42,12 +42,22 @@ uses
   FMX.Viewport3D,
   FMX.Objects,
   FMX.MaterialSources,
+  RiggVar.App.Config,
+  RiggVar.App.FolderInfo,
   RiggVar.App.OpenSave,
   RiggVar.Bitmap.Bitmap02,
   RiggVar.Bitmap.Texture,
+  RiggVar.Col.Action,
+  RiggVar.Col.Animation,
+  RiggVar.Col.Repo,
+  RiggVar.Conn.AutoConnect,
+  RiggVar.Conn.Connection,
+  RiggVar.Conn.Input,
   RiggVar.EQ.Model,
   RiggVar.FB.Action,
   RiggVar.FB.ActionConst,
+  RiggVar.FB.ActionEncode,
+  RiggVar.FB.ActionDecode,
   RiggVar.FB.ActionGroup,
   RiggVar.FB.ActionGroups,
   RiggVar.FB.ActionConfig,
@@ -65,8 +75,10 @@ uses
   RiggVar.FB.Frame,
   RiggVar.FB.Hub,
   RiggVar.FB.Logger,
+  RiggVar.FB.Meme,
   RiggVar.FB.MeshParams,
   RiggVar.FB.Model,
+  RiggVar.FB.ParamDef,
   RiggVar.FB.Params,
   RiggVar.FB.Report,
   RiggVar.FB.Scheme,
@@ -74,6 +86,10 @@ uses
   RiggVar.FB.Text,
   RiggVar.FB.Transform,
   RiggVar.FB.Update,
+  RiggVar.Anim.ParallelAnimation,
+  RiggVar.Anim.Player,
+  RiggVar.Anim.Script,
+  RiggVar.Anim.Transition,
   RiggVar.FederModel.Binding,
   RiggVar.FederModel.Color,
   RiggVar.FederModel.Format,
@@ -89,11 +105,13 @@ uses
   RiggVar.FederModel.TouchBase,
   RiggVar.FederModel.TouchPhone,
   RiggVar.Mesh.ExporterOBJ,
+  RiggVar.Mesh.FederMesh,
   RiggVar.Mesh.FederShell1,
   RiggVar.Mesh.SolidPart,
   RiggVar.Mesh.MeshBuilder,
   RiggVar.Util.ActionTable,
   RiggVar.Util.BitmapCache,
+  RiggVar.Util.GamePad,
   RiggVar.Util.BitmapImprinter;
 
 type
@@ -109,6 +127,7 @@ type
     FHasShirtColor: Boolean;
     FHasShirtFarbe: Boolean;
     FHelpFlash: Boolean;
+    FHost: string;
     FIsMobile: Boolean;
     FIsRetina: Boolean;
     FKeyBinding: Integer;
@@ -116,6 +135,7 @@ type
     FLayer: Integer;
     FOnMemoDraw: TNotifyEvent;
     FPixelCount: Integer;
+    FPort: Integer;
     FReportIndex: Integer;
     FSelectedColor: Integer;
     FShowColorSwat: Boolean;
@@ -126,13 +146,21 @@ type
     FWantStripColorText: Boolean;
     FWheelFrequency: Integer;
     MappedReports: TList<TReportPage>;
+    MLRef: TStrings;
     procedure CopyFL;
     procedure CreateFedergraph;
+    procedure CreateFedergraphAnim;
+    procedure CreateFedergraphConn;
+    procedure DestroyFedergraphAnim;
+    procedure DestroyFedergraphConn;
     procedure DoBigWheelForNormal(Delta: single);
+    procedure DoRotStep1(Step: Integer);
     procedure DoSmallWheelForNormal(Delta: single);
+    procedure DoWheel(Delta: single);
     procedure DoWheelForBandWidth(Delta: single);
     procedure DoWheelForPanX(Delta: single);
     procedure DoWheelForPanY(Delta: single);
+    function GetAutoSend: TFederAction;
     function GetBigmap: Boolean;
     function GetBitmap: Integer;
     function GetBitmapBuilder: TBitmapBuilder02;
@@ -146,6 +174,7 @@ type
     function GetCurrentParam: TFederParam;
     function GetDetailPulling: Boolean;
     function GetDim: Integer;
+    function GetDropTargetVisible: Boolean;
     function GetFederFrame: TFederFrameBase;
     function GetFederText: TFederTouchBase;
     function GetFigure: Integer;
@@ -157,6 +186,7 @@ type
     function GetFrame3D: TFederFrame3D;
     function GetGleich: Boolean;
     function GetGraph: Integer;
+    function GetHost: string;
     function GetHub: Integer;
     function GetInitDataOK: Boolean;
     function GetIsDesktop: Boolean;
@@ -188,6 +218,7 @@ type
     function GetPlotFigure: Integer;
     function GetPlusCap: Boolean;
     function GetPolarMesh: Boolean;
+    function GetPort: Integer;
     function GetReducedMesh: Boolean;
     function GetRetinaScale: single;
     function GetRGBColorMix: Integer;
@@ -200,6 +231,7 @@ type
     function GetShowColorPanel: Boolean;
     function GetShowCurrentBand: Boolean;
     function GetSideCapVisible: Boolean;
+    function GetShowEditField: Boolean;
     function GetSliceHeight: single;
     function GetSlicePulling: Boolean;
     function GetSlicePullingMode: Integer;
@@ -227,6 +259,9 @@ type
     procedure OnModulationColorChanged(Sender: TObject);
     procedure OnViewport3DChanged(Sender: TObject);
     procedure PrepareForExample;
+    procedure RecordCodeLine(k: string; v: Integer);
+    procedure RecordLine(k: string; v: Integer);
+    procedure SetAutoSend(const Value: TFederAction);
     procedure SetBandWidthOption(const Value: TBandWidthOption);
     procedure SetBigmap(const Value: Boolean);
     procedure SetBitmap(const Value: Integer);
@@ -245,6 +280,7 @@ type
     procedure SetForceMode(const Value: Integer);
     procedure SetGleich(const Value: Boolean);
     procedure SetGraph(const Value: Integer);
+    procedure SetHost(const Value: string);
     procedure SetHub(const Value: Integer);
     procedure SetInitDataOK(const Value: Boolean);
     procedure SetKeyBinding(const Value: Integer);
@@ -266,6 +302,7 @@ type
     procedure SetPlotFigure(const Value: Integer);
     procedure SetPlusCap(const Value: Boolean);
     procedure SetPolarMesh(const Value: Boolean);
+    procedure SetPort(const Value: Integer);
     procedure SetReducedMesh(const Value: Boolean);
     procedure SetReduceMode(const Value: Integer);
     procedure SetRGBColorMix(const Value: Integer);
@@ -279,6 +316,7 @@ type
     procedure SetShowColorSwat(const Value: Boolean);
     procedure SetShowCurrentBand(const Value: Boolean);
     procedure SetSideCapVisible(const Value: Boolean);
+    procedure SetShowEditField(const Value: Boolean);
     procedure SetSlicePulling(const Value: Boolean);
     procedure SetSlicePullingMode(const Value: Integer);
     procedure SetSolidPartVisible(const Value: Boolean);
@@ -302,6 +340,7 @@ type
     procedure TrackbarUpdate(Sender: TObject);
     procedure TrackBar_CheckValue(const AValue: single);
   public
+    ActionData: TActionReport;
     ActionGroupList: TActionGroupList;
     ActionHandler: TActionHelper;
     ActionItemList: TActionItemList;
@@ -309,6 +348,9 @@ type
     ActionMapTablet: TActionMap;
     ActionMapTransit: TActionMap;
     ActionTest: TActionTest;
+    AnimationData: TAnimationData;
+    AnimationPlayer: TAnimationPlayer;
+    AutoConnector: TAutoConnector;
     BambuPartition: TBambuPartition;
     BitmapCache: TBitmapCache;
     BitmapImprinter: TBitmapImprinter;
@@ -327,41 +369,53 @@ type
     ExporterOBJ: TExporterOBJ;
     FederBinding: TFederBinding;
     FederColor: TFederColor;
+    FederConnection: TFederOutputConnection;
     FederData: TFederData;
     FederFrame3D: TFederFrame3D;
     FederKeyboard1: TFederKeyboard01;
+    FederMemory: TFederMemory;
     FederMenu: TFederMenu;
     Outer: TFederShell1;
     Inner: TFederShell1;
     SolidPart: TSolidPart;
     FederModel: TFederModel;
     FederPalette: TFederPalette;
+    FederRecorder: TFederRecorder;
     FederReport: TFederReport;
     FederScene: TFederSceneOne;
+    FederScript: TFederScript;
     FederText1: TFederTouch;
     FederText2: TFederTouchPhone;
     FederTexture: TFederTexture;
     FigureIndex: Integer;
     FKoordChanging: Boolean;
     FlashClearingNeeded: Boolean;
+    FolderInfo: TFolderInfo;
     FormatManager: TFormatManager;
     FParamChanging: Boolean;
+    GamePad: TGamePad;
     GraphIndex: Integer;
     GraphUpdatingNeeded: Boolean;
+    IniImage: TIniImage;
     InitDataMillies: Integer;
     IsReady: Boolean;
     IsUp: Boolean;
     Logger: TMemoLogger;
+    MemeText: TMemeText;
     ModelUpdate: TGridUpdate;
+    ParallelAnimation: TParallelAnimation;
     ParamIndex: Integer;
     ParamManager: TParamManager;
     PlayRequested: Boolean;
     PlotIndex: Integer;
     Receiving: Boolean;
+    RepoData: TRepoReport;
     ReportLock: Boolean;
     Resetting: Boolean;
     RingBuilder: TRingBuilder;
     SampleManager: TSampleManager;
+    SampleTransition: TSampleTransition;
+    SavedParam: Integer;
     SceneIndex: Integer;
     StateCheckingNeeded: Boolean;
     StopWatch: TStopWatch;
@@ -402,6 +456,7 @@ type
     procedure CloseBitmap;
     procedure CollectShortcuts(fa: Integer; ML: TStrings);
     procedure ColorChanged(NewItemIndex: Integer);
+    procedure ConnectAction;
     procedure CopyBitmap3D;
     procedure CopyCode;
     procedure CopyDatoToBitmap(Bitmap: TBitmap);
@@ -443,16 +498,19 @@ type
     procedure CycleTextureNormM;
     procedure CycleTextureNormP;
     procedure CycleToolSet(i: Integer);
+    procedure DebugAnimationData;
     procedure DensityChanged(NewValue: Integer);
     procedure DestroyFedergraph;
     procedure DestroyMainModel;
     procedure DimChanged(NewValue: Integer);
+    procedure DisconnectAction;
     procedure DoBigWheel(Delta: single);
     procedure DoEulerSync;
     procedure DoEulerTest;
     procedure DoMM(fmk: TFederMessageKind; X, Y: single);
     procedure DoMMRemote(fmk: TFederMessageKind; X, Y: single);
     procedure DoMouseWheel(Shift: TShiftState; WheelDelta: Integer);
+    procedure DoParallelUpdate(Value: single);
     procedure DoRandom(ID: Integer);
     procedure DoRandomBambu1;
     procedure DoRandomBambu2;
@@ -462,11 +520,13 @@ type
     procedure DoResetPositionAndRotation;
     procedure DoResetRotation;
     procedure DoResetZoom;
+    procedure DoRotStep(Step: Integer);
     procedure DoSmallWheel(Delta: single);
     procedure DoTouchbarBottom(Delta: single);
     procedure DoTouchbarLeft(Delta: single);
     procedure DoTouchbarRight(Delta: single);
     procedure DoTouchbarTop(Delta: single);
+    procedure DownloadAction;
     procedure DownloadCompleted(ML: TStrings);
     procedure DoZoom(const Delta: single);
     procedure DoZoomTimed(const Value: single);
@@ -481,10 +541,15 @@ type
     procedure FigureChanged(NewItemIndex: Integer);
     procedure FilterMeshChanged(NewValue: Boolean);
     procedure FlippedTextureChanged(NewValue: Boolean);
+    procedure FocusEditField;
     procedure FrameVisibilityChanged;
     procedure FuzzyMeshChanged(NewValue: Boolean);
+    procedure GenActionMsg(fa: TFederAction);
+    procedure GenMsg(K, V: string);
+    procedure GenMsgI(K: string; V: Integer);
     function GetChecked(fa: TFederAction): Boolean;
     function GetKeyboard: TFederKeyboard;
+    function GetLastMsg: string;
     function GetLoading: Boolean;
     function GetMeshDataDisplayText: string;
     function GetMoveModeDisplayText: string;
@@ -505,14 +570,19 @@ type
     procedure GrayText;
     procedure HandleAction(fa: TFederAction; CanBubble: Boolean = True);
     procedure HandleMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
+    procedure HandleRemoteUpdate;
     procedure HideImage;
     procedure Init;
+    procedure InitAutoConnector;
     procedure InitData(Sender: TObject);
     procedure InitData2D;
     procedure InitDefaultRingWidth(Value: Integer);
+    procedure InitFederConnection;
     procedure InitFederGraph;
     procedure InitFederModel;
+    procedure InitFederScript;
     procedure InitMainModel;
+    procedure InitMemeText;
     procedure InitRaster;
     procedure InitRepo(Value: Integer);
     procedure InitSample;
@@ -526,17 +596,25 @@ type
     procedure InvertedMeshChanged(NewValue: Boolean);
     function IsTouchBtnEnabled(Btn: TTouchBtn): Boolean;
     procedure LoadAction;
+    procedure LoadActionItems;
     procedure LoadAnimScript(AnimData: TStrings);
     procedure LoadExample(Value: Integer);
     procedure LoadFromFederData;
     procedure LoadHub(prev: Boolean);
     procedure LoadRotation(fd: TFederData);
     procedure LoadSample(prev: Boolean);
+    procedure LoadSampleItems;
+    procedure MakeScene4;
     procedure MapColorToLayer;
     procedure MarkForUpdate(Value: TUpdateReason);
     procedure MinusCapChanged(NewValue: Boolean);
     procedure ModifyTrackbar(NewValue: single);
+    procedure OnChangeHelp(Sender: TObject);
+    procedure OnChangeOption(Sender: TObject);
+    procedure OnChangeOptionFlash(Sender: TObject);
     procedure OnChangeParam(Sender: TObject);
+    procedure OnUpdateLED(Sender: TObject);
+    procedure OnUpdateView(Sender: TObject);
     procedure OpacityChanged(NewValue: Boolean);
     procedure OpenBundle;
     procedure OpenMeshChanged(NewValue: Boolean);
@@ -545,12 +623,16 @@ type
     procedure ParamValueChanged(NewValue: single);
     procedure PasteSample;
     procedure PickRing(X, Y: single);
+    procedure Play;
+    procedure PlayAnimation;
     procedure PlotChanged(NewItemIndex: Integer);
     procedure PlusCapChanged(NewValue: Boolean);
     procedure PlusOne;
     procedure PlusTen;
     procedure PolarMeshChanged(NewValue: Boolean);
     procedure ProcessAnimLine(fmk: TFederMessageKind; var V: string);
+    procedure ProcessGame;
+    procedure ProcessInput(ML1, ML2: TStrings);
     procedure RandomBitmapBlack;
     procedure RandomBitmapWhite;
     procedure ReadSample(ML: TStrings);
@@ -561,6 +643,15 @@ type
     procedure RingIndexChanged;
     procedure RingIndexUpdated;
     procedure RollStatusText;
+    procedure RotX;
+    procedure RotXM;
+    procedure RotXP;
+    procedure RotY;
+    procedure RotYM;
+    procedure RotYP;
+    procedure RotZ;
+    procedure RotZM;
+    procedure RotZP;
     procedure RunBinPixelTest;
     procedure SampleChanged(NewSampleIndex: Integer);
     procedure SaveAction;
@@ -569,10 +660,13 @@ type
     procedure SaveRotation(fd: TFederData);
     procedure SaveStatus(ML: TStrings);
     procedure SceneChanged(NewItemIndex: Integer);
+    procedure ScriptL;
     procedure SetLoading(const Value: Boolean);
     procedure ShowInfo;
     procedure SolutionModeChanged(NewValue: Boolean);
     procedure SpecialDoOnMouseUp(X, Y: single);
+    procedure Start;
+    procedure Stop;
     procedure SwapBundle;
     procedure TakeCapValueSnapShot;
     procedure TestBitmapPaint;
@@ -626,6 +720,7 @@ type
     procedure UpdateFederTextDataPhone(var TD: TFederTextDataPhone);
     procedure UpdateFederTextDataQuick(var TD: TFederTextDataQuick);
     procedure UpdateFigureSize(NewFigureSize: TSizeName);
+    procedure UpdateLED;
     procedure UpdateMesh;
     procedure UpdatePrintColors(ASelectedColors: TPrintColorSet);
     procedure UpdateReport;
@@ -652,17 +747,25 @@ type
     procedure WhiteText;
     procedure WriteActionConst;
     procedure WriteActionNames;
+    procedure WriteActionReport;
+    procedure WriteActionTable;
     procedure WriteAllSampleDiff(ML: TStrings);
     procedure WriteCode(ML: TStrings);
     procedure WriteDiffBin(ML: TStrings);
     procedure WriteDiffBinTest(ML: TStrings);
     procedure WriteDiffCode(ML: TStrings);
     procedure WriteDiffPixelTest(ML: TStrings);
+    procedure WriteRepoReport;
     procedure WriteSampleDiff(ML: TStrings);
+    procedure WriteScript0(ML: TStrings);
+    procedure WriteScript1(ML: TStrings);
+    procedure WriteScript2(ML: TStrings);
+    procedure WriteScript3(ML: TStrings);
     procedure WriteStatus(ML: TStrings);
     procedure WriteTestMemoLines(ML: TStrings; Count: Integer);
     procedure WriteVersion1Diff(ML: TStrings);
     procedure WriteVersion1Txt(ML: TStrings);
+    property AutoSend: TFederAction read GetAutoSend write SetAutoSend;
     property BandWidthOption: TBandWidthOption read FBandWidthOption write SetBandWidthOption;
     property Bigmap: Boolean read GetBigmap write SetBigmap;
     property Bitmap: Integer read GetBitmap write SetBitmap;
@@ -681,6 +784,7 @@ type
     property CurrentRing: Integer read FCurrentRing write SetCurrentRing;
     property DetailPulling: Boolean read GetDetailPulling write SetDetailPulling;
     property Dim: Integer read GetDim write SetDim;
+    property DropTargetVisible: Boolean read GetDropTargetVisible;
     property ExampleID: Integer read FExampleID;
     property FederFrame: TFederFrameBase read GetFederFrame;
     property FederMesh: TFederShell1 read Outer;
@@ -696,6 +800,7 @@ type
     property Graph: Integer read GetGraph write SetGraph;
     property HasShirtColor: Boolean read FHasShirtColor write FHasShirtColor;
     property HasShirtFarbe: Boolean read FHasShirtFarbe write FHasShirtFarbe;
+    property Host: string read GetHost write SetHost;
     property Hub: Integer read GetHub write SetHub;
     property InitDataOK: Boolean read GetInitDataOK write SetInitDataOK;
     property IsDesktop: Boolean read GetIsDesktop;
@@ -707,6 +812,7 @@ type
     property IsRetina: Boolean read GetIsRetina write FIsRetina;
     property KeyBinding: Integer read FKeyBinding write SetKeyBinding;
     property Keyboard: TFederKeyboard read GetKeyboard;
+    property LastMsg: string read GetLastMsg;
     property Layer: Integer read FLayer write FLayer;
     property Level: Integer read GetLevel write SetLevel;
     property LightMode: Boolean read GetLightMode;
@@ -734,6 +840,7 @@ type
     property PlotFigure: Integer read GetPlotFigure write SetPlotFigure;
     property PlusCap: Boolean read GetPlusCap write SetPlusCap;
     property PolarMesh: Boolean read GetPolarMesh write SetPolarMesh;
+    property Port: Integer read GetPort write SetPort;
     property ReducedMesh: Boolean read GetReducedMesh write SetReducedMesh;
     property ReduceMode: Integer write SetReduceMode;
     property RetinaScale: single read GetRetinaScale;
@@ -749,6 +856,7 @@ type
     property ShowColorSwat: Boolean read FShowColorSwat write SetShowColorSwat;
     property ShowCurrentBand: Boolean read GetShowCurrentBand write SetShowCurrentBand;
     property SideCapVisible: Boolean read GetSideCapVisible write SetSideCapVisible;
+    property ShowEditField: Boolean read GetShowEditField write SetShowEditField;
     property SliceHeight: single read GetSliceHeight;
     property SlicePulling: Boolean read GetSlicePulling write SetSlicePulling;
     property SlicePullingMode: Integer read GetSlicePullingMode write SetSlicePullingMode;
@@ -801,6 +909,9 @@ begin
   FormatSettings.DecimalSeparator := '.';
   MainVar.AppTitle := Application.Title;
 
+  FolderInfo := TFolderInfo.Create;
+  IniImage := TIniImage.Create;
+
   FL := TStringList.Create;
 
   InitMappedReports;
@@ -811,6 +922,7 @@ begin
 
   StopWatch := TStopWatch.Create;
 
+  CreateFedergraphConn;
   CreateFedergraph;
 
   ActionGroupList := TActionGroupList.Create;
@@ -828,13 +940,20 @@ end;
 destructor TMain0.Destroy;
 begin
   MainVar.AppIsClosing := True;
+  Stop;
   ModelUpdate.ViewEnabled := False;
 
+  MemeText.Free;
+
+  DestroyFedergraphConn;
   DestroyFedergraph;
 
   ActionItemList.Free;
   BambuPartition.Free;
   RingBuilder.Free;
+
+  IniImage.Free;
+  FolderInfo.Free;
 
   StopWatch.Free;
   Logger.Free;
@@ -1012,6 +1131,11 @@ begin
   end;
 end;
 
+procedure TMain0.ConnectAction;
+begin
+  FederConnection.Connect;
+end;
+
 procedure TMain0.CopyBitmap3D;
 var
   bmp: TBitmap;
@@ -1144,7 +1268,7 @@ end;
 procedure TMain0.CopyTextureBitmapText;
 begin
   FL.Text := FederScene.TextureBitmapText;
-  if FL.Count  < 2 then
+  if FL.Count < 2 then
     FL.Text := 'available only after using random colors once';
   CopyFL;
 end;
@@ -1166,7 +1290,7 @@ begin
 
   Want2D := False;
   Want3D := True;
-  WantAnimation := False;
+  WantAnimation := True;
   WantCanvasClear := True;
   WantTimedParams := True;
   WantEulerTest := False;
@@ -1199,16 +1323,51 @@ begin
   ActionHandler := TActionHelper.Create;
   ActionHandler.CheckForDuplicates(FL);
 
+  FederMemory := TFederMemory.Create;
+
   ModelUpdate := TGridUpdate.Create;
   ModelUpdate.OnUpdateView := TrackbarUpdate;
 
   DefaultFederData.InitDefault;
+  FederRecorder := TFederRecorder.Create;
+  GamePad := TGamePad.Create;
   FederMenu := TFederMenu.Create;
 
   FederColor := TFederColor.Create;
+  ParallelAnimation := TParallelAnimation.Create;
+
+  ActionData := TActionReport.Create;
+  RepoData := TRepoReport.Create;
 
   BitmapCache := TBitmapCache.Create;
   BitmapImprinter := TBitmapImprinter.Create;
+
+  CreateFedergraphAnim;
+end;
+
+procedure TMain0.CreateFedergraphAnim;
+begin
+  WantAnimation := True;
+
+  { recreate with other type }
+  FederMemory.Free;
+  FederMemory := TManualTransition.Create;
+
+  AnimationData := TAnimationData.Create;
+  FederScript := TFederScript.Create;
+  AnimationPlayer := TAnimationPlayer.Create;
+  SampleTransition := TSampleTransition.Create;
+end;
+
+procedure TMain0.CreateFedergraphConn;
+begin
+  AutoConnector := TAutoConnector.Create;
+{$ifdef InputCLient}
+  FederConnection := TFederInputConnection.Create;
+{$endif}
+{$ifdef OutputCLient}
+  FederConnection := TFederOutputConnection.Create;
+{$endif}
 end;
 
 procedure TMain0.CreateMainModel;
@@ -1554,6 +1713,23 @@ begin
   TextUpdateNeeded;
 end;
 
+procedure TMain0.DebugAnimationData;
+var
+  s: string;
+  cr: TAnimationRowCollectionItem;
+begin
+  if AnimationData.Count > 0 then
+  begin
+    cr := AnimationData.Current;
+    if cr <> nil then
+    begin
+      s := Format('%s,%s,%s,%d,%d,%d,%d,%d', [cr.ATString, cr.ITString,
+        cr.ParamString, cr.StartValue, cr.StopValue, cr.Duration,
+        cr.AutoReverse, cr.Loop]);
+    end;
+  end;
+end;
+
 procedure TMain0.DensityChanged(NewValue: Integer);
 begin
   FederModel.MeshSize := NewValue;
@@ -1562,11 +1738,20 @@ end;
 
 procedure TMain0.DestroyFedergraph;
 begin
+  DestroyFederGraphAnim;
+
+  FederRecorder.Free;
+  GamePad.Free;
+
   ActionHandler.Free;
   FederKeyboard1.Free;
 
   SampleManager.Free;
 
+  ActionData.Free;
+  RepoData.Free;
+  FederMemory.Free;
+  ParallelAnimation.Free;
   FederColor.Free;
   FederMenu.Free;
 
@@ -1593,6 +1778,21 @@ begin
   ActionMapPhone.Free;
 end;
 
+procedure TMain0.DestroyFedergraphAnim;
+begin
+  AnimationData.Free;
+  SampleTransition.Free;
+  AnimationPlayer.Free;
+  FederScript.Free;
+  inherited;
+end;
+
+procedure TMain0.DestroyFedergraphConn;
+begin
+  AutoConnector.Free;
+  FederConnection.Free;
+end;
+
 procedure TMain0.DestroyMainModel;
 begin
   FederScene.Free;
@@ -1608,6 +1808,11 @@ procedure TMain0.DimChanged(NewValue: Integer);
 begin
   FederModel.Dim := NewValue;
   UpdateChart;
+end;
+
+procedure TMain0.DisconnectAction;
+begin
+  FederConnection.Disconnect;
 end;
 
 procedure TMain0.DoBigWheel(Delta: single);
@@ -1637,6 +1842,12 @@ begin
   begin
     EulerAngle.Rotation := Frame3D.GetRotationInfo * -1;
     EulerAngle.Wrap;
+
+    GenMsg(cEulerX, FloatToStrF(EulerAngle.X, ffFixed, 7, 2));
+    GenMsg(cEulerY, FloatToStrF(EulerAngle.Y, ffFixed, 7, 2));
+    GenMsg(cEulerZ, FloatToStrF(EulerAngle.Z, ffFixed, 7, 2));
+
+//    GenActionMsg(faEulerSync);
   end
   else
   begin
@@ -1685,6 +1896,11 @@ begin
   begin
     DoSmallWheel(WheelDelta);
   end
+end;
+
+procedure TMain0.DoParallelUpdate(Value: single);
+begin
+  ParallelAnimation.SetValue(FederModel, Value);
 end;
 
 procedure TMain0.DoRandom(ID: Integer);
@@ -1770,6 +1986,43 @@ begin
   UpdateViewParamValue;
 end;
 
+procedure TMain0.DoRotStep(Step: Integer);
+begin
+  DoRotStep1(Step);
+end;
+
+procedure TMain0.DoRotStep1(Step: Integer);
+var
+  p: TPoint3D;
+begin
+  case Step of
+    0: // Test EulerAngle for CameraDummy
+    begin
+      p := Frame3D.GetRotationInfo;
+      Frame3D.ResetRotation;
+      Frame3D.CameraDummy.RotationAngle.Point := p * -1;
+    end;
+
+    1: // Test rotation of CameraDummy around local X-Axis
+    begin
+      Frame3D.CameraDummyRotationAngle.X := Frame3D.CameraDummyRotationAngle.X + 30;
+      Frame3D.UpdateRotation;
+    end;
+
+    2: // Test rotation of CameraDummy around local Y-Axis
+    begin
+      Frame3D.CameraDummyRotationAngle.Y := Frame3D.CameraDummyRotationAngle.Y + 30;
+      Frame3D.UpdateRotation;
+    end;
+
+    3: // Test rotation of CameraDummy around local Z-Axis
+    begin
+      Frame3D.CameraDummyRotationAngle.Z := Frame3D.CameraDummyRotationAngle.Z + 30;
+      Frame3D.UpdateRotation;
+    end;
+  end;
+end;
+
 procedure TMain0.DoSmallWheel(Delta: single);
 begin
   if CurrentParam = fpBandWidth then
@@ -1813,6 +2066,17 @@ end;
 procedure TMain0.DoTouchbarTop(Delta: single);
 begin
   DoMM(fmkRZ, Delta, 0);
+end;
+
+procedure TMain0.DoWheel(Delta: single);
+var
+  pv: single;
+begin
+  pv := Trackbar_Value;
+  if Delta > 0 then
+    ModifyTrackbar(pv + Delta * MainVar.WheelFrequency)
+  else
+    ModifyTrackbar(pv + Delta * MainVar.WheelFrequency);
 end;
 
 procedure TMain0.DoWheelForBandWidth(Delta: single);
@@ -1862,6 +2126,7 @@ begin
     Frame3D.Camera00.Position.X := Frame3D.Camera00.Position.X - Delta * 0.002
   else
     Frame3D.Camera00.Position.X := Frame3D.Camera00.Position.X - Delta * 0.02;
+  GenMsgI('TX', Sign(Delta));
 end;
 
 procedure TMain0.DoWheelForPanY(Delta: single);
@@ -1870,6 +2135,12 @@ begin
     Frame3D.Camera00.Position.Y := Frame3D.Camera00.Position.Y - Delta * 0.002
   else
     Frame3D.Camera00.Position.Y := Frame3D.Camera00.Position.Y - Delta * 0.02;
+  GenMsgI('TY', Sign(Delta));
+end;
+
+procedure TMain0.DownloadAction;
+begin
+  FederConnection.BeginDownload;
 end;
 
 procedure TMain0.DownloadCompleted(ML: TStrings);
@@ -1881,6 +2152,11 @@ begin
   begin
     FederData.Load(ML);
     LoadFromFederData;
+    if PlayRequested then
+    begin
+      PlayRequested := False;
+      Play;
+    end;
   end;
 end;
 
@@ -2006,6 +2282,12 @@ begin
   end;
 end;
 
+procedure TMain0.FocusEditField;
+begin
+  if Assigned(FormMain) then
+    FormMain.FocusEditField;
+end;
+
 procedure TMain0.FrameVisibilityChanged;
 begin
   FormMain.UpdateHintText(faNoop);
@@ -2018,6 +2300,36 @@ begin
     FederScene.FuzzyMesh := NewValue;
     UpdateChart;
   end;
+end;
+
+procedure TMain0.GenActionMsg(fa: TFederAction);
+begin
+  GenMsg(cAction, IntToStr(GetFederActionEncodedValue(fa)));
+end;
+
+procedure TMain0.GenMsg(K, V: string);
+begin
+  if IsInputClient then
+    FederRecorder.RecordMsg(K + '=' + V);
+end;
+
+procedure TMain0.GenMsgI(K: string; V: Integer);
+var
+  s: string;
+begin
+  if IsInputClient and not Receiving then
+  begin
+    s := K + '=' + IntToStr(V);
+    FederRecorder.RecordMsg(s);
+  end;
+end;
+
+function TMain0.GetAutoSend: TFederAction;
+begin
+  if FederRecorder.AutoSend then
+    result := faAutoSendOn
+  else
+    result := faAutoSendOff;
 end;
 
 function TMain0.GetBigmap: Boolean;
@@ -2094,6 +2406,16 @@ begin
   result := FederModel.Dim;
 end;
 
+function TMain0.GetDropTargetVisible: Boolean;
+begin
+  result := FormMain.DropTargetVisible;
+end;
+
+function TMain0.GetShowEditField: Boolean;
+begin
+  result := FormMain.ShowEditField;
+end;
+
 function TMain0.GetFederFrame: TFederFrameBase;
 begin
   result := FederFrame3D;
@@ -2161,6 +2483,18 @@ begin
   result := FederModel.Graph;
 end;
 
+function TMain0.GetHost: string;
+begin
+  if Assigned(IniImage) then
+    result := IniImage.Host
+  else
+  begin
+    if FHost = '' then
+      FHost := 'Host';
+    result :=  FHost;
+  end;
+end;
+
 function TMain0.GetHub: Integer;
 begin
   result := SampleManager.Hub;
@@ -2218,7 +2552,17 @@ end;
 
 function TMain0.GetKeyboard: TFederKeyboard;
 begin
-  result := FederKeyboard1;
+  case KeyBinding of
+    1: result := FederKeyboard1;
+//    2: result := FederKeyboard2;
+    else
+      result := FederKeyboard1;
+  end;
+end;
+
+function TMain0.GetLastMsg: string;
+begin
+  result := FederRecorder.LastMsg;
 end;
 
 function TMain0.GetLevel: Integer;
@@ -2357,6 +2701,18 @@ end;
 function TMain0.GetPolarMesh: Boolean;
 begin
   result := FederScene.PolarMesh;
+end;
+
+function TMain0.GetPort: Integer;
+begin
+  if Assigned(IniImage) then
+    result := IniImage.Port
+  else
+  begin
+    if FPort = 0 then
+      FPort := 8080;
+    result := FPort;
+  end;
 end;
 
 function TMain0.GetReducedMesh: Boolean;
@@ -2526,6 +2882,9 @@ begin
   result := 0.0;
   if Frame3D.InitOK then
   case fp of
+    fppx: result := Frame3D.Camera00.Position.X * 20;
+    fppy: result := Frame3D.Camera00.Position.Y * 20;
+
     fprx: result := Frame3D.CameraDummyRotationAngle.X;
     fpry: result := Frame3D.CameraDummyRotationAngle.Y;
     fprz: result := Frame3D.CameraDummyRotationAngle.Z;
@@ -2671,6 +3030,7 @@ procedure TMain0.HandleAction(fa: TFederAction; CanBubble: Boolean);
 begin
   case fa of
     faNoop: ;
+    faAnimationStop: Param := SavedParam;
   end;
 
   if CanBubble then
@@ -2682,6 +3042,215 @@ procedure TMain0.HandleMouseWheel(Sender: TObject; Shift: TShiftState;
 begin
   if IsUp then
     Frame3D.HandleMouseWheel(Sender, Shift, WheelDelta, Handled);
+end;
+
+procedure TMain0.HandleRemoteUpdate;
+{$ifdef OutputClient}
+var
+  fd: TFederData;
+  fp: TFederProtReceiver;
+  mk: TFederMessageKind;
+{$endif}
+begin
+{$ifdef OutputClient}
+  Receiving := True;
+  fd := FederConnection.FederData;
+  fp := FederConnection.FederProt;
+  mk := fp.MsgKind;
+
+  case mk of
+    fmkX1, fmkY1, fmkX2, fmkY2, fmkX3, fmkY3, fmkX4, fmkY4:
+      UpdateXY(mk, fp.vd);
+
+    fmkTX:
+      DoMMRemote(mk, -fp.vd, 0);
+    fmkTY:
+      DoMMRemote(mk, 0, fp.vd);
+    fmkRX:
+      DoMMRemote(mk, fp.vd, 0);
+    fmkRY:
+      DoMMRemote(mk, 0, fp.vd);
+    fmkRZ:
+      DoMMRemote(mk, fp.vd, 0);
+
+    fmkCZ:
+      DoZoomTimed(fp.vd / 100);
+
+    fmkScene:
+      SceneChanged(fd.Scene - 1);
+    fmkGraph:
+      GraphChanged(fd.Graph - 1);
+    fmkPlot:
+      PlotChanged(fd.Plot - 1);
+    fmkFigure:
+      FigureChanged(fd.Figure - 1);
+    fmkBitmap:
+      BitmapChanged(fd.Bitmap - 1);
+    fmkColor:
+      Color := fd.Color;
+    fmkParam:
+      ParamChanged(fd.Param - 1);
+
+    fmkParamValue:
+      begin
+        if (fd.Param = FederModel.Param) then
+          case fp.FederParam of
+            fpUnknown:
+              ;
+            fprx, fpry, fprz:
+              ParamValueChanged(fd.x1);
+            fpl:
+              ParamValueChanged(fd.l1);
+            fpl1:
+              ParamValueChanged(fd.l1);
+            fpl2:
+              ParamValueChanged(fd.l2);
+            fpl3:
+              ParamValueChanged(fd.l3);
+            fpl4:
+              ParamValueChanged(fd.l4);
+            fpk:
+              ParamValueChanged(fd.k1);
+            fpk1:
+              ParamValueChanged(fd.k1);
+            fpk2:
+              ParamValueChanged(fd.k2);
+            fpk3:
+              ParamValueChanged(fd.k3);
+            fpk4:
+              ParamValueChanged(fd.k4);
+            fpox:
+              ParamValueChanged(fd.OffsetX);
+            fpoy:
+              ParamValueChanged(fd.OffsetY);
+            fpoz:
+              ParamValueChanged(fd.OffsetZ);
+            fpx1:
+              ParamValueChanged(fd.x1);
+            fpx2:
+              ParamValueChanged(fd.x2);
+            fpx3:
+              ParamValueChanged(fd.x3);
+            fpx4:
+              ParamValueChanged(fd.x4);
+            fpy1:
+              ParamValueChanged(fd.y1);
+            fpy2:
+              ParamValueChanged(fd.y2);
+            fpy3:
+              ParamValueChanged(fd.y3);
+            fpy4:
+              ParamValueChanged(fd.y4);
+            fpz1:
+              ParamValueChanged(fd.z1);
+            fpz2:
+              ParamValueChanged(fd.z2);
+            fpz3:
+              ParamValueChanged(fd.z3);
+            fpz4:
+              ParamValueChanged(fd.z4);
+            fpAttenuation:
+              ParamValueChanged(fd.Attenuation);
+            fpGrenze:
+              ParamValueChanged(fd.Limit);
+            fpRange:
+              ParamValueChanged(fd.Range);
+            fpAbsoluteRange:
+              ParamValueChanged(fd.AbsoluteRange);
+            fpt:
+              ParamValueChanged(fd.x1);
+            fpz:
+              ParamValueChanged(fd.z1);
+
+            fpParamCapValue:
+              ParamValueChanged(fd.CapValue);
+//            fpParamSliceHeight:
+//              ParamValueChanged(fp.vd);
+
+            // fps, fph: ;
+            { pseudo params Sample/Hub do not update trackbar }
+
+            fpt1:
+            begin
+              if fd.T1 > 0.1 then
+                ParamValueChanged(fd.T1);
+            end;
+            fpt2:
+            begin
+              if fd.T2 > 0.1 then
+                ParamValueChanged(fd.T2);
+            end;
+            fpt3:
+            begin
+              if fd.T3 > 0.1 then
+                ParamValueChanged(fd.T3);
+            end;
+            fpt4:
+            begin
+              if fd.T4 > 0.1 then
+                ParamValueChanged(fd.T4);
+            end;
+
+            fptrt:
+              ParamValueChanged(fd.x1);
+            fptrx:
+              ParamValueChanged(fd.x1);
+            fptry:
+              ParamValueChanged(fd.x1);
+
+            fp1, fp2, fp3, fp4, fp5, fp6, fp7, fp8, fp9, fp0:
+              ParamValueChanged(fd.x1);
+
+          end;
+      end;
+
+    fmkMinusCap:
+      MinusCapChanged(fd.MinusCap);
+    fmkPlusCap:
+      PlusCapChanged(fd.PlusCap);
+    fmkOpacity:
+      OpacityChanged(fd.Opacity);
+    fmkBigmap:
+      BigmapChanged(fd.Bigmap);
+    fmkMeshSize:
+      DensityChanged(fd.MeshSize);
+
+    fmkAction:
+      case fp.MsgValue of
+        faExecute:
+        begin
+          PlayRequested := True;
+          FederConnection.BeginDownload;
+        end;
+        faDownload:
+          FederConnection.BeginDownload;
+        faPlay:
+          Play;
+
+        else
+          ActionHandler.Execute(fp.MsgValue);
+      end;
+
+    fmkHub:
+      begin
+        GotoHub(SampleManager.Hub);
+      end;
+    fmkSample:
+      begin
+        GotoSample(SampleManager.Sample);
+      end;
+
+    fmkAnimGO:
+      begin
+        PlayAnimation;
+      end;
+
+  end;
+  TextUpdateNeeded;
+{$endif}
+  OnUpdateLED(nil);
+  Receiving := False;
+  BubbleUpAction(faNoop);
 end;
 
 procedure TMain0.HideImage;
@@ -2711,12 +3280,23 @@ begin
   Frame3D.InitOK := True;
 
   InitTrackbar;
+  InitFederScript;
   InitText;
 
   InitSample;
 
+  OnChangeHelp(nil);
+  OnChangeOptionFlash(nil);
+
   FCurrentRing := 21;
   MenubarLayout := 0;
+end;
+
+procedure TMain0.InitAutoConnector;
+begin
+  if IsInputClient then
+    ActionHandler.Execute(faAutoSendOn);
+  AutoConnector.Connection := FederConnection;
 end;
 
 procedure TMain0.InitData2D;
@@ -2727,6 +3307,16 @@ end;
 procedure TMain0.InitDefaultRingWidth(Value: Integer);
 begin
   BitmapBuilder.InitDefaultRingWidth(Value);
+end;
+
+procedure TMain0.InitFederConnection;
+begin
+  FederConnection.OnUpdateLED := OnUpdateLED;
+{$ifdef OutputClient}
+  FederConnection.OnUpdateView := OnUpdateView;
+{$endif}
+  FederConnection.Init;
+  OnUpdateLED(nil);
 end;
 
 procedure TMain0.InitFederGraph;
@@ -2752,6 +3342,11 @@ begin
   end
   else
     FederModel.Graph := GraphIndex;
+end;
+
+procedure TMain0.InitFederScript;
+begin
+  FederScript.Init;
 end;
 
 procedure TMain0.InitFederText(ft: TFederText);
@@ -2783,6 +3378,7 @@ begin
   FederModel.OnInitData := InitData;
   FederModel.Active := True;
   ParamManager.OnChangeParam := OnChangeParam;
+  FederBinding.OnChangeHelp := OnChangeHelp;
 
   Frame3D.InitWithViewport(Viewport);
   Frame3D.OnViewportChanged := OnViewport3DChanged;
@@ -2811,6 +3407,17 @@ begin
     rpColorInfo2,
     rpMeshDataInfo
    ]);
+end;
+
+procedure TMain0.InitMemeText;
+begin
+  if not Assigned(MemeText) then
+  begin
+    MemeText := TMemeText.Create;
+    MemeText.TopCaption := 'FC91';
+    MemeText.BottomCaption := 'Federgraph.de';
+    MemeText.Init(FormMain);
+  end;
 end;
 
 procedure TMain0.InitRaster;
@@ -3047,9 +3654,28 @@ begin
   SampleManager.SampleBundle.LoadFromFile;
 end;
 
+procedure TMain0.LoadActionItems;
+var
+  fa: TFederAction;
+  cr: TActionRowCollectionItem;
+begin
+  ActionData.Clear;
+  for fa := 1 to faMax - 1 do
+  begin
+    cr := ActionData.Add;
+    cr.ActionValue := fa;
+    cr.Shortcut := ActionHandler.GetShortcutString(fa);
+    cr.ActionName := ActionHandler.GetActionName(fa);
+    cr.ShortName := ActionHandler.GetShortCaption(fa);
+    cr.Caption := ActionHandler.GetCaption(fa);
+    cr.ActionGroup := ActionHandler.GetActionGroup(fa);
+  end;
+end;
+
 procedure TMain0.LoadAnimScript(AnimData: TStrings);
 begin
-  { keep even if empty }
+  if Assigned(FederScript) then
+    FederScript.ReadScript(AnimData);
 end;
 
 procedure TMain0.LoadColorInfoOnly;
@@ -3175,6 +3801,82 @@ begin
   ParamManager.ResetCycle;
 end;
 
+procedure TMain0.LoadSampleItems;
+var
+  h, s: Integer;
+  fd: TFederData;
+  sh: TSampleHub;
+  cr: TRepoRowCollectionItem;
+begin
+  if not Assigned(SampleManager.SampleHub) then
+    Exit;
+
+  fd := TFederData.Create;
+
+  Main.RepoData.Clear;
+  for h := 0 to SampleManager.HubCount-1 do
+  begin
+    sh := SampleManager.SampleBundle.GetSampleHubByIndex(h);
+    for s := 0 to SampleManager.SampleCount-1 do
+    begin
+      sh.LoadSample(fd, s);
+      cr := Main.RepoData.Add;
+      cr.Hub := h;
+      cr.Sample := s;
+      cr.Scene := fd.Scene;
+      cr.Plot := fd.Plot;
+      cr.PlotFigure := fd.PlotFigure;
+      cr.Bitmap := fd.Bitmap;
+      cr.Param := fd.Param;
+      cr.Title := fd.Title;
+    end;
+  end;
+  fd.Free;
+end;
+
+procedure TMain0.MakeScene4;
+var
+  A: TFederData;
+//  FMEQ: TFederModelEQ;
+//  EQ: TFederEquation;
+begin
+  A := FederData;
+  if A.Scene = 3 then
+  begin
+    A.l3 := A.l3 / 2;
+    A.l4 := A.l3;
+
+    A.k4 := 0;
+
+    A.x4 := A.x3;
+    A.y4 := A.y3;
+    A.z4 := A.z3;
+
+    A.Scene := 4;
+    A.AngleX := 180;
+    A.AngleY := 0;
+    A.AngleZ := 0;
+
+    if A.SolutionMode then
+    begin
+      A.Figure := 5;
+      A.Attenuation := 20;
+    end
+    else
+    begin
+      A.Figure := 3;
+      A.Attenuation := 0;
+    end;
+  end;
+
+  LoadFromFederData;
+
+//  FMEQ := FederModel as TFederModelEQ;
+//  EQ := FMEQ.Equation04;
+//  Logger.Info(Format('EQ4.Figure = %d', [EQ.Figure]));
+//  Logger.Info(Format('EQ4.fcap = %.5g', [EQ.fcap]));
+end;
+
 procedure TMain0.MapColorToLayer;
 begin
   RingBuilder.MapColorToLayer(FLayer, FSelectedColor);
@@ -3234,6 +3936,22 @@ begin
   end;
 end;
 
+procedure TMain0.OnChangeHelp(Sender: TObject);
+begin
+  FederText.HelpCaption := FederBinding.CurrentHelp;
+end;
+
+procedure TMain0.OnChangeOption(Sender: TObject);
+begin
+  FederText.OptionCaption := ''; //ParamManager.OptionText;
+end;
+
+procedure TMain0.OnChangeOptionFlash(Sender: TObject);
+begin
+  FederText.FlashCaption := ''; //ParamManager.CurrentOptionFlash;
+  FederText.OptionCaption := ''; //ParamManager.OptionText;
+end;
+
 procedure TMain0.OnChangeParam(Sender: TObject);
 var
   idx: Integer;
@@ -3248,6 +3966,33 @@ end;
 procedure TMain0.OnModulationColorChanged(Sender: TObject);
 begin
   FederScene.ModulationColor := Frame3D.Color;
+end;
+
+procedure TMain0.OnUpdateLED(Sender: TObject);
+begin
+  if not MainVar.AppIsClosing then
+  begin
+    if Assigned(FederText) then
+    FederText.UpdateLED(
+      FederConnection.HostPanelText,
+      FederConnection.PortPanelText,
+      FederConnection.CounterPanelText,
+      FederConnection.MsgPanelText,
+      FederConnection.LEDColor
+      );
+  end;
+end;
+
+procedure TMain0.OnUpdateView(Sender: TObject);
+begin
+  if not MainVar.AppIsClosing then
+  begin
+    if FederConnection.HasUpdate then
+    begin
+      HandleRemoteUpdate;
+      FederConnection.HasUpdate := False;
+    end;
+  end;
 end;
 
 procedure TMain0.OnViewport3DChanged(Sender: TObject);
@@ -3304,6 +4049,9 @@ begin
 end;
 
 procedure TMain0.ParamChanged(NewItemIndex: Integer);
+var
+  fp: TFederParam;
+  global_fp: Integer;
 begin
   FParamChanging := True;
   try
@@ -3318,6 +4066,12 @@ begin
           UpdateTrackbar;
           ClearFlashNeeded;
           TextUpdateNeeded;
+          if not Loading then
+          begin
+            fp := TFederUtils.GetFederParam(FederModel.Param);
+            global_fp := TFederParamDef.Encode(fp);
+            GenMsg(cParam, IntToStr(global_fp));
+          end;
         end;
       end;
     end;
@@ -3332,10 +4086,16 @@ begin
   begin
     if FederModel <> nil then
     begin
-        FederModel.ParamValue := NewValue;
+      FederModel.ParamValue := NewValue;
 
       if not (Loading or FParamChanging or FKoordChanging) then
       begin
+        case TFederUtils.GetFederParam(FederModel.Param) of
+          fpTRT, fpTRX, fpTRY:
+            GenMsg(cParamValue, FloatToStrF(NewValue, ffFixed, 7, 2));
+          else
+            GenMsg(cParamValue, FloatToStrF(FederModel.ParamValue, ffFixed, 7, 2));
+        end;
         Trackbar_Value := NewValue;
         UpdateChart;
       end
@@ -3383,6 +4143,26 @@ procedure TMain0.PickRing(X, Y: single);
 begin
   if FederMesh.Parent <> nil then
     FederMesh.PickRing(X, Y);
+end;
+
+procedure TMain0.Play;
+begin
+  if not AnimationPlayer.IsPlaying then
+  begin
+    if FederData.ScriptLineCount > 0 then
+    begin
+      FederScript.ReadScript(FederData.Script);
+      AnimationPlayer.Calc;
+    end;
+  end;
+end;
+
+procedure TMain0.PlayAnimation;
+begin
+  if WantAnimation then
+    AnimationData.Calc
+  else
+    DebugAnimationData;
 end;
 
 procedure TMain0.PlotChanged(NewItemIndex: Integer);
@@ -3453,7 +4233,61 @@ end;
 
 procedure TMain0.ProcessAnimLine(fmk: TFederMessageKind; var V: string);
 begin
-  { keep even if empty }
+  if Assigned(AnimationData) then
+    AnimationData.Edit(fmk, V);
+end;
+
+procedure TMain0.ProcessGame;
+begin
+  if GamePad.A then
+    ActionHandler.Execute(faBitmapOne)
+  else if GamePad.B then
+    ActionHandler.Execute(faBitmapEscape)
+  else if GamePad.X then
+    ActionHandler.Execute(faCycleBitmapM)
+  else if GamePad.Y then
+    ActionHandler.Execute(faCycleBitmapP)
+
+  else if GamePad.Start then
+    ActionHandler.Execute(faParamCapValue)
+  else if GamePad.Back then
+    ActionHandler.Execute(faParamL)
+  else if GamePad.Left then
+    ActionHandler.Execute(faSampleM)
+  else if GamePad.Right then
+    ActionHandler.Execute(faSampleP)
+  else if GamePad.Up then
+    ActionHandler.Execute(faHubP)
+  else if GamePad.Down then
+    ActionHandler.Execute(faHubM)
+
+  else if (GamePad.LX <> 0)
+    or (GamePad.LY <> 0) then
+  begin
+    if (GamePad.LX <> 0) then
+      Frame3D.DoMM(fmkRX, 20 * GamePad.LX, 0);
+    if (GamePad.LY <> 0) then
+      Frame3D.DoMM(fmkRY, 0, 20 * GamePad.LY)
+  end
+
+  else if GamePad.LeftShoulder then
+    Frame3D.DoMM(fmkRZ, -3, 0)
+  else if GamePad.RightShoulder then
+    Frame3D.DoMM(fmkRZ, 3, 0)
+
+  else if GamePad.RY <> 0 then
+    Frame3D.DoZoom(-GamePad.RY / 5)
+  else if GamePad.RX <> 0 then
+    DoSmallWheel(GamePad.RX)
+  else if GamePad.LeftTrigger <> 0 then
+    DoWheel(-1)
+  else if GamePad.RightTrigger <> 0 then
+    DoWheel(1);
+end;
+
+procedure TMain0.ProcessInput(ML1, ML2: TStrings);
+begin
+  FederConnection.ProcessInput(ML1, ML2);
 end;
 
 procedure TMain0.RandomBitmapBlack;
@@ -3495,6 +4329,16 @@ begin
   except
     ResetRequested;
   end;
+end;
+
+procedure TMain0.RecordCodeLine(k: string; v: Integer);
+begin
+  MLRef.Add(k + ' := ' + IntToStr(v) + ';');
+end;
+
+procedure TMain0.RecordLine(k: string; v: Integer);
+begin
+  MLRef.Add(k + '=' + IntToStr(v));
 end;
 
 procedure TMain0.ReducedMeshChanged(NewValue: Boolean);
@@ -3574,6 +4418,87 @@ begin
   if not FederText.EquationVisible then
     FederText.ToggleEquationText;
   ToggleLabelBatch(1);
+end;
+
+procedure TMain0.RotX;
+begin
+  if not AnimationPlayer.IsPlaying then
+  begin
+    FederScript.X1;
+    AnimationPlayer.Calc;
+  end;
+end;
+
+procedure TMain0.RotXM;
+begin
+  if not AnimationPlayer.IsPlaying then
+  begin
+    FederScript.XM;
+    AnimationPlayer.Calc;
+  end;
+end;
+
+procedure TMain0.RotXP;
+begin
+  if not AnimationPlayer.IsPlaying then
+  begin
+    FederScript.XP;
+    AnimationPlayer.Calc;
+  end;
+end;
+
+procedure TMain0.RotY;
+begin
+  if not AnimationPlayer.IsPlaying then
+  begin
+    FederScript.Y1;
+    AnimationPlayer.Calc;
+  end;
+end;
+
+procedure TMain0.RotYM;
+begin
+  if not AnimationPlayer.IsPlaying then
+  begin
+    FederScript.YM;
+    AnimationPlayer.Calc;
+  end;
+end;
+
+procedure TMain0.RotYP;
+begin
+  if not AnimationPlayer.IsPlaying then
+  begin
+    FederScript.YP;
+    AnimationPlayer.Calc;
+  end;
+end;
+
+procedure TMain0.RotZ;
+begin
+  if not AnimationPlayer.IsPlaying then
+  begin
+    FederScript.Z1;
+    AnimationPlayer.Calc;
+  end;
+end;
+
+procedure TMain0.RotZM;
+begin
+  if not AnimationPlayer.IsPlaying then
+  begin
+    FederScript.ZM;
+    AnimationPlayer.Calc;
+  end;
+end;
+
+procedure TMain0.RotZP;
+begin
+  if not AnimationPlayer.IsPlaying then
+  begin
+    FederScript.ZP;
+    AnimationPlayer.Calc;
+  end;
 end;
 
 procedure TMain0.RunBinPixelTest;
@@ -3656,6 +4581,41 @@ begin
       UpdateChart;
     end;
   end;
+end;
+
+procedure TMain0.ScriptL;
+begin
+  if (FederModel.Param = 14) and not AnimationPlayer.IsPlaying then
+  begin
+    FederScript.Clear;
+
+    MeshSize := 128;
+    if FederModel.ParamValue = 90 then
+    begin
+      FederScript.MoveTo(fpL, 240);
+    end
+    else
+    begin
+      FederScript.MoveTo(fpL, 90);
+    end;
+
+    FederScript.Current.InterpolationType := Integer(TInterpolationType.Quadratic);
+    FederScript.Current.Duration := 4;
+
+    FederScript.JumpTo(fmkMeshSize, 256);
+
+    AnimationPlayer.Calc;
+  end;
+end;
+
+procedure TMain0.SetAutoSend(const Value: TFederAction);
+begin
+  case Value of
+    faAutoSend: FederRecorder.AutoSend := not FederRecorder.AutoSend;
+    faAutoSendOn: FederRecorder.AutoSend := True;
+    faAutoSendOff: FederRecorder.AutoSend := False;
+  end;
+  FormMain.UpdateMenu;
 end;
 
 procedure TMain0.SetBandWidthOption(const Value: TBandWidthOption);
@@ -3762,6 +4722,12 @@ end;
 procedure TMain0.SetGraph(const Value: Integer);
 begin
   GraphChanged(Value-1);
+end;
+
+procedure TMain0.SetHost(const Value: string);
+begin
+  FHost := Value;
+  IniImage.Host := Value;
 end;
 
 procedure TMain0.SetHub(const Value: Integer);
@@ -3885,6 +4851,12 @@ begin
   PolarMeshChanged(Value);
 end;
 
+procedure TMain0.SetPort(const Value: Integer);
+begin
+  FPort := Value;
+  IniImage.Port := Value;
+end;
+
 procedure TMain0.SetReducedMesh(const Value: Boolean);
 begin
   ReducedMeshChanged(Value);
@@ -3986,6 +4958,12 @@ begin
       FederTexture.BitmapBuilder.WantContour := True;
     UpdateRings;
   end;
+end;
+
+procedure TMain0.SetShowEditField(const Value: Boolean);
+begin
+  if Assigned(FormMain) then
+    FormMain.ShowEditField := Value;
 end;
 
 procedure TMain0.SetSlicePulling(const Value: Boolean);
@@ -4147,6 +5125,20 @@ end;
 procedure TMain0.SpecialDoOnMouseUp(X, Y: Single);
 begin
   { keep even if empty }
+end;
+
+procedure TMain0.Start;
+begin
+  if not AnimationPlayer.IsPlaying then
+  begin
+    SampleManager.SampleHub.LoadScript(0);
+    AnimationPlayer.Calc;
+  end;
+end;
+
+procedure TMain0.Stop;
+begin
+  AnimationPlayer.Stop;
 end;
 
 procedure TMain0.SwapBundle;
@@ -4620,13 +5612,18 @@ begin
 {$ifndef IOS}
   TD.SB00 := FloatToStrF(Trackbar_Value, ff, 7, 2);
 {$endif}
-  TD.RecorderLine := '';
+  TD.RecorderLine := LastMsg;
 end;
 
 procedure TMain0.UpdateFigureSize(NewFigureSize: TSizeName);
 begin
   RingBuilder.FigureSize := NewFigureSize;
   TextUpdateNeeded;
+end;
+
+procedure TMain0.UpdateLED;
+begin
+  OnUpdateLED(nil);
 end;
 
 procedure TMain0.UpdateMesh;
@@ -4948,6 +5945,22 @@ begin
   CopyFL;
 end;
 
+procedure TMain0.WriteActionReport;
+begin
+  ActionData.Clear;
+  ActionData.Load;
+  FL.Clear;
+  ActionData.FinishReport(FL);
+  CopyFL;
+end;
+
+procedure TMain0.WriteActionTable;
+begin
+  FL.Clear;
+  ActionHandler.ExportTable(FL);
+  CopyFL;
+end;
+
 procedure TMain0.WriteAllSampleDiff(ML: TStrings);
 var
   fd1, fd2: TFederData;
@@ -5008,10 +6021,97 @@ begin
   bmp.Free;
 end;
 
+procedure TMain0.WriteRepoReport;
+begin
+  RepoData.Clear;
+  RepoData.Load;
+  FL.Clear;
+  RepoData.FinishReport(FL);
+  CopyFL;
+end;
+
 procedure TMain0.WriteSampleDiff(ML: TStrings);
 begin
   UpdateData;
   FederData.ShowVersion1Diff(DefaultFederData, ML);
+end;
+
+procedure TMain0.WriteScript0(ML: TStrings);
+var
+  cr: TAnimationRowCollectionItem;
+  i: Integer;
+begin
+  MLRef := ML;
+  RecordLine('NS', 0);
+  AnimationData.First;
+  for i := 0 to AnimationData.Count-1 do
+  begin
+    cr := AnimationData.Next;
+    if not Assigned(cr) then
+      break;
+    RecordLine('NE', 0);
+    RecordLine('AT', cr.AnimationType);
+    RecordLine('IT', cr.InterpolationType);
+    RecordLine('PA', cr.Param);
+    RecordLine('VA', cr.StartValue);
+    RecordLine('VE', cr.StopValue);
+    RecordLine('DU', cr.Duration);
+    RecordLine('AR', cr.AutoReverse);
+    RecordLine('LP', cr.Loop);
+    RecordLine('FC', cr.FromCurrent);
+    ML.Add('');
+  end;
+end;
+
+procedure TMain0.WriteScript1(ML: TStrings);
+var
+  cr: TAnimationRowCollectionItem;
+  i: Integer;
+begin
+  MLRef := ML;
+  ML.Add('//NS - New Script');
+  AnimationData.First;
+  for i := 0 to AnimationData.Count-1 do
+  begin
+    cr := AnimationData.Next;
+    if not Assigned(cr) then
+      break;
+    ML.Add('cr := cl.Add;');
+    if cr.AnimationType <> 2 then
+      RecordCodeLine('cr.AnimationType', cr.AnimationType);
+    if cr.InterpolationType <> 1 then
+      RecordCodeLine('cr.InterpolationType', cr.InterpolationType);
+    RecordCodeLine('cr.Param', cr.Param);
+    if cr.StartValue <> 1 then
+      RecordCodeLine('cr.StartValue', cr.StartValue);
+    RecordCodeLine('cr.StopValue', cr.StopValue);
+    if cr.Duration <> 1 then
+      RecordCodeLine('cr.Duration', cr.Duration);
+    if cr.AutoReverse <> 1 then
+      RecordCodeLine('cr.AutoReverse', cr.AutoReverse);
+    if cr.Loop <> 0 then
+      RecordCodeLine('cr.Loop', cr.Loop);
+    if cr.FromCurrent <> 1 then
+      RecordCodeLine('cr.FromCurrent', cr.FromCurrent);
+    ML.Add('');
+  end;
+end;
+
+procedure TMain0.WriteScript2(ML: TStrings);
+begin
+  FederScript.WriteScript1(ML);
+end;
+
+procedure TMain0.WriteScript3(ML: TStrings);
+begin
+  ML.Add('SampleData.Begin');
+  FederModel.SaveToFederData(FederData);
+  FederData.SaveVirtual(ML);
+  ML.Add('SampleData.End');
+
+  ML.Add('AnimationData.Begin');
+  FederScript.WriteScript2(ML);
+  ML.Add('AnimationData.End');
 end;
 
 procedure TMain0.WriteStatus(ML: TStrings);

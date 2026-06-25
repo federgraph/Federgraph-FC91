@@ -38,7 +38,6 @@ type
     procedure Execute(fa: TFederAction); override;
     function GetChecked(fa: TFederAction): Boolean; override;
     function GetEnabled(fa: TFederAction): Boolean; override;
-    function GetReportPage(fa: TFederAction): TReportPage; override;
   end;
 
 implementation
@@ -164,11 +163,22 @@ begin
   begin
     M.BubbleUpAction(fa);
   end;
+
+  M.GenActionMsg(fa);
 end;
 
 function TFederActionHandler.GetCaption(fa: TFederAction): string;
 begin
   result := inherited;
+
+  case fa of
+    faAnimationStartA: result := 'A1-A-Script-L';
+
+    faAnimationStartD: result := 'A2-D-CurrentSample-TargetSample-D';
+    faAnimationStartF: result := 'A3-F-CurrentState-CurrentSample';
+    faAnimationStartS: result := 'A4-S-CurrentSample-NextSample';
+    faAnimationStartT: result := 'A5-T-CurrentSample-TargetSample';
+  end;
 
   if Main.PaletteMode then
   begin
@@ -205,9 +215,14 @@ begin
       (Main.SampleManager.HubCount > 1) and
       (Main.SampleManager.Hub  > 0);
 
+    faAnimationStartA: result := (Main.Param = 14) and not Main.AnimationPlayer.Playing;
+    faAnimationStartD: result := not Main.AnimationPlayer.Playing;
+    faAnimationStartT: result := not Main.AnimationPlayer.Playing;
+
     faTogglePCap: result := not Main.ReducedMesh;
     faToggleMCap: result := not Main.ReducedMesh;
 
+    faShowEditField: result := MainVar.WantEditField;
     faToggleUniqueVertices: result := Main.FederScene.WantLux;
 
     faUniqueMode1,
@@ -231,43 +246,9 @@ begin
     faExample08: result := 'E8';
     faExample09: result := 'E9';
 
-    else
-      result := inherited;
+  else
+    result := inherited;
   end;
-end;
-
-function TFederActionHandler.GetReportPage(fa: TFederAction): TReportPage;
-var
-  rp: TReportPage;
-begin
-  case fa of
-    faParamRX,
-    faParamRY,
-    faParamRZ,
-    faParamCZ: rp := rpAppInfo;
-
-    faShowInfo: rp := rpAppInfo;
-
-    faExample01 .. faExample09: rp := rpSelectedColors;
-    faFigureSizeXS .. faFigureSizeXL: rp := rpRingInfo;
-    faEyeSizeS .. faEyeSizeL: rp := rpRingInfo;
-
-    faSelectColorMapping1 .. faSelectColorMapping6: rp := rpColorMapping;
-
-    faCLA: rp := rpSelectedColors;
-
-    faTL01 .. faTL06,
-    faTR01 .. faTR08,
-    faBL01 .. faBL08,
-    faBR01 .. faBR06: rp := rpColorMapping; // rpSelectedColors;
-
-    faToggleLuxMarker,
-    faParamL1X .. faParamL4Z: rp := rpLightInfo;
-
-    else
-      rp := inherited;
-  end;
-  result := rp;
 end;
 
 end.

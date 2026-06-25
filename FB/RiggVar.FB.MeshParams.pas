@@ -91,6 +91,14 @@ type
     ParamBahnPositionX: single;
     ParamBahnPositionY: single;
 
+    FSlice: Integer; // 'Slice' is (already) an intrinsic function of Delphi
+    SliceFlag: Boolean;
+    SliceCount: Integer;
+    SliceCols: Integer;
+    SliceRows: Integer;
+    SliceX: Integer;
+    SliceY: Integer;
+
     CapValue: single;
     SliceHeight: single;
 

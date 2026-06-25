@@ -31,6 +31,7 @@ uses
   System.UITypes,
   System.UIConsts,
   System.Types,
+  FMX.DialogService,
   FMX.Graphics,
   FMX.Viewport3D,
   FMX.StdCtrls,
@@ -41,9 +42,11 @@ uses
   FMX.Controls,
   FMX.ExtCtrls,
   FMX.Layouts,
+  FMX.Dialogs,
   FMX.Menus,
   FMX.Colors,
   FMX.Layers3D,
+  FMX.Edit,
   FMX.Objects;
 
 type
@@ -60,6 +63,7 @@ type
     DrawingNeeded: Boolean;
     ExitSizeMoveCounter: Integer;
     FBandColor: TAlphaColor;
+    FDropTargetVisible: Boolean;
     FShowColorPanel: Boolean;
     FViewportState: Integer;
     NewControlSize: TControlSize;
@@ -67,19 +71,27 @@ type
     SmallViewportSize: Integer;
     ZInfoCounter: Integer;
     procedure ActionsBtnClick(Sender: TObject);
+    procedure AnimBtnClick(Sender: TObject);
     procedure ApplicationEventsException(Sender: TObject; E: Exception);
     procedure ApplicationEventsIdle(Sender: TObject; var Done: Boolean);
     procedure BambuBtnClick(Sender: TObject);
     procedure CheckFormBounds(AForm: TForm);
     procedure ColorBtnClick(Sender: TObject);
     procedure ColorPanelChange(Sender: TObject);
+    procedure ConnBtnClick(Sender: TObject);
     procedure CreateColorPanel;
+    procedure CreateFocusEdit;
     procedure CreateHintText;
     procedure CreateLayouts;
     procedure DestroyForms;
     procedure DoOnResize;
     procedure DoOrientationChanged(const Sender: TObject; const M: TMessage);
+    procedure DropTargetDropped(Sender: TObject; const AData: TDragObject; const Point: TPointF);
+    procedure EditHost(Sender: TObject);
+    procedure EditPort(Sender: TObject);
+    procedure EditText(Sender: TObject);
     procedure FixZOrderForBackground;
+    procedure FocusEditKey(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
     function GetContentHeight: single;
     function GetContentParent: TFmxObject;
     function GetContentWidth: single;
@@ -92,6 +104,8 @@ type
     procedure Init;
     procedure InitChecker;
     procedure InitColorPanel;
+    procedure InitDropTarget;
+    procedure InitFocusEdit;
     procedure InitFormat;
     procedure InitViewport;
     procedure InitViewportX(ModelID: Integer; l: TLayout; v: TViewport3D);
@@ -100,32 +114,46 @@ type
     procedure MemoBtnClick(Sender: TObject);
     procedure PopulateMenu;
     procedure RegisterForAppEvents;
+    procedure RepoBtnClick(Sender: TObject);
     procedure ResizeColorPanel;
     procedure RingPicked(Sender: TObject);
     procedure SetBandColor(const Value: TAlphaColor);
+    procedure SetDropTargetVisible(const Value: Boolean);
     procedure SetIsUp(const Value: Boolean);
     procedure SetMainMenuVisible(const Value: Boolean);
     procedure SetShowColorPanel(const Value: Boolean);
+    procedure SetShowEditField(const Value: Boolean);
     procedure SetViewportState(const Value: Integer);
+    procedure ToggleDropTarget(Sender: TObject);
     procedure UpdateHintTextPosition;
+    function GetShowEditField: Boolean;
+  protected
+    function FindTarget(P: TPointF; const AData: TDragObject): IControl; override;
   public
     CheckerBitmap: TBitmap;
     CheckerImage: TImage;
     claBackground: TAlphaColor;
     ColorPanel: TColorPanel;
     ColorPanelChanged: Boolean;
+    ContentUpdateRequested: Boolean;
+    DropTarget: TDropTarget;
+    FocusEdit: TEdit;
     HintText: TText;
     InitTimer: TTimer;
     KeyCharReceived: Boolean;
     Layout3D: TLayout;
+    LayoutCM: TLayout;
     MainMenu: TMainMenu;
     MenuItem: TMenuItem;
     Viewport: TViewport3D;
     WantColorPanel: Boolean;
+    WantFocusEdit: Boolean;
+    WantInitTimer: Boolean;
     WantPhone: Boolean;
     WantPortrait: Boolean;
     procedure CreateCheckerBitmap;
     procedure Draw(ModelID: Integer = 1);
+    procedure FocusEditField;
     procedure FormResizeEnd(Sender: TObject);
     procedure HandleAction(fa: TFederAction);
     procedure HandleKey(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
@@ -133,6 +161,7 @@ type
     procedure InitZOrderInfo(ML: TStrings);
     procedure InvalidateGraph(Sender: TObject);
     function MakeScreenshot: TBitmap;
+    procedure PrepareForDroppingMeme;
     procedure UpdateBackground;
     procedure UpdateChecker(a: Integer = 0);
     procedure UpdateDisplay;
@@ -143,9 +172,11 @@ type
     property ContentHeight: single read GetContentHeight;
     property ContentParent: TFmxObject read GetContentParent;
     property ContentWidth: single read GetContentWidth;
+    property DropTargetVisible: Boolean read FDropTargetVisible write SetDropTargetVisible;
     property IsUp: Boolean read GetIsUp write SetIsUp;
     property MainMenuVisible: Boolean read GetMainMenuVisible write SetMainMenuVisible;
     property ShowColorPanel: Boolean read FShowColorPanel write SetShowColorPanel;
+    property ShowEditField: Boolean read GetShowEditField write SetShowEditField;
     property ViewportState: Integer read FViewportState write SetViewportState;
   end;
 
@@ -162,6 +193,10 @@ uses
   FrmColor,
   FrmImage,
   FrmMemo,
+  FrmConn,
+  FrmGrid,
+  FrmActionGrid,
+  FrmRepo,
   RiggVar.App.Main,
   RiggVar.FederModel.TouchBase,
   RiggVar.FederModel.Frame3D,
@@ -180,6 +215,17 @@ begin
   end;
   FormAction.Visible := True;
   FormAction.Activate;
+end;
+
+procedure TFormMain.AnimBtnClick(Sender: TObject);
+begin
+  if not Assigned(FormGrid) then
+  begin
+    FormGrid := TFormGrid.Create(nil);
+    FormGrid.InitGrid;
+  end;
+  FormGrid.Visible := True;
+  FormGrid.Activate;
 end;
 
 procedure TFormMain.ApplicationEventsException(Sender: TObject; E: Exception);
@@ -203,9 +249,20 @@ begin
         begin
           HandleColorPanelChanged;
         end
+        else if Assigned(FocusEdit) and KeyCharReceived then
+        begin
+          KeyCharReceived := False;
+          FocusEdit.Text := '';
+        end
         else if Main.FederFrame.IsClean then
         begin
           Main.ModelUpdate.DoOnIdle;
+          if Main.KeyBinding = 2 then
+          begin
+            Main.ProcessGame;
+            if not Main.GamePad.WantRepeat then
+              Main.GamePad.Reset;
+          end;
         end
         else
         begin
@@ -258,6 +315,21 @@ end;
 procedure TFormMain.ColorPanelChange(Sender: TObject);
 begin
   ColorPanelChanged := True;
+end;
+
+procedure TFormMain.ConnBtnClick(Sender: TObject);
+var
+  FormConn: TFormConn;
+begin
+  FormConn := TFormConn.Create(nil);
+  FormConn.edHost.Text := Main.IniImage.Host;
+  FormConn.edPort.Text := IntToStr(Main.IniImage.Port);
+  if FormConn.ShowModal = mrOK then
+  begin
+    Main.IniImage.Host := FormConn.edHost.Text;
+    Main.IniImage.Port := StrToIntDef(FormConn.edPort.Text, Main.IniImage.Port);
+  end;
+  FormConn.Free;
 end;
 
 procedure TFormMain.CreateCheckerBitmap;
@@ -320,11 +392,24 @@ begin
   HintText.TextSettings.FontColor := claYellow;
 end;
 
+procedure TFormMain.CreateFocusEdit;
+begin
+  if WantFocusEdit then
+  begin
+    FocusEdit := TEdit.Create(self);
+    Self.AddObject(FocusEdit);
+  end;
+end;
+
 procedure TFormMain.CreateLayouts;
 begin
   Layout3D := TLayout.Create(self);
   Layout3D.Name := 'Layout3D';
   Self.AddObject(Layout3D);
+
+  LayoutCM := TLayout.Create(self);
+  LayoutCM.Name := 'LayoutCM';
+  Self.AddObject(LayoutCM);
 end;
 
 procedure TFormMain.DestroyForms;
@@ -344,6 +429,16 @@ begin
     FormMemo.Free;
     FormMemo := nil;
   end;
+  if FormActionGrid <> nil then
+  begin
+    FormActionGrid.Free;
+    FormActionGrid := nil;
+  end;
+  if FormRepo <> nil then
+  begin
+    FormRepo.Free;
+    FormRepo := nil;
+  end;
   if FormColor <> nil then
   begin
     FormColor.Free;
@@ -353,6 +448,11 @@ begin
   begin
     FormBambu.Free;
     FormBambu := nil;
+  end;
+  if FormGrid <> nil then
+  begin
+    FormGrid.Free;
+    FormGrid := nil;
   end;
 end;
 
@@ -370,7 +470,12 @@ begin
     if CheckerImage <> nil then
       CheckerImage.SendToBack;
 
+    InitFocusEdit;
+
     SetViewportState(ViewportState);
+
+    if Assigned(Main.MemeText) then
+      Main.MemeText.DoOnResize;
 
     HandleAction(faNoop);
   end;
@@ -390,9 +495,153 @@ procedure TFormMain.Draw(ModelID: Integer);
 begin
 end;
 
+procedure TFormMain.DropTargetDropped(Sender: TObject; const AData: TDragObject; const Point: TPointF);
+var
+  fn: string;
+begin
+  if Length(AData.Files) = 1 then
+  begin
+    fn := AData.Files[0];
+    Main.DropTargetDropped(fn);
+    Viewport.Repaint;
+  end;
+end;
+
+procedure TFormMain.EditHost(Sender: TObject);
+var
+  s: string;
+  Values: array of string;
+begin
+  s := Main.IniImage.Host;
+
+//  s := InputBox('Edit', 'Host:', s);
+//  Main.IniImage.Host := s;
+//  Main.IniImage.WriteIni;
+
+  SetLength(Values, 1);
+  Values[0] := s;
+  TDialogService.InputQuery('Edit', ['Host'], Values,
+    procedure(const AResult: TModalResult; const AValues: array of string)
+    begin
+      if AResult = mrOk then
+      begin
+        s := Values[0];
+        Main.IniImage.Host := s;
+        Main.IniImage.WriteIni;
+      end
+      else
+      begin
+        ShowMessage('Eingabe abgebrochen.');
+      end;
+    end
+  );
+end;
+
+procedure TFormMain.EditPort(Sender: TObject);
+var
+  i: Integer;
+  s: string;
+  Values: array of string;
+begin
+  i := Main.IniImage.Port;
+
+  s := IntToStr(i);
+
+//  s := InputBox('Edit', 'Port:', s);
+//  i := StrToIntDef(s, i);
+//  if i > 79 then
+//    Main.IniImage.Port := i;
+//  Main.IniImage.WriteIni;
+
+  SetLength(Values, 1);
+  Values[0] := s;
+  TDialogService.InputQuery('Edit', ['Port'], Values,
+    procedure(const AResult: TModalResult; const AValues: array of string)
+    begin
+      if AResult = mrOk then
+      begin
+        s := Values[0];
+        i := StrToIntDef(s, i);
+        if i > 79 then
+          Main.IniImage.Port := i;
+        Main.IniImage.WriteIni;
+      end
+      else
+      begin
+        ShowMessage('Eingabe abgebrochen.');
+      end;
+    end
+  );
+end;
+
+procedure TFormMain.EditText(Sender: TObject);
+var
+  s: string;
+  Values: array of string;
+begin
+  s := Main.FederText.Spruch;
+
+//  s := InputBox('Label Text', '', s);
+//  Main.FederText.Spruch := s;
+//  Main.FederText.ClearFlash;
+//  Main.FederText.UpdateText;
+
+  SetLength(Values, 1);
+  Values[0] := s;
+  TDialogService.InputQuery('Label Text', [''], Values,
+    procedure(const AResult: TModalResult; const AValues: array of string)
+    begin
+      if AResult = mrOk then
+      begin
+        s := Values[0];
+       Main.FederText.Spruch := s;
+       Main.FederText.ClearFlash;
+       Main.FederText.UpdateText;
+      end
+      else
+      begin
+        ShowMessage('Eingabe abgebrochen.');
+      end;
+    end
+  );
+end;
+
+function TFormMain.FindTarget(P: TPointF; const AData: TDragObject): IControl;
+var
+  i: Integer;
+  NewObj: IControl;
+begin
+  Result := nil;
+  for i := ChildrenCount - 1 downto 0 do
+    if Supports(Children[i], IControl, NewObj) and NewObj.Visible and NewObj.HitTest then
+    begin
+      NewObj := NewObj.FindTarget(P, AData);
+
+      if Assigned(NewObj) then
+        Exit(NewObj);
+    end;
+end;
+
 procedure TFormMain.FixZOrderForBackground;
 begin
   CheckerImage.SendToBack;
+end;
+
+procedure TFormMain.FocusEditField;
+begin
+  if Assigned(FocusEdit) then
+    if FocusEdit.Visible and not FocusEdit.IsFocused then
+      FocusEdit.SetFocus;
+end;
+
+procedure TFormMain.FocusEditKey(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  KeyCharReceived := True;
+
+  if KeyChar = '?' then
+    ContentUpdateRequested := True
+  else
+    Main.FederFrame.ViewportKeyUp(Sender, Key, KeyChar, Shift);
 end;
 
 procedure TFormMain.FormActivate(Sender: TObject);
@@ -416,6 +665,10 @@ begin
   TMessageManager.DefaultManager.Unsubscribe(TOrientationChangedMessage, DoOrientationChanged);
 
   MainVar.AppIsClosing := True;
+  if IsUp then
+  begin
+    Main.Stop;
+  end;
 
   DestroyForms;
 
@@ -486,6 +739,13 @@ begin
   result := MainMenu <> nil;
 end;
 
+function TFormMain.GetShowEditField: Boolean;
+begin
+  result := False;
+  if (FocusEdit <> nil) then
+    result := FocusEdit.Visible;
+end;
+
 procedure TFormMain.HandleAction(fa: TFederAction);
 begin
   case fa of
@@ -495,10 +755,24 @@ begin
     faShowColor: ColorBtnClick(nil);
     faShowBambu: BambuBtnClick(nil);
 
+    faShowAnim: AnimBtnClick(nil);
+    faShowRepo: RepoBtnClick(nil);
+
+    faEditText: EditText(nil);
+    faEditHost: EditHost(nil);
+    faEditPort: EditPort(nil);
+    faEditConn: ConnBtnClick(nil);
+
+    faToggleDropTarget: ToggleDropTarget(nil);
+
     faWheelFrequency1 .. faWheelFrequency0001,
 
     faToggleColorPanel,
     faToggleColorSwat,
+
+    faSetShift,
+    faSetCtrl,
+    faClearShift,
 
     faTogglePngCopy,
     faPngCopyOn,
@@ -551,6 +825,8 @@ begin
     end;
     TApplicationEvent.BecameActive:
     begin
+      if Assigned(Main) then
+        Main.UpdateLED;
       Log('Became Active');
       DrawingNeeded := True;
     end;
@@ -676,6 +952,9 @@ begin
   WantColorPanel := True;
   CreateColorPanel;
 
+  WantFocusEdit := MainVar.WantEditField;
+  CreateFocusEdit;
+
   Main := TMain.Create;
   Main.WantPosZ12 := False;
 
@@ -693,6 +972,7 @@ begin
   CreateHintText;
   LayoutHintText;
 
+  Main.InitFederConnection;
   Main.IsReady := True;
   Main.ModelUpdate.Delay := 80;
 
@@ -712,14 +992,19 @@ begin
 
   Main.Want2D := False;
   Main.Want3D := True;
-  Main.WantAnimation := False;
+  Main.WantAnimation := True;
 
   PopulateMenu;
 
   Main.MeshSize := MainConst.DefaultMeshSize;
 
-  Main.WantTimedParams := True;
-  Main.Frame3D.WantIdleMove := True;
+  Main.WantTimedParams := False;
+  Main.Frame3D.WantIdleMove := False;
+
+  Main.InitAutoConnector;
+{$ifdef WantLED}
+  Main.AutoConnector.Run;
+{$endif}
 
   Main.Trackbar_Value := Main.FederModel.ParamValue;
   IsUp := True;
@@ -728,6 +1013,9 @@ begin
 
   if WantColorPanel then
     InitColorPanel;
+
+  if WantFocusEdit then
+    InitFocusEdit;
 
   InitChecker;
 
@@ -740,6 +1028,8 @@ begin
 
   SmallViewportSize := 5 * MainVar.Raster;
   ViewportState := 0;
+
+  Main.FederText.FlashCaption := 'FlashText!';
 
   HintText.BringToFront;
   Application.OnHint := HandleShowHint;
@@ -794,6 +1084,50 @@ begin
     ColorPanel.UseAlpha := False;
     ColorPanel.Opacity := 0.5;
     ColorPanel.OnChange := ColorPanelChange;
+  end;
+end;
+
+procedure TFormMain.InitDropTarget;
+begin
+  if Assigned(DropTarget) then
+  begin
+    DropTarget.Width := 150;
+    DropTarget.Height := 120;
+    DropTarget.Position.X := 3 * MainVar.Raster + 20;
+    DropTarget.Position.Y := 2 * MainVar.Raster + 20;
+    DropTarget.Filter := '*.txt;*.jpeg;*.jpg;*.png;*.ply';
+    DropTarget.Text := 'Droptarget';
+    DropTarget.OnDropped := DropTargetDropped;
+  end;
+end;
+
+procedure TFormMain.InitFocusEdit;
+begin
+  if FocusEdit <> nil then
+  begin
+    if Main.IsPhone then
+    begin
+      if Main.IsPortrait then
+      begin
+        FocusEdit.Position.X := 2 * MainVar.Raster + 4;
+        FocusEdit.Position.Y := 1 * MainVar.Raster + 8;
+      end
+      else
+      begin
+        FocusEdit.Position.X := 1 * MainVar.Raster + 4;
+        FocusEdit.Position.Y := 2 * MainVar.Raster + 8;
+      end;
+    end
+    else
+    begin
+      FocusEdit.Position.X := 3 * MainVar.Raster + 10;
+      FocusEdit.Position.Y := 4 * MainVar.Raster + 20;
+    end;
+    FocusEdit.Width := 40;
+    FocusEdit.Opacity := 0.3;
+{$ifdef MSWINDOWS}
+    FocusEdit.OnKeyUp := FocusEditKey;
+{$endif}
   end;
 end;
 
@@ -1010,6 +1344,22 @@ begin
   end;
 end;
 
+procedure TFormMain.PrepareForDroppingMeme;
+begin
+  if not DropTargetVisible then
+  begin
+    Main.GotoColorScheme(7);
+    Main.FederText.AllVisible := False;
+    DropTargetVisible := True;
+  end
+  else
+  begin
+    Main.GotoColorScheme(4);
+    Main.FederText.AllVisible := True;
+    DropTargetVisible := False;
+  end;
+end;
+
 procedure TFormMain.RegisterForAppEvents;
 var aFMXApplicationEventService: IFMXApplicationEventService;
 begin
@@ -1017,6 +1367,16 @@ begin
     aFMXApplicationEventService.SetApplicationEventHandler(HandleAppEvent)
   else
     Log('Application Event Service is not supported.');
+end;
+
+procedure TFormMain.RepoBtnClick(Sender: TObject);
+begin
+  if not Assigned(FormRepo) then
+  begin
+    FormRepo := TFormRepo.Create(nil);
+    FormRepo.InitGrid;
+  end;
+  FormRepo.Visible := True;
 end;
 
 procedure TFormMain.ResizeColorPanel;
@@ -1069,6 +1429,33 @@ begin
   end;
 end;
 
+procedure TFormMain.SetDropTargetVisible(const Value: Boolean);
+begin
+  FDropTargetVisible := Value;
+  if Value then
+  begin
+    if DropTarget = nil then
+    begin
+      DropTarget := TDropTarget.Create(Self);
+      DropTarget.Name := 'DropTarget';
+      DropTarget.Parent := Self;
+      InitDropTarget;
+    end
+    else
+    begin
+      DropTarget.Visible := True;
+      DropTarget.BringToFront;
+    end;
+  end
+  else if DropTarget <> nil then
+  begin
+    DropTarget.Visible := False;
+    CheckerImage.SendToBack;
+  end;
+  if Main.MemeText <> nil then
+    Main.MemeText.Visible := Value;
+end;
+
 procedure TFormMain.SetIsUp(const Value: Boolean);
 begin
   Main.IsUp := Value;
@@ -1105,6 +1492,27 @@ begin
     begin
       ColorPanel.BringToFront;
       ColorPanel.Color := Main.BitmapBuilder.RingColor[Main.CurrentRing];
+    end;
+  end;
+end;
+
+procedure TFormMain.SetShowEditField(const Value: Boolean);
+begin
+  if FocusEdit <> nil then
+  begin
+    if Value then
+    begin
+      FocusEdit.Visible := True;
+      FocusEdit.Enabled := True;
+      FocusEdit.BringToFront;
+      if not FocusEdit.IsFocused then
+        FocusEdit.SetFocus;
+    end
+    else
+    begin
+      FocusEdit.Visible := False;
+      FocusEdit.Enabled := False;
+      FocusEdit.SendToBack;
     end;
   end;
 end;
@@ -1160,6 +1568,14 @@ begin
 
   Viewport.Repaint;
   Main.UpdateTouch;
+end;
+
+procedure TFormMain.ToggleDropTarget(Sender: TObject);
+begin
+  DropTargetVisible := not DropTargetVisible;
+  if Main.MemeText = nil then
+    Main.InitMemeText;
+  UpdateMenu;
 end;
 
 procedure TFormMain.UpdateBackground;
@@ -1375,7 +1791,7 @@ begin
       l.Width := cw2;
       l.Height := ch2;
       l.SendToBack;
-    end;
+  end;
 
     DisloBL:
     begin

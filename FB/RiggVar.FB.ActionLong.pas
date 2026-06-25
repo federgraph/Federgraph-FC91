@@ -53,6 +53,12 @@ begin
     faShowActions: result := 'Form Actions';
     faShowColor: result := 'Form Color';
     faShowBambu: result := 'Form Bambu';
+    faShowAnim: result := 'Form Animations';
+    faEditText: result := 'Edit Text';
+    faEditConn: result := 'Edit Connection Info';
+    faEditHost: result := 'Edit Host Info';
+    faEditPort: result := 'Edit Port Info';
+    faShowRepo: result := 'Form Repository';
     faShowInfo: result := 'Form Info';
 
     { TouchLayout }
@@ -449,6 +455,17 @@ begin
     faCycleColorSchemeM: result := 'cycle color scheme -';
     faCycleColorSchemeP: result := 'cycle color scheme +';
 
+    { AnimatedRotations }
+    faRotX: result := 'Rot X';
+    faRotY: result := 'Rot Y';
+    faRotZ: result := 'Rot Z';
+    faRotXM: result := 'Rotation X+';
+    faRotXP: result := 'Rotation X-';
+    faRotYM: result := 'Rotation Y-';
+    faRotYP: result := 'Rotation Y+';
+    faRotZM: result := 'Rotation Z-';
+    faRotZP: result := 'Rotation Z+';
+
     { Step }
     faStepRXM: result := 'Rotation step x-';
     faStepRXP: result := 'Rotation step x+';
@@ -459,10 +476,23 @@ begin
     faStepCZM: result := 'Zoom step cz-';
     faStepCZP: result := 'Zoom step cz+';
 
+    { Keyboard }
+    faKeyboard01: result := 'Keyboard 1';
+    faKeyboard02: result := 'Keyboard 2';
+    faSetShift: result := '[Shift]';
+    faSetCtrl: result := '[Control]';
+    faClearShift: result := '[]';
+
     { UI }
+    faParamLabelTextX: result := 'Label Text X';
+    faParamLabelTextY: result := 'Label Text Y';
+    faParamLabelTextZ: result := 'lLabel Text Z';
     faToggleColorPanel: result := 'Color Panel';
     faColorPanelOn: result := 'Toggle Color Panel On';
     faColorPanelOff: result := 'Toggle Color Panel Off';
+    faShowEditField: result := 'Show Edit field';
+    faFocusEditField: result := 'Focus Edit field';
+    faInitSpecial: result := 'Init Special';
     faPaletteOn: result := 'Toggle Palette On';
     faPaletteOff: result := 'Toggle Palette Off';
 
@@ -479,6 +509,10 @@ begin
     faOpacityOn: result := 'Opacity On';
     faOpacityOff: result := 'Opacity Off';
 
+    { MainMenuActivation }
+    faMainMenuHide: result := 'Hide Main Menu';
+    faMainMenuShow: result := 'Show Menu Show';
+
     { FederText }
     faToggleAllText: result := 'Toggle All Text';
     faToggleTouchFrame: result := 'Toggle Touch Frame';
@@ -491,6 +525,11 @@ begin
     faParamCZ: result := 'Camera Position Z';
 
     { ViewParamsFC }
+    faRotStep0: result := 'Test Rotation Step 0';
+    faRotStep1: result := 'Test Rotation Step 1';
+    faRotStep2: result := 'Test Rotation Step 2';
+    faRotStep3: result := 'Test Rotation Step 3';
+    faRotStepA: result := 'Test Rotation Step 4 (A)';
     faParamTRS: result := 'Param trs';
     faParamTRT: result := 'Param trt';
     faParamTRX: result := 'Param trx';
@@ -574,6 +613,35 @@ begin
     faParamBahnCylinderD: result := 'Param Bahn: Cylinder Depth';
     faParamBahnCylinderZ: result := 'Param Bahn: Cylinder Position Z';
 
+    { AnimationStore }
+    faRecall1: result := 'Memory Recall 1';
+    faRecall2: result := 'Memory Recall 2';
+    faMemory1: result := 'Memory 1';
+    faMemory2: result := 'Memory 2';
+    faTransit: result := 'Transition Start/Stop';
+
+    { AnimPlay }
+    faPlay: result := 'Play';
+    faExecute: result := 'Execute';
+    faAnimationStop: result := 'Animation Stop';
+    faAnimationStartA: result := 'A1';
+    faAnimationStartD: result := 'A2';
+    faAnimationStartF: result := 'A3';
+    faAnimationStartS: result := 'A4';
+    faAnimationStartT: result := 'A5';
+
+    { Transit }
+    faTransitionAll: result := 'Transition All';
+    faTransitionScript: result := 'Transition Script';
+
+    { Connect }
+    faConnect: result := 'Connect';
+    faDisconnect: result := 'Disconnect';
+    faDownload: result := 'Download';
+    faAutoSend: result := 'Toggle AutoSend';
+    faAutoSendOn: result := 'Set AutoSend on';
+    faAutoSendOff: result := 'Turn AutoSend off';
+
     { ExampleData }
     faExample01: result := 'Example 01';
     faExample02: result := 'Example 02';
@@ -600,6 +668,14 @@ begin
     faSampleP: result := 'Sample +';
     faGotoSample0: result := 'Goto Sample 0';
     faGotoSample1: result := 'Goto Sample 1';
+
+    { DebugOptions }
+    faTestBtnClick: result := 'Test Btn Click';
+    faRunBinPixelTest: result := 'Run Bin Pixel Test';
+
+    { EmptyLastLine }
+    faELLOn: result := 'Empty Last Line On';
+    faELLOff: result := 'Empty Last Line Off';
 
     { Help }
     faToggleHelp: result := 'Toggle Help Text';
@@ -663,6 +739,9 @@ begin
     faResetRotation: result := 'Reset Rotation';
     faResetZoom: result := 'Reset Zoom';
 
+    { DropTarget }
+    faToggleDropTarget: result := 'Drop target';
+
     { Language }
     faToggleLanguage: result := 'Toggle Language';
 
@@ -677,6 +756,7 @@ begin
     faToggleMoveMode: result := 'Toggle move mode';
     faLinearMove: result := 'Linear move';
     faExpoMove: result := 'Exponential move';
+    faToggleQuickMesh: result := 'Quick mesh';
     faToggleOrbitMode: result := 'fToggle orbit mode';
 
     { BitmapCycle }

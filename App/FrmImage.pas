@@ -241,7 +241,6 @@ begin
   Main.ActionHandler.Execute(faCopyImprintedBitmap);
   Image.Bitmap := Main.BitmapCache.Bitmap;
   ShowBitmapProps;
-
 end;
 
 procedure TFormImage.CreateTextureBitmap(Sender: TObject);

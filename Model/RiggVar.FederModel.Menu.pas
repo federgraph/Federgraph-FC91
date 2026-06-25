@@ -124,7 +124,13 @@ begin
   fag.Add(faShowImage);
   fag.Add(faToggleColorPanel);
   fag.Add(faToggleColorSwat);
+  fag.Add(faToggleDropTarget);
+  fag.Add(faShowEditField);
   fag.Add(faOpen);
+  fag.Add(faShowRepo);
+  fag.Add(faShowAnim);
+  fag.Add(faEditConn);
+  fag.Add(faEditText);
   if MainVar.AppTitle = '' then
     MainVar.AppTitle := 'App';
   AddGroup(MainVar.AppTitle, fag);
@@ -137,7 +143,16 @@ begin
   fag.Add(faCopyBinCode);
   fag.Add(faCopyBinCodeTest);
   fag.Add(faCopyShortcutReport);
+  fag.Add(faExportObj);
+  fag.Add(faWriteActionTable);
+  fag.Add(faWriteActionReport);
   AddGroup('Text', fag);
+
+  fag := TFederActionGroup.Create;
+  fag.Add(faToggleHardCopy);
+  fag.Add(faTogglePngCopy);
+  fag.Add(faToggleNoCopy);
+  AddGroup('Image', fag);
 
   fag := TFederActionGroup.Create;
   fag.Add(faScene1);
@@ -182,6 +197,9 @@ begin
   AddGroup('Plot', fag);
 
   fag := TFederActionGroup.Create;
+  fag.Add(faMeshSize4);
+  fag.Add(faMeshSize8);
+  fag.Add(faMeshSize16);
   fag.Add(faMeshSize32);
   fag.Add(faMeshSize64);
   fag.Add(faMeshSize128);
@@ -220,10 +238,10 @@ begin
   fag.Add(faParamCapValue);
   fag.Add(faParamL);
   fag.Add(faParamA);
-    fag.Add(faParamT1);
-    fag.Add(faParamT2);
-    fag.Add(faParamT3);
-    fag.Add(faParamT4);
+  fag.Add(faParamT1);
+  fag.Add(faParamT2);
+  fag.Add(faParamT3);
+  fag.Add(faParamT4);
   AddGroup('Param', fag);
 
   fag := TFederActionGroup.Create;
@@ -273,11 +291,21 @@ begin
 
   fag := TFederActionGroup.Create;
   fag.Add(faToggleSolutionMode);
+  fag.Add(faToggleVorzeichen);
+  fag.Add(faToggleGleich);
+  fag.Add(faToggleLinearForce);
   fag.Add(faToggleLabelText);
   fag.Add(faToggleLuxMarker);
   fag.Add(faToggleGrid);
   fag.Add(faToggleGridFrequency);
   AddGroup('Option', fag);
+
+  fag := TFederActionGroup.Create;
+  fag.Add(faToggleTouchMenu);
+  fag.Add(faToggleTouchFrame);
+  fag.Add(faTogglePrimeText);
+  fag.Add(faToggleSecondText);
+  AddGroup('UI', fag);
 
   fag := TFederActionGroup.Create;
   fag.Add(faToggleParamLock);
@@ -288,6 +316,36 @@ begin
   AddGroup('Lock', fag);
 
   fag := TFederActionGroup.Create;
+  fag.Add(faToggleContour);
+  fag.Add(faToggleMoveMode);
+  fag.Add(faToggleQuickMesh);
+  fag.Add(faToggleLabelText);
+  fag.Add(faToggleLuxMarker);
+  fag.Add(faToggleGridFrequency);
+  fag.Add(faShirtColorOn);
+  fag.Add(faShirtColorOff);
+  fag.Add(faTextureClear);
+  AddGroup('O3D', fag);
+
+  fag := TFederActionGroup.Create;
+  fag.Add(faOpenMesh);
+  fag.Add(faPolarMesh);
+  fag.Add(faReducedMesh);
+  AddGroup('Mesh', fag);
+
+  fag := TFederActionGroup.Create;
+  fag.Add(faRotX);
+  fag.Add(faRotY);
+  fag.Add(faRotZ);
+  fag.Add(faRotXM);
+  fag.Add(faRotXP);
+  fag.Add(faRotYM);
+  fag.Add(faRotYP);
+  fag.Add(faRotZM);
+  fag.Add(faRotZP);
+  AddGroup('Rot', fag);
+
+  fag := TFederActionGroup.Create;
   fag.Add(faColor0);
   fag.Add(faColor1);
   fag.Add(faColor2);
@@ -296,6 +354,18 @@ begin
   fag.Add(faColor5);
   fag.Add(faColor6);
   AddGroup('Col', fag);
+
+  if Main.WantAnimation then
+  begin
+    fag := TFederActionGroup.Create;
+    fag.Add(faAnimationStop);
+    fag.Add(faAnimationStartA);
+    fag.Add(faAnimationStartF);
+    fag.Add(faAnimationStartT);
+//    fag.Add(faAnimationStartD);
+//    fag.Add(faAnimationStartS);
+    AddGroup('Anim', fag);
+  end;
 
   fag := TFederActionGroup.Create;
   fag.Add(faForceMode0);
@@ -314,6 +384,21 @@ begin
   fag.Add(faLevelM);
   fag.Add(faLevelP);
   AddGroup('Sample', fag);
+
+  fag := TFederActionGroup.Create;
+  fag.Add(faSetShift);
+  fag.Add(faSetCtrl);
+  fag.Add(faClearShift);
+  fag.Add(faKeyboard01);
+  fag.Add(faKeyboard02);
+  AddGroup('Flag', fag);
+
+  fag := TFederActionGroup.Create;
+  fag.Add(faConnect);
+  fag.Add(faDisconnect);
+  fag.Add(faDownload);
+  fag.Add(faAutoSend);
+  AddGroup('Conn', fag);
 end;
 
 function TFederMenu.AddMenu(M: TMainMenu; Caption: string; fas: TFederActions): TMenuItem;

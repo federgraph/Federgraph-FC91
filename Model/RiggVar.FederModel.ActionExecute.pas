@@ -105,6 +105,16 @@ begin
     faFigure5: M.Figure := 5;
     faFigure6: M.Figure := 6;
 
+    faRotX: M.RotX;
+    faRotY: M.RotY;
+    faRotZ: M.RotZ;
+    faRotXM: M.RotXM;
+    faRotXP: M.RotXP;
+    faRotYM: M.RotYM;
+    faRotYP: M.RotYP;
+    faRotZM: M.RotZM;
+    faRotZP: M.RotZP;
+
     faLevelM: M.CycleDBM;
     faLevelP: M.CycleDBP;
     faHubM: M.LoadHub(true);
@@ -170,6 +180,10 @@ begin
     faWheelFrequency01: M.WheelFrequency := 4;
     faWheelFrequency001: M.WheelFrequency := 5;
     faWheelFrequency0001: M.WheelFrequency := 6;
+
+    faSetShift: MainVar.ShiftState := [ssShift];
+    faSetCtrl: MainVar.ShiftState := [ssCtrl];
+    faClearShift: MainVar.ShiftState := [];
 
     faParamT1: M.ParamManager.ChangeParam(fpt1);
     faParamT2: M.ParamManager.ChangeParam(fpt2);
@@ -240,6 +254,7 @@ begin
     faMenu80: M.MenubarLayout := 80;
     faMenu90: M.MenubarLayout := 90;
 
+    faToggleQuickMesh: M.FederScene.QuickMesh := not M.FederScene.QuickMesh;
     faToggleParamLock: M.FederData.ParamLock := not M.FederData.ParamLock;
     faToggleTextureLock: M.FederData.TextureLock := not M.FederData.TextureLock;
     faToggleBackgroundLock: M.FederData.BackgroundLock := not M.FederData.BackgroundLock;
@@ -313,11 +328,33 @@ begin
       M.PasteSample;
     end;
 
+    faAnimationStop: M.Stop;
+
+    faAnimationStartA: M.ScriptL;
+
+    faAnimationStartD,
+    faAnimationStartF,
+    faAnimationStartS,
+    faAnimationStartT: M.SampleTransition.HandleAction(fa);
+
+    faRecall1: M.FederMemory.Recall1;
+    faRecall2: M.FederMemory.Recall2;
+    faMemory1: M.FederMemory.Memory1;
+    faMemory2: M.FederMemory.Memory2;
+    faTransit: M.FederMemory.Transit;
+
+    faConnect: M.ConnectAction;
+    faDisconnect: M.DisconnectAction;
+    faDownload: M.DownloadAction;
+
     faTakeCapValueSnapShot: M.TakeCapValueSnapShot;
 
     faCopyScreenshot: M.CopyScreenshot;
     faCopyBitmap3D: M.CopyBitmap3D;
     faCopyTextureBitmap: M.CopyTextureBitmap;
+
+    faKeyboard01: M.KeyBinding := 1;
+    faKeyboard02: M.KeyBinding := 2;
 
     faReset: M.DoReset;
     faResetPosition: M.DoResetPosition;
@@ -332,6 +369,7 @@ begin
     faBitmapEscape: M.CycleBitmapE;
     faBitmapOne: M.CycleBitmapOne;
     faPan: M.ParamManager.ChangeParam(fpPan);
+    faInitSpecial: M.InitSpecial;
     faCycleRingP: M.CycleRing(1);
     faCycleRingM: M.CycleRing(-1);
     faBlindRingP: M.BlindRing(1);
@@ -349,6 +387,10 @@ begin
     faDiff0: M.ToggleDiff(0);
     faDiff1: M.ToggleDiff(1);
     faDiff10: M.ToggleDiff(2);
+
+    faAutoSend,
+    faAutoSendOn,
+    faAutoSendOff: M.AutoSend := fa;
 
     faToggleShirtColor: M.ToggleShirtColor;
     faShirtColorOn: M.UpdateShirtColor(True);
@@ -393,12 +435,19 @@ begin
     faLabelBatchP: M.ToggleLabelBatch(1);
     faLabelBatchM: M.ToggleLabelBatch(-1);
 
+    faRotStep0: M.DoRotStep(0);
+    faRotStep1: M.DoRotStep(1);
+    faRotStep2: M.DoRotStep(2);
+    faRotStep3: M.DoRotStep(3);
+    faRotStepA: M.DoRotStep(4);
+
     faToggleLinearForce: M.ToggleLinearForce;
     faToggleColorPanel: M.ToggleColorPanel;
     faToggleColorSwat: M.ShowColorSwat := not M.ShowColorSwat;
 
     faCopyBinCode: M.CopyDiffBin;
     faCopyBinCodeTest: M.CopyDiffBinTest;
+    faRunBinPixelTest: M.RunBinPixelTest;
 
     faCopyImprintedBitmap: M.CopyImprintedBitmap;
     faCopyImprintedBitmapTest: M.CopyImprintedBitmapTest;
@@ -474,6 +523,9 @@ begin
 
     faForceZ0: M.WantPosZ12 := False;
     faWantZ12: M.WantPosZ12 := True;
+
+    faFocusEditField: M.FocusEditField;
+    faShowEditField: M.ShowEditField := not M.ShowEditField;
 
     faStepRXM: M.DoMM(fmkRY, -10, 0);
     faStepRXP: M.DoMM(fmkRY, 10, 0);
@@ -565,6 +617,10 @@ begin
       M.ParamManager.ChangeParam(fpBandWidth);
     end;
 
+    faParamLabelTextX: M.ParamManager.ChangeParam(fpLabelTextX);
+    faParamLabelTextY: M.ParamManager.ChangeParam(fpLabelTextY);
+    faParamLabelTextZ: M.ParamManager.ChangeParam(fpLabelTextZ);
+
     faWriteActionReport,
     faWriteActionTable,
     faWriteActionConst,
@@ -572,6 +628,8 @@ begin
 
     faSwapBundle: M.SwapBundle;
 
+    faTransitionAll,
+    faTransitionScript,
     faWriteVersion1,
     faWriteVersion2,
     faWriteCode,
@@ -591,6 +649,13 @@ begin
     faTouchPhone,
     faTouchDesk: M.Touch := fa;
 
+    faELLOn,
+    faELLOff: M.HandleAction(fa);
+
+    faMainMenuHide: M.MainMenuVisible := False;
+    faMainMenuShow: M.MainMenuVisible := True;
+
+    faTestBtnClick: M.MakeScene4;
     faShowInfo: M.ShowInfo;
     faToggleShowEdges: M.ToggleShowEdges;
     faToggleUniqueVertices: M.ToggleUniqueVertices;

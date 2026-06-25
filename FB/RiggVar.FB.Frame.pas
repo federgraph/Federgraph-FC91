@@ -741,7 +741,12 @@ begin
       end
       else
       begin
+        if ldx <> 0 then
+          Main.GenMsgI('TX', -rx);
         Camera.Position.X := Camera.Position.X - ldx * 0.1;
+
+        if ldy <> 0 then
+          Main.GenMsgI('TY', ry);
         Camera.Position.Y := Camera.Position.Y + ldy * 0.1;
       end;
       OldX := X;
@@ -764,11 +769,16 @@ begin
       end
       else
       begin
+        if ldy <> 0 then
+          Main.GenMsgI('RY', -ry);
         if ry <> 0 then
         begin
           CameraDummyRotationAngle.X := CameraDummyRotationAngle.X - ldy * FMouseRotationSpeed;
           UpdateRotation;
         end;
+
+        if ldx <> 0 then
+          Main.GenMsgI('RX', -rx);
         if rx <> 0 then
         begin
           CameraDummyRotationAngle.Y := CameraDummyRotationAngle.Y - ldx * FMouseRotationSpeed;
@@ -782,6 +792,8 @@ begin
     end
     else if (ssRight in Shift) then
     begin
+      if ldx <> 0 then
+        Main.GenMsgI('RZ', rx * 100);
       if rx <> 0 then
       begin
         CameraDummyRotationAngle.Z := CameraDummyRotationAngle.Z + ldx * 0.3;
@@ -861,6 +873,7 @@ begin
       begin
         CameraDummyRotationAngle.Z := CameraDummyRotationAngle.Z + X;
         UpdateRotation;
+        Main.GenMsgI('RZ', Round(X * 300));
         ViewportChanged;
       end;
     end;
@@ -883,6 +896,7 @@ begin
     temp := Delta;
     if WantLinearMove then
       temp := Delta * 0.5;
+    Main.GenMsgI('CZ', Round(temp * 100));
     DoZoomTimed3D(temp);
     ClearIdleMoveInfo;
   end;
@@ -1366,8 +1380,8 @@ begin
 
   if OrbitMode then
   begin
-    CameraDummy.ResetRotationAngle;
-    CameraDummy.RotationAngle.Point := CameraDummyRotationAngle;
+  CameraDummy.ResetRotationAngle;
+  CameraDummy.RotationAngle.Point := CameraDummyRotationAngle;
   end
   else
   begin

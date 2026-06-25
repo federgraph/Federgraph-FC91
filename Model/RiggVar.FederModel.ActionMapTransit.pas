@@ -395,7 +395,7 @@ begin
       InitA(2, faToggleGleich);
       InitA(3, faToggleLinearForce);
       InitA(4, faToggleMoveMode);
-      InitA(5, faNoop);
+      InitA(5, faToggleQuickMesh);
     end;
 
     27:
@@ -534,38 +534,38 @@ begin
 
     { 40 - Animation }
 
-//    40:
-//    begin
-//      result.Caption := 'Memory Recall and Transit';
-//      InitA(0, faMemory1);
-//      InitA(1, faMemory2);
-//      InitA(2, faRecall1);
-//      InitA(3, faRecall2);
-//      InitA(4, faTransit);
-//      InitA(5, faAnimationStop);
-//    end;
+    40:
+    begin
+      result.Caption := 'Memory Recall and Transit';
+      InitA(0, faMemory1);
+      InitA(1, faMemory2);
+      InitA(2, faRecall1);
+      InitA(3, faRecall2);
+      InitA(4, faTransit);
+      InitA(5, faAnimationStop);
+    end;
 
-//    41:
-//    begin
-//      result.Caption := 'Animated Rotations';
-//      InitA(0, faRotX);
-//      InitA(1, faRotY);
-//      InitA(2, faRotZ);
-//      InitA(3, faNoop);
-//      InitA(4, faCycleSliceModeM);
-//      InitA(5, faCycleSliceModeP);
-//    end;
+    41:
+    begin
+      result.Caption := 'Animated Rotations';
+      InitA(0, faRotX);
+      InitA(1, faRotY);
+      InitA(2, faRotZ);
+      InitA(3, faNoop);
+      InitA(4, faNoop);
+      InitA(5, faNoop);
+    end;
 
-//    42:
-//    begin
-//      result.Caption := 'Rotation Steps';
-//      InitA(0, faRotXM);
-//      InitA(1, faRotXP);
-//      InitA(2, faRotYM);
-//      InitA(3, faRotYP);
-//      InitA(4, faRotZM);
-//      InitA(5, faRotZP);
-//    end;
+    42:
+    begin
+      result.Caption := 'Rotation Steps';
+      InitA(0, faRotXM);
+      InitA(1, faRotXP);
+      InitA(2, faRotYM);
+      InitA(3, faRotYP);
+      InitA(4, faRotZM);
+      InitA(5, faRotZP);
+    end;
 
 //    43:
 //    begin
@@ -624,16 +624,16 @@ begin
 //      InitA(5, faRepo480);
 //    end;
 
-//    52:
-//    begin
-//      result.Caption := 'DropTarget';
-//      InitA(0, faToggleLabelText);
-//      InitA(1, faNoop);
-//      InitA(2, faNoop);
-//      InitA(3, faNoop);
-//      InitA(4, faNoop);
-//      InitA(5, faToggleDropTarget);
-//    end;
+    52:
+    begin
+      result.Caption := 'DropTarget';
+      InitA(0, faToggleLabelText);
+      InitA(1, faNoop);
+      InitA(2, faNoop);
+      InitA(3, faNoop);
+      InitA(4, faNoop);
+      InitA(5, faToggleDropTarget);
+    end;
 
     53:
     begin
@@ -804,16 +804,16 @@ begin
 //      InitA(5, faNoop);
 //    end;
 
-//    73:
-//    begin
-//      result.Caption := 'Action Report';
-//      InitA(0, faWriteActionTable);
-//      InitA(1, faWriteActionReport);
-//      InitA(2, faCopyShortcutReport);
-//      InitA(3, faCopyMeshDataReport);
-//      InitA(4, faNoop);
-//      InitA(5, faNoop);
-//    end;
+    73:
+    begin
+      result.Caption := 'Action Report';
+      InitA(0, faWriteActionTable);
+      InitA(1, faWriteActionReport);
+      InitA(2, faCopyShortcutReport);
+      InitA(3, faNoop);
+      InitA(4, faNoop);
+      InitA(5, faNoop);
+    end;
 
 //    74:
 //    begin
@@ -887,10 +887,10 @@ begin
     begin
       result.Caption := 'Forms';
       InitA(0, faNoop);
-      InitA(1, faNoop);
+      InitA(1, faShowAnim);
       InitA(2, faShowMemo);
       InitA(3, faShowActions);
-      InitA(4, faNoop);
+      InitA(4, faShowRepo);
       InitA(5, faShowInfo);
     end;
 
@@ -905,27 +905,27 @@ begin
       InitA(5, faNoop);
     end;
 
-//    82:
-//    begin
-//      result.Caption := 'Keyboard and Flags';
-//      InitA(0, faSetShift);
-//      InitA(1, faSetCtrl);
-//      InitA(2, faClearShift);
-//      InitA(3, faNoop);
-//      InitA(4, faKeyboard01);
-//      InitA(5, faKeyboard02);
-//    end;
+    82:
+    begin
+      result.Caption := 'Keyboard and Flags';
+      InitA(0, faSetShift);
+      InitA(1, faSetCtrl);
+      InitA(2, faClearShift);
+      InitA(3, faNoop);
+      InitA(4, faKeyboard01);
+      InitA(5, faKeyboard02);
+    end;
 
-//    83:
-//    begin
-//      result.Caption := 'Dialogs';
-//      InitA(0, faNoop);
-//      InitA(1, faEditText);
-//      InitA(2, faNoop);
-//      InitA(3, faNoop);
-//      InitA(4, faNoop);
-//      InitA(5, faNoop);
-//    end;
+    83:
+    begin
+      result.Caption := 'Dialogs';
+      InitA(0, faEditConn);
+      InitA(1, faEditText);
+      InitA(2, faNoop);
+      InitA(3, faNoop);
+      InitA(4, faNoop);
+      InitA(5, faNoop);
+    end;
 
 //    84:
 //    begin

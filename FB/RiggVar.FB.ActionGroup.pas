@@ -50,6 +50,12 @@ const
     faShowActions,
     faShowColor,
     faShowBambu,
+    faShowAnim,
+    faEditText,
+    faEditConn,
+    faEditHost,
+    faEditPort,
+    faShowRepo,
     faShowInfo];
 
   ActionGroupTouchLayout: TActionGroup = [
@@ -446,6 +452,17 @@ const
     faCycleColorSchemeM,
     faCycleColorSchemeP];
 
+  ActionGroupAnimatedRotations: TActionGroup = [
+    faRotX,
+    faRotY,
+    faRotZ,
+    faRotXM,
+    faRotXP,
+    faRotYM,
+    faRotYP,
+    faRotZM,
+    faRotZP];
+
   ActionGroupStep: TActionGroup = [
     faStepRXM,
     faStepRXP,
@@ -456,10 +473,23 @@ const
     faStepCZM,
     faStepCZP];
 
+  ActionGroupKeyboard: TActionGroup = [
+    faKeyboard01,
+    faKeyboard02,
+    faSetShift,
+    faSetCtrl,
+    faClearShift];
+
   ActionGroupUI: TActionGroup = [
+    faParamLabelTextX,
+    faParamLabelTextY,
+    faParamLabelTextZ,
     faToggleColorPanel,
     faColorPanelOn,
     faColorPanelOff,
+    faShowEditField,
+    faFocusEditField,
+    faInitSpecial,
     faPaletteOn,
     faPaletteOff];
 
@@ -476,6 +506,10 @@ const
     faOpacityOn,
     faOpacityOff];
 
+  ActionGroupMainMenuActivation: TActionGroup = [
+    faMainMenuHide,
+    faMainMenuShow];
+
   ActionGroupFederText: TActionGroup = [
     faToggleAllText,
     faToggleTouchFrame];
@@ -488,6 +522,11 @@ const
     faParamCZ];
 
   ActionGroupViewParamsFC: TActionGroup = [
+    faRotStep0,
+    faRotStep1,
+    faRotStep2,
+    faRotStep3,
+    faRotStepA,
     faParamTRS,
     faParamTRT,
     faParamTRX,
@@ -571,6 +610,35 @@ const
     faParamBahnCylinderD,
     faParamBahnCylinderZ];
 
+  ActionGroupAnimationStore: TActionGroup = [
+    faRecall1,
+    faRecall2,
+    faMemory1,
+    faMemory2,
+    faTransit];
+
+  ActionGroupAnimPlay: TActionGroup = [
+    faPlay,
+    faExecute,
+    faAnimationStop,
+    faAnimationStartA,
+    faAnimationStartD,
+    faAnimationStartF,
+    faAnimationStartS,
+    faAnimationStartT];
+
+  ActionGroupTransit: TActionGroup = [
+    faTransitionAll,
+    faTransitionScript];
+
+  ActionGroupConnect: TActionGroup = [
+    faConnect,
+    faDisconnect,
+    faDownload,
+    faAutoSend,
+    faAutoSendOn,
+    faAutoSendOff];
+
   ActionGroupExampleData: TActionGroup = [
     faExample01,
     faExample02,
@@ -597,6 +665,14 @@ const
     faSampleP,
     faGotoSample0,
     faGotoSample1];
+
+  ActionGroupDebugOptions: TActionGroup = [
+    faTestBtnClick,
+    faRunBinPixelTest];
+
+  ActionGroupEmptyLastLine: TActionGroup = [
+    faELLOn,
+    faELLOff];
 
   ActionGroupHelp: TActionGroup = [
     faToggleHelp,
@@ -660,6 +736,9 @@ const
     faResetRotation,
     faResetZoom];
 
+  ActionGroupDropTarget: TActionGroup = [
+    faToggleDropTarget];
+
   ActionGroupLanguage: TActionGroup = [
     faToggleLanguage];
 
@@ -674,6 +753,7 @@ const
     faToggleMoveMode,
     faLinearMove,
     faExpoMove,
+    faToggleQuickMesh,
     faToggleOrbitMode];
 
   ActionGroupBitmapCycle: TActionGroup = [
