@@ -3,7 +3,7 @@
 (*
 -
 -     F
--    * * *
+-    * *  *
 -   *   *   G
 -  *     * *   *
 - E - - - H - - - I
@@ -18,6 +18,8 @@
 
 interface
 
+{$define WantToolBtn}
+
 uses
   System.SysUtils,
   System.Classes,
@@ -29,12 +31,18 @@ uses
   FMX.Objects,
   FMX.Controls,
   RiggVar.FB.ActionConst,
+  RiggVar.FB.ActionMap,
+  RiggVar.FB.Classes,
+  RiggVar.FB.Text,
+  RiggVar.FB.Color,
   RiggVar.FB.Def;
 
 type
   TTouchBtn = class(TControl)
   private
     FID: Integer;
+    FMenuBtn: Boolean;
+    FOptiBtn: Boolean;
     FCaption: string;
     FColor: TAlphaColor;
     FText: TText;
@@ -69,10 +77,12 @@ type
     property ID: Integer read FID write FID;
     property Caption: string read FCaption write SetCaption;
     property Hint: string write SetHint;
-    property FederAction: TFederAction read FFederAction write SetFederAction;
+     property FederAction: TFederAction read FFederAction write SetFederAction;
     property Shape: TShape read FShape;
     property Text: TText read FText;
     property Color: TAlphaColor read GetColor write SetColor;
+    property MenuBtn: Boolean read FMenuBtn;
+    property OptiBtn: Boolean read FOptiBtn;
   end;
 
   TCornerPos = (
@@ -116,28 +126,120 @@ type
     LCount: Integer;
   end;
 
-  TFederTouchBase = class
+  TTouchBarBase = class
+  protected
+    FBtnCount: Integer;
+  public
+    TouchBtnList: TObjectList<TTouchBtn>;
+    procedure UpdateColorScheme;
+    constructor Create;
+    destructor Destroy; override;
+    property BtnCount: Integer read FBtnCount;
+  end;
+
+  TTouchMenu = class(TTouchBarBase)
   private
+    FColumnCount: Integer;
+    procedure SetColumnCount(const Value: Integer);
+  public
+    procedure AddBtn(fa: TFederAction);
+    procedure UpdateShape(Docked: Boolean; LimitY: Integer);
+    procedure UpdateAction(Idx: Integer; NewAction: TFederAction);
+    property ColumnCount: Integer read FColumnCount write SetColumnCount;
+  end;
+
+  TTouchBar = class(TTouchBarBase)
+  private
+    FTop: Boolean;
+    FCount: Integer;
+    procedure SetVisible(const Value: Boolean);
+    function GetVisible: Boolean;
+  public
+    Container: TRectangle;
+    procedure InitContainer(ATop: Boolean; ACount: Integer);
+    procedure InitPosition;
+    procedure UpdateAction(Idx: Integer; NewAction: TFederAction);
+    procedure AddBtn(fa: TFederAction);
+    property Visible: Boolean read GetVisible write SetVisible;
+  end;
+
+  TFederTouchBase = class(TFederText)
+  private
+    function GetMaxCount: Integer;
+    function GetMinCount: Integer;
+  protected
+    FMinBtnCount: Integer;
+    FMaxBtnCount: Integer;
+    FMaxBtnPhone: Integer;
+    FMinBtnPhone: Integer;
+
+    MissID: TList<Integer>;
+    MissBtnListB: TObjectList<TCornerBtn>;
+    MissBtnListS: TObjectList<TCornerBtn>;
+
+    MaxPageIndex: Integer;
+    EscapePageIndex: Integer;
+
+    FMenuBarLayout: Integer;
+
+    FWantMenuVisible: Boolean;
+    FWantEquationVisible: Boolean;
+    FWantTextVisible: Boolean;
+    FWantTitleVisible: Boolean;
+    FWantSwatVisible: Boolean;
+
     OldX: single;
     OldY: single;
     Down: Boolean;
-    FOwnsMouse: Boolean;
 
-    procedure OnMouseDown(Sender: TObject; Button: TMouseButton;Shift: TShiftState; X, Y: single);
+{$ifdef WantToolBtn}
+    ToolBtn: TCircle;
+{$endif}
+
+    ConnLED: TCircle;
+    LAT: TText;
+    LHT: single;
+
+    AppliedApp: Integer;
+
+    function FindMissBtn(id: Integer): TCornerBtn;
+    function FindMissBtnB(id: Integer): TCornerBtn;
+    function FindMissBtnS(id: Integer): TCornerBtn;
+    procedure AddMissingB;
+    procedure AddMissingS;
+    procedure RemoveMissingB;
+    procedure RemoveMissingS;
+
+    function LineHeight(t: TText): single;
+    function NewLabelText(t: TText): TText;
+
+    procedure OnMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: single);
     procedure OnMouseMove(Sender: TObject; Shift: TShiftState; X, Y: single);
     procedure OnMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: single);
     procedure OnMouseLeave(Sender: TObject);
     procedure BorderTrack(Sender: TObject; X, Y: single);
 
-    procedure InitCornerMenu;
+    procedure SetActionPage(const Value: Integer); override;
+    procedure SetFrameVisible(const Value: Boolean); override;
 
-    procedure InitShapes;
-    procedure CheckBtnOrder;
-    procedure SetOwnsMouse(const Value: Boolean);
+    procedure InitAction(BtnID: Integer; fa: TFederAction);
+    procedure InitActionWithColor(BtnID: Integer; fa: TFederAction; ac: TAlphaColor);
+
+    function GetPaletteBtn: TCornerBtn; virtual;
+
+    procedure SetAllVisible(const Value: Boolean); override;
+    procedure SetTransitBarLayout(const Value: Integer); override;
+    procedure SetMenuBarLayout(const Value: Integer);
   public
-    InitOK: Boolean;
+    WantLED: Boolean;
+    Spruch: string;
+
     CornerBtnList: TObjectList<TCornerBtn>;
     CornerMenu: TCornerMenu;
+
+    HomeBtn: TCornerBtn;
+    PageBtnP: TCornerBtn;
+    PageBtnM: TCornerBtn;
 
     SL00: TCornerBtn;
     ST00: TCornerBtn;
@@ -149,16 +251,45 @@ type
       OwnerComponent: TComponent;
       ParentObject: TFmxObject;
       ClickedID: Integer;
+      VerticalTouchbarHelpText: string;
+      HorizontalTouchbarHelpText: string;
 
-    constructor Create(AOwner: TComponent);
+    constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-    procedure Init;
-    procedure CheckState;
+    procedure ToolBtnClick(Sender: TObject);
+    procedure ToggleTouchFrame; override;
+    procedure UpdateText; override;
+
+    procedure Init; override;
+    procedure CheckState; virtual;
+    procedure UpdateWH;
     procedure CheckCircleState; virtual;
+    procedure MoveText; virtual;
+    procedure CheckBtnOrder; virtual;
+
+    procedure Report(ML: TStrings);
+    function FindCornerBtn(id: Integer): TCornerBtn;
+    function GetColorOfButton(BtnID: Integer): TAlphaColor;
+    function GetHintForColorBtn(BtnID: Integer): string;
+
+    procedure InitActions(Layout: Integer); virtual;
+    procedure UpdateMissing; virtual;
+    procedure UpdateToolSet(Delta: Integer);
     procedure UpdateShape;
-    procedure UpdateColorScheme;
-    property OwnsMouse: Boolean read FOwnsMouse write SetOwnsMouse;
+    procedure UpdateColorScheme; virtual;
+    procedure UpdatePageBtnText;
+    procedure ResetAge; virtual;
+
+    procedure InitMenuBarActions(ALayout: Integer); virtual;
+    procedure InitTransitBarActions(ALayout: Integer); virtual;
+    procedure InitActionFromInfo(ActionInfo: TActionInfo); virtual;
+
+    property MinCount: Integer read GetMinCount;
+    property MaxCount: Integer read GetMaxCount;
+    property MenuBarLayout: Integer read FMenuBarLayout write SetMenuBarLayout;
+
+    property PaletteBtn: TCornerBtn read GetPaletteBtn;
   end;
 
 const
@@ -200,7 +331,10 @@ begin
   if Enabled then
   begin
     TFederTouchBase.ClickedID := ID;
-    Main.ActionHandler.Execute(FederAction);
+    if Main.IsPhone
+      or not Main.FederPaletteHandleTouchBtnClick(Self)
+    then
+      Main.ActionHandler.Execute(FederAction);
   end;
 end;
 
@@ -248,8 +382,8 @@ begin
     cr := FShape as TCircle;
     if e then
     begin
-    if c then
-      cr.Fill.Color := claAqua
+     if c then
+       cr.Fill.Color := claAqua
     else
        cr.Fill.Color := MainVar.ColorScheme.claTouchBtnFill;
     end
@@ -347,6 +481,177 @@ procedure TTouchBtn.InitPosition;
 begin
   Position.X := X * BtnWidth + OffsetX;
   Position.Y := Y * BtnHeight + OffsetY;
+end;
+
+{ TTouchBarBase }
+
+constructor TTouchBarBase.Create;
+begin
+  TouchBtnList := TObjectList<TTouchBtn>.Create;
+  TouchBtnList.OwnsObjects := False;
+end;
+
+destructor TTouchBarBase.Destroy;
+begin
+  TouchBtnList.Free;
+  inherited;
+end;
+
+procedure TTouchBarBase.UpdateColorScheme;
+var
+  b: TTouchBtn;
+begin
+  if not Main.PaletteMode then
+    for b in TouchBtnList do
+    begin
+      b.FShape.Fill.Color := MainVar.ColorScheme.claTouchBtnFill;
+      b.FText.Color := MainVar.ColorScheme.claCornerBtnText;
+    end;
+end;
+
+{ TTouchMenu }
+
+procedure TTouchMenu.AddBtn(fa: TFederAction);
+var
+  b: TTouchBtn;
+begin
+  if fa <> faNoop then
+  begin
+    b := TTouchBtn.Create(TFederTouchBase.OwnerComponent);
+    b.X := (BtnCount) mod ColumnCount;
+    b.Y := BtnCount div ColumnCount;
+    b.FederAction := fa;
+    b.Caption := Main.ActionHandler.GetShortCaption(fa);
+    b.FMenuBtn := True;
+    b.Init;
+    TFederTouchBase.ParentObject.AddObject(b);
+    TouchBtnList.Add(b);
+    b.ID := TouchBtnList.Count-1;
+    b.FShape.Opacity := 0.4;
+    b.FText.Opacity := 1.0;
+  end;
+  Inc(FBtnCount);
+end;
+
+procedure TTouchMenu.SetColumnCount(const Value: Integer);
+begin
+  FColumnCount := Value;
+end;
+
+procedure TTouchMenu.UpdateShape(Docked: Boolean; LimitY: Integer);
+var
+  b: TTouchBtn;
+  v: Boolean;
+begin
+  for b in TouchBtnList do
+  begin
+    v := True;
+    if Docked then
+      v := (b.X  < DockStartX) or (b.Y > 1);
+
+    if b.Y > LimitY then
+      v := False;
+
+    b.Visible := v;
+  end;
+end;
+
+procedure TTouchMenu.UpdateAction(Idx: Integer; NewAction: TFederAction);
+var
+  b: TTouchBtn;
+begin
+  if (Idx >= 0) and (Idx < BtnCount) then
+  begin
+    b := TouchBtnList[Idx] as TTouchBtn;
+    b.FederAction := NewAction;
+    b.Caption := Main.ActionHandler.GetShortCaption(NewAction);
+//    b.UpdateHint;
+    b.Hint := TActionMap.CurrentMenuCaptions[Idx];
+  end;
+end;
+
+{ TTouchBar }
+
+procedure TTouchBar.AddBtn(fa: TFederAction);
+var
+  b: TTouchBtn;
+begin
+  b := TTouchBtn.Create(TFederTouchBase.OwnerComponent);
+  b.X := BtnCount;
+  b.Y := 0;
+  b.FederAction := fa;
+  b.Caption := Main.ActionHandler.GetShortCaption(fa);
+
+  b.Init;
+  Container.AddObject(b);
+  TouchBtnList.Add(b);
+  b.ID := TouchBtnList.Count-1;
+  b.FOptiBtn := TTouchBtn.Circle;
+
+  Inc(FBtnCount);
+end;
+
+function TTouchBar.GetVisible: Boolean;
+begin
+  if Assigned(Container) then
+    result := Container.Visible
+  else
+    result := False;
+end;
+
+procedure TTouchBar.InitContainer(ATop: Boolean; ACount: Integer);
+begin
+  FTop := ATop;
+  FCount := ACount;
+  Container := TRectangle.Create(TFederTouchBase.OwnerComponent);
+  Container.Fill.Color := claWhite;
+  Container.Stroke.Color := BtnBorderColor;
+  Container.Stroke.Thickness := BtnBorderWidth;
+  Container.XRadius := BtnBorderRadius;
+  Container.YRadius := BtnBorderRadius;
+  Container.Opacity := 0.4;
+
+  InitPosition;
+
+  Container.Width := FCount * TTouchBtn.BtnWidth;
+  Container.Height := TTouchBtn.BtnHeight;
+  TFederTouchBase.ParentObject.AddObject(Container);
+end;
+
+procedure TTouchBar.InitPosition;
+begin
+  if FTop then
+  begin
+    Container.Position.X := 2 * MainVar.Raster;
+    Container.Position.Y := MainVar.Raster;
+  end
+  else
+  begin
+    Container.Position.X := MainVar.ClientWidth - (1 + FCount) * MainVar.Raster;
+    Container.Position.Y := MainVar.ClientHeight - 2 * MainVar.Raster;
+  end;
+end;
+
+procedure TTouchBar.SetVisible(const Value: Boolean);
+begin
+  if Assigned(Container) then
+    Container.Visible := Value;
+end;
+
+procedure TTouchBar.UpdateAction(Idx: Integer; NewAction: TFederAction);
+var
+  b: TTouchBtn;
+begin
+  if (Idx >= 0) and (Idx < BtnCount) then
+  begin
+    if Container.Children[Idx] is TTouchBtn then
+    begin
+      b := Container.Children[Idx] as TTouchBtn;
+      b.FederAction := NewAction;
+      b.Caption := Main.ActionHandler.GetShortCaption(NewAction);
+      b.UpdateHint;
+    end;
+  end;
 end;
 
 { TCornerMenu }
@@ -516,6 +821,12 @@ end;
 
 { TFederTouchBase }
 
+procedure TFederTouchBase.UpdateWH;
+begin
+  Width := MainVar.ClientWidth;
+  Height := MainVar.ClientHeight;
+end;
+
 procedure TFederTouchBase.CheckBtnOrder;
 begin
   { virtual }
@@ -524,6 +835,12 @@ end;
 procedure TFederTouchBase.CheckCircleState;
 begin
   { virtual }
+end;
+
+procedure TFederTouchBase.MoveText;
+begin
+  Width := MainVar.ClientWidth;
+  Height := MainVar.ClientHeight;
 end;
 
 procedure TFederTouchBase.CheckState;
@@ -539,7 +856,18 @@ end;
 
 constructor TFederTouchBase.Create(AOwner: TComponent);
 begin
-  OpacityValue := 0.5;
+  inherited;
+  FFrameVisible := True;
+  FMaxBtnCount := 12;
+  FMinBtnCount := 8;
+  FMaxBtnPhone := 6;
+  FMinBtnPhone := 4;
+
+  FActionPage := 1;
+  EscapePageIndex := FActionPage + 1;
+  MissID := TList<Integer>.Create;
+  MissBtnListB := TObjectList<TCornerBtn>.Create;
+  MissBtnListS := TObjectList<TCornerBtn>.Create;
   CornerBtnList := TObjectList<TCornerBtn>.Create;
   CornerBtnList.OwnsObjects := False;
   CornerMenu := TCornerMenu.Create;
@@ -547,65 +875,85 @@ end;
 
 destructor TFederTouchBase.Destroy;
 begin
+  MissID.Free;
   CornerMenu.Free;
   CornerBtnList.Free;
+  MissBtnListB.Free;
+  MissBtnListS.Free;
   inherited;
+end;
+
+function TFederTouchBase.GetMinCount: Integer;
+begin
+  result := Min(MainVar.ClientWidth, MainVar.ClientHeight) div MainVar.Raster;
+end;
+
+function TFederTouchBase.GetMaxCount: Integer;
+begin
+  result := Max(MainVar.ClientWidth, MainVar.ClientHeight) div MainVar.Raster;
 end;
 
 procedure TFederTouchBase.Init;
 begin
-  if not InitOK then
-  begin
-    InitShapes;
-    InitOK := True;
-  end;
+  { virtual }
 end;
 
-procedure TFederTouchBase.InitShapes;
+procedure TFederTouchBase.SetActionPage(const Value: Integer);
 begin
-  if not InitOK then
+  if Value = -3 then
   begin
-    InitCornerMenu;
-    SL00.FShape.OnMouseDown := OnMouseDown;
-    SR00.FShape.OnMouseDown := OnMouseDown;
-    ST00.FShape.OnMouseDown := OnMouseDown;
-    SB00.FShape.OnMouseDown := OnMouseDown;
+    if FActionPage = 1 then
+      FActionPage := EscapePageIndex
+    else
+      FActionPage := 1;
+  end
+  else if Value = -2 then
+    FActionPage := MaxPageIndex
+  else if Value = -1 then
+    FActionPage := EscapePageIndex
+  else if (Value = EscapePageIndex) and (FActionPage = EscapePageIndex + 1) then
+    FActionPage := EscapePageIndex
+  else if (Value = EscapePageIndex) and (FActionPage = EscapePageIndex - 1) then
+    FActionPage := 1
+  else
+    FActionPage := Value;
 
-    SL00.FShape.OnMouseMove := OnMouseMove;
-    SR00.FShape.OnMouseMove := OnMouseMove;
-    ST00.FShape.OnMouseMove := OnMouseMove;
-    SB00.FShape.OnMouseMove := OnMouseMove;
+    if FActionPage > MaxPageIndex then
+    FActionPage := 1;
+  if FActionPage < 1 then
+      FActionPage := EscapePageIndex - 1;
 
-    SL00.FShape.OnMouseUp := OnMouseUp;
-    SR00.FShape.OnMouseUp := OnMouseUp;
-    ST00.FShape.OnMouseUp := OnMouseUp;
-    SB00.FShape.OnMouseUp := OnMouseUp;
+  InitActions(FActionPage);
 
-    SL00.FShape.OnMouseLeave := OnMouseLeave;
-    SR00.FShape.OnMouseLeave := OnMouseLeave;
-    ST00.FShape.OnMouseLeave := OnMouseLeave;
-    SB00.FShape.OnMouseLeave := OnMouseLeave;
-
-    InitOK := True;
-    UpdateShape;
-  end;
+  Main.CheckStateNeeded;
+  Main.TextUpdateNeeded;
 end;
 
 procedure TFederTouchBase.UpdateColorScheme;
+begin
+  { virtual }
+end;
+
+procedure TFederTouchBase.SetFrameVisible(const Value: Boolean);
 var
   b: TCornerBtn;
 begin
-  for b in CornerBtnList do
-    b.FText.Color := MainVar.ColorScheme.claCornerBtnText;
+  FFrameVisible := Value;
 
-  ST00.FShape.Fill.Color := MainVar.ColorScheme.claCornerScrollbar;
-  ST00.FText.Color := MainVar.ColorScheme.claCornerBtnText;
-  SB00.FShape.Fill.Color := MainVar.ColorScheme.claCornerScrollbar;
-  SB00.FText.Color := MainVar.ColorScheme.claCornerBtnText;
-  SL00.FShape.Fill.Color := MainVar.ColorScheme.claCornerScrollbar;
-  SL00.FText.Color := MainVar.ColorScheme.claCornerBtnText;
-  SR00.FShape.Fill.Color := MainVar.ColorScheme.claCornerScrollbar;
-  SR00.FText.Color := MainVar.ColorScheme.claCornerBtnText;
+{$ifdef WantToolBtn}
+  if Value then
+    ToolBtn.Opacity := 0.1
+  else
+    ToolBtn.Opacity := 0.05;
+{$endif}
+
+  for b in CornerBtnList do
+    b.Visible := Value;
+
+  ST00.Visible := Value;
+  SR00.Visible := Value;
+  SB00.Visible := Value;
+  SL00.Visible := Value;
 end;
 
 procedure TFederTouchBase.BorderTrack(Sender: TObject; X, Y: single);
@@ -658,7 +1006,7 @@ begin
   Down := True;
   OldX := X;
   OldY := Y;
-  FOwnsMouse := True;
+  OwnsMouse := True;
 end;
 
 procedure TFederTouchBase.OnMouseMove(Sender: TObject; Shift: TShiftState; X, Y: single);
@@ -673,12 +1021,7 @@ end;
 procedure TFederTouchBase.OnMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: single);
 begin
   Down := False;
-  FOwnsMouse := False;
-end;
-
-procedure TFederTouchBase.SetOwnsMouse(const Value: Boolean);
-begin
-  FOwnsMouse := Value;
+  OwnsMouse := False;
 end;
 
 procedure TFederTouchBase.OnMouseLeave(Sender: TObject);
@@ -690,6 +1033,8 @@ procedure TFederTouchBase.UpdateShape;
 var
   b: TCornerBtn;
 begin
+  UpdateWH;
+
   if InitOK then
   begin
     TCornerMenu.TStart := 1;
@@ -722,71 +1067,408 @@ begin
     SL00.Height := MainVar.ClientHeight - (TCornerMenu.LCount) * MainVar.Raster;
     SR00.Height := MainVar.ClientHeight - (TCornerMenu.RCount) * MainVar.Raster;
 
+{$ifdef WantToolBtn}
+    ToolBtn.Position.X := MainVar.Raster;
+    ToolBtn.Position.Y := MainVar.Raster;
+    ToolBtn.Width := MainVar.Raster;
+{$endif}
+
+    if Assigned(ConnLED) then
+    begin
+      ConnLED.Position.X := ToolBtn.Position.X + 0.5 * MainVar.Raster - 7;
+      ConnLED.Position.Y := ToolBtn.Position.Y + 0.5 * MainVar.Raster - 7;
+    end;
+
+    MoveText;
     CheckBtnOrder;
   end;
 end;
 
-procedure TFederTouchBase.InitCornerMenu;
-var
-  cp: TCornerPos;
-  cla: TAlphaColor;
-  claTextureParam: TAlphaColor;
-  claParam: TAlphaColor;
-  claOption: TAlphaColor;
-  claMeshSize: TAlphaColor;
+procedure TFederTouchBase.UpdateToolSet(Delta: Integer);
 begin
-  cla := claWhite;
-  claParam := claYellow;
-  claTextureParam := claPlum;
-  claOption := claCornflowerBlue;
-  claMeshSize := claLightGray;
+  ActionPage := FActionPage + Delta;
+end;
 
-  TCornerBtn.OffsetX := 0;
-  TCornerBtn.OffsetY := 0;
-  TCornerBtn.BtnWidth := MainVar.Raster;
-  TCornerBtn.BtnHeight := MainVar.Raster;
-  TCornerBtn.Circle := False;
+procedure TFederTouchBase.InitAction(BtnID: Integer; fa: TFederAction);
+var
+  tb: TCornerBtn;
+begin
+  tb := FindCornerBtn(BtnID);
+  if not Assigned(tb) then
+    tb := FindMissBtn(BtnID);
+  if Assigned(tb) then
+  begin
+    tb.FederAction := fa;
+    tb.Caption := Main.ActionHandler.GetShortCaption(fa);
+    tb.UpdateHint;
+  end;
+end;
 
-  cp := cpTL;
-  CornerBtnList.Add(CornerMenu.NewBtn(cp, 0, 0, claOption, faToggleColorPanel));
-  CornerBtnList.Add(CornerMenu.NewBtn(cp, 1, 0, claTextureParam, faParamT1));
-  CornerBtnList.Add(CornerMenu.NewBtn(cp, 2, 0, claTextureParam, faParamT2));
+procedure TFederTouchBase.InitActionWithColor(BtnID: Integer; fa: TFederAction; ac: TAlphaColor);
+var
+  tb: TCornerBtn;
+begin
+  tb := FindCornerBtn(BtnID);
+  if not Assigned(tb) then
+    tb := FindMissBtn(BtnID);
+  if Assigned(tb) then
+  begin
+    tb.FederAction := fa;
+    tb.Caption := Main.ActionHandler.GetShortCaption(fa);
+    tb.UpdateHint;
+    tb.Color := ac;
+    if fa = faCLA then
+    begin
+      tb.Hint := ColorVar.RggColorPool.ColorToString(ac);
+    end;
+  end;
+end;
 
-  cp := cpTR;
-  CornerBtnList.Add(CornerMenu.NewBtn(cp, 0, 0, cla, faReset));
-  CornerBtnList.Add(CornerMenu.NewBtn(cp, 1, 0, claParam, faParamR));
-  CornerBtnList.Add(CornerMenu.NewBtn(cp, 2, 0, claParam, faParamL));
+procedure TFederTouchBase.InitActions(Layout: Integer);
+begin
+  { virtual }
+end;
 
-  cp := cpBR;
-  CornerBtnList.Add(CornerMenu.NewBtn(cp, 1, 0, claMeshSize, faMeshSize128));
-  CornerBtnList.Add(CornerMenu.NewBtn(cp, 0, 0, claMeshSize, faMeshSize64));
-  CornerBtnList.Add(CornerMenu.NewBtn(cp, 0, 1, claMeshSize, faMeshSize32));
+procedure TFederTouchBase.InitActionFromInfo(ActionInfo: TActionInfo);
+begin
+  { virtual }
+end;
 
-  cp := cpBL;
-  CornerBtnList.Add(CornerMenu.NewBtn(cp, 0, 0, cla, faToggleSolidFlip));
-  CornerBtnList.Add(CornerMenu.NewBtn(cp, 1, 0, cla, faToggleShowEdges));
+function TFederTouchBase.LineHeight(t: TText): single;
+begin
+  result := t.Font.Size + Round(t.Font.Size / 4);
+end;
 
-  cla := MainVar.ColorScheme.claCornerScrollbar;
-  ST00 := CornerMenu.NewBtn(cpT, 0, 0, cla, faNoop);
-  SR00 := CornerMenu.NewBtn(cpR, 0, 0, cla, faNoop);
-  SB00 := CornerMenu.NewBtn(cpB, 0, 0, cla, faNoop);
-  SL00 := CornerMenu.NewBtn(cpL, 0, 0, cla, faNoop);
+function TFederTouchBase.NewLabelText(t: TText): TText;
+begin
+  result := TText.Create(OwnerComponent);
+  result.AutoSize := True;
+  result.WordWrap := False;
+  if Assigned(t) then
+  begin
+    result.Position.X := t.Position.X;
+    result.Position.Y := t.Position.Y + LineHeight(t);
+    result.Font.Size := t.Font.Size;
+    result.Font.Family := t.Font.Family;
+    result.Color := t.Color;
+    result.Parent := t.Parent;
+    result.HorzTextAlign := t.HorzTextAlign;
+  end;
+  result.BringToFront;
+  result.Enabled := False;
+  LAT := result;
+end;
 
-  SL00.FText.Align := TAlignLayout.Client;
-  SL00.FText.HitTest := False;
-  SL00.FText.Font.Size := 28;
+procedure TFederTouchBase.SetAllVisible(const Value: Boolean);
+begin
+  if Value then
+  begin
+    { make components visible as recorded before }
+    FrameVisible := True;
+    TextVisible := FWantTextVisible;
+    EquationVisible := FWantEquationVisible;
+    MenuVisible := FWantMenuVisible;
+    TitleVisible := FWantTitleVisible;
+    SwatVisible := FWantSwatVisible;
+    ToolBtn.Opacity := 0.1;
+  end
+  else
+  begin
+    { if Frame/All is currently visible }
 
-  SR00.FText.Align := TAlignLayout.Client;
-  SR00.FText.HitTest := False;
-  SR00.FText.Font.Size := 28;
+    { record current state }
+    FWantMenuVisible := FMenuVisible;
+    FWantEquationVisible := FEquationVisible;
+    FWantTextVisible := FTextVisible;
+    FWantTitleVisible := FTitleVisible;
+    FWantSwatVisible := FSwatVisible;
 
-  ST00.FText.Align := TAlignLayout.Client;
-  ST00.FText.HitTest := False;
-  ST00.FText.Font.Size := 28;
+    { and switch all off}
+    FrameVisible := False;
+    TextVisible := False;
+    EquationVisible := False;
+    MenuVisible := False;
+    SwatVisible := False;
+    //TitleVisible := False; //leave this as is
+    ToolBtn.Opacity := 0.05;
+  end;
 
-  SB00.FText.Align := TAlignLayout.Client;
-  SB00.FText.HitTest := False;
-  SB00.FText.Font.Size := 28;
+  FAllVisible := Value;
+end;
+
+function TFederTouchBase.FindCornerBtn(id: Integer): TCornerBtn;
+var
+  cb: TCornerBtn;
+begin
+  result := nil;
+  for cb in CornerBtnList do
+    if cb.ID = id then
+    begin
+      result := cb;
+      break;
+    end;
+end;
+
+procedure TFederTouchBase.UpdateText;
+begin
+  if InitOK then
+  begin
+    UpdatePageBtnText;
+  end;
+end;
+
+procedure TFederTouchBase.UpdatePageBtnText;
+begin
+  if not Main.PaletteMode then
+  begin
+    PageBtnP.Text.Text := IntToStr(ActionPage);
+    PageBtnM.Text.Text := IntToStr(ActionPage);
+  end;
+end;
+
+procedure TFederTouchBase.ResetAge;
+begin
+  { virtual }
+end;
+
+function TFederTouchBase.GetPaletteBtn: TCornerBtn;
+begin
+  result := nil;
+end;
+
+procedure TFederTouchBase.SetMenuBarLayout(const Value: Integer);
+begin
+  FMenuBarLayout := Value;
+  InitMenuBarActions(Value);
+  TransitBarLayout := Value;
+end;
+
+procedure TFederTouchBase.SetTransitBarLayout(const Value: Integer);
+begin
+  FTransitBarLayout := Value;
+  InitTransitBarActions(Value);
+end;
+
+procedure TFederTouchBase.InitMenuBarActions(ALayout: Integer);
+begin
+  { virtual }
+end;
+
+procedure TFederTouchBase.InitTransitBarActions(ALayout: Integer);
+begin
+  { virtual }
+end;
+
+procedure TFederTouchBase.Report(ML: TStrings);
+var
+  cb: TCornerBtn;
+  s: string;
+
+  function GetLocationString(cp: TCornerPos): string;
+  begin
+    case cp of
+      cpTL: result := 'TL';
+      cpTR: result := 'TR';
+      cpBL: result := 'BL';
+      cpBR: result := 'BR';
+      cpT: result := 'T';
+      cpR: result := 'R';
+      cpB: result := 'B';
+      cpL: result := 'L';
+    end;
+  end;
+
+  procedure AddLine(cb: TCornerBtn);
+  begin
+    s := Format('%.2d: %s, %s = %s', [
+      cb.ID,
+      GetLocationString(cb.CornerPos),
+      Main.ActionHandler.GetCaption(cb.FederAction),
+      cb.Caption
+      ]);
+    ML.Add(s);
+  end;
+
+begin
+  for cb in CornerBtnList do
+    AddLine(cb);
+end;
+
+procedure TFederTouchBase.ToolBtnClick(Sender: TObject);
+begin
+  ToggleTouchFrame;
+end;
+
+procedure TFederTouchBase.ToggleTouchFrame;
+begin
+  FrameVisible := not FrameVisible;
+
+  Main.FrameVisibilityChanged;
+
+{$ifdef WantToolBtn}
+  if FrameVisible then
+  begin
+    ToolBtn.Opacity := 0.1;
+   end
+  else
+  begin
+    ToolBtn.Opacity := 0.05;
+  end;
+{$endif}
+end;
+
+function TFederTouchBase.FindMissBtn(id: Integer): TCornerBtn;
+var
+  cb: TCornerBtn;
+begin
+  result := nil;
+  for cb in MissBtnListB do
+    if cb.ID = id then
+    begin
+      result := cb;
+      break;
+    end;
+  for cb in MissBtnListS do
+    if cb.ID = id then
+    begin
+      result := cb;
+      break;
+    end;
+end;
+
+function TFederTouchBase.FindMissBtnB(id: Integer): TCornerBtn;
+var
+  cb: TCornerBtn;
+begin
+  result := nil;
+  for cb in MissBtnListB do
+    if cb.ID = id then
+    begin
+      result := cb;
+      break;
+    end;
+end;
+
+function TFederTouchBase.FindMissBtnS(id: Integer): TCornerBtn;
+var
+  cb: TCornerBtn;
+begin
+  result := nil;
+  for cb in MissBtnListS do
+    if cb.ID = id then
+    begin
+      result := cb;
+      break;
+    end;
+end;
+
+procedure TFederTouchBase.AddMissingB;
+var
+  i: Integer;
+  bid: Integer;
+  cb: TCornerBtn;
+  mb: TCornerBtn;
+begin
+  for i := 0 to MissID.Count-1 do
+  begin
+    bid := MissID[i];
+    cb := FindCornerBtn(bid);
+    mb := FindMissBtnB(bid);
+    if Assigned(mb) then
+      mb.Visible := FFrameVisible;
+    if (cb = nil) and (mb <> nil) then
+      CornerBtnList.Add(mb);
+  end;
+end;
+
+procedure TFederTouchBase.AddMissingS;
+var
+  i: Integer;
+  bid: Integer;
+  cb: TCornerBtn;
+  mb: TCornerBtn;
+begin
+  for i := 0 to MissID.Count-1 do
+  begin
+    bid := MissID[i];
+    cb := FindCornerBtn(bid);
+    mb := FindMissBtnS(bid);
+    if Assigned(mb) then
+      mb.Visible := FFrameVisible;
+    if (cb = nil) and (mb <> nil) then
+      CornerBtnList.Add(mb);
+  end;
+end;
+
+procedure TFederTouchBase.RemoveMissingB;
+var
+  i: Integer;
+  bid: Integer;
+  cb: TCornerBtn;
+  mb: TCornerBtn;
+begin
+  for i := 0 to MissID.Count-1 do
+  begin
+    bid := MissID[i];
+    cb := FindCornerBtn(bid);
+    mb := FindMissBtnB(bid);
+    if Assigned(mb) then
+      mb.Visible := False;
+    if (cb <> nil) and (mb <> nil) then
+      CornerBtnList.Remove(mb);
+  end;
+end;
+
+procedure TFederTouchBase.RemoveMissingS;
+var
+  i: Integer;
+  bid: Integer;
+  cb: TCornerBtn;
+  mb: TCornerBtn;
+begin
+  for i := 0 to MissID.Count-1 do
+  begin
+    bid := MissID[i];
+    cb := FindCornerBtn(bid);
+    mb := FindMissBtnS(bid);
+    if Assigned(mb) then
+      mb.Visible := False;
+    if (cb <> nil) and (mb <> nil) then
+      CornerBtnList.Remove(mb);
+  end;
+end;
+
+procedure TFederTouchBase.UpdateMissing;
+begin
+  if MaxCount > FMaxBtnCount then
+    AddMissingB
+  else
+    RemoveMissingB;
+
+  if MinCount > FMinBtnCount then
+    AddMissingS
+  else
+    RemoveMissingS;
+end;
+
+function TFederTouchBase.GetColorOfButton(BtnID: Integer): TAlphaColor;
+var
+  tb: TCornerBtn;
+begin
+  tb := FindCornerBtn(BtnID);
+  if not Assigned(tb) then
+    tb := FindMissBtn(BtnID);
+  if tb <> nil then
+  begin
+    result := tb.Color;
+  end
+  else
+    result := claBlack;
+end;
+
+function TFederTouchBase.GetHintForColorBtn(BtnID: Integer): string;
+begin
+  result := ColorVar.RggColorPool.ColorToString(GetColorOfButton(BtnID));
 end;
 
 end.

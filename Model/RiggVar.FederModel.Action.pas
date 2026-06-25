@@ -29,6 +29,7 @@ uses
 type
   TFederActionHandler = class(TFederActionHandlerBase)
   public
+    function GetShortCaption(fa: TFederAction): string; override;
     procedure Execute(fa: TFederAction); override;
     function GetChecked(fa: TFederAction): Boolean; override;
   end;
@@ -83,6 +84,16 @@ end;
 function TFederActionHandler.GetChecked(fa: TFederAction): Boolean;
 begin
   result := GetFederActionChecked(fa);
+end;
+
+function TFederActionHandler.GetShortCaption(fa: TFederAction): string;
+begin
+  case fa of
+    faCLA: result := '';
+
+    else
+      result := inherited;
+  end;
 end;
 
 end.

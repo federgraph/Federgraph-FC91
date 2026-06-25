@@ -158,6 +158,7 @@ var
   rp: TReportPage;
 begin
   case fa of
+    faGotoSample1,
     faParamX12,
     faParamY12,
     faParamZ12,
@@ -175,7 +176,7 @@ begin
     faParamRY,
     faParamRZ: rp := rpViewStatus;
 
-    faParamCZ: rp := rpZoomInfo;
+    faParamCZ: rp := rpViewStatus;
 
     faBandSelection16,
     faBandSelection17: rp := rpColorInfo1;
@@ -186,6 +187,8 @@ begin
     faBandSelection20,
     faBandSelection21,
     faParamBandSelected: rp := rpColorInfo2;
+
+    faShowInfo: rp := rpAppInfo;
 
     else
       rp := rpAny;

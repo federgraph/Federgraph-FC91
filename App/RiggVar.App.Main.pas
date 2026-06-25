@@ -33,7 +33,7 @@ var
 type
   MainConst = class
   public const
-    WantOldBandColors = False;
+    WantOldBandColors: Boolean = False;
     PerspectiveZoomDefault = 10;
     OrthoZoomDefault = 0.5;
     TrackbarFrequency = 0.1;
@@ -107,7 +107,7 @@ begin
   ShiftState := [];
 
   AppIsClosing := False;
-  AppTitle := 'FC91P'; // sometimes initialized in FormMain, from Application.Title set in dpr
+  AppTitle := 'FC91N'; // sometimes initialized in FormMain, from Application.Title set in dpr
   AppFolder := 'FC';
   TextureRepeat := False;
   WantUniqueVertices := True;

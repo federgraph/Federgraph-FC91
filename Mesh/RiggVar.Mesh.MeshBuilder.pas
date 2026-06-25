@@ -641,7 +641,7 @@ begin
 
   result := FV.Count;
 
-    for i := 0 to FV.Count - 1 do
+  for i := 0 to FV.Count - 1 do
     MV.AddVertex(FV[i]);
 
   if MaterialName <> '' then
@@ -1252,7 +1252,7 @@ begin
     ApplyAbsolute;
 
   if not WantFlippedHands then
-    ApplyTopCapping(FederLimits.SliceLimitP);
+  ApplyTopCapping(FederLimits.SliceLimitP);
   ApplyBottomCapping(FederLimits.PCapLimit);
 end;
 
@@ -1955,7 +1955,18 @@ end;
 
 procedure TFederMeshBuilder.Update3DBuffers(VB: TVertexBuffer; IB: TIndexBuffer);
 begin
-  inherited;
+  UV.Clear;
+
+  if vp.WantLux and WantUniqueVertices then
+  begin
+    MakeUniqueVertices;
+  end;
+
+  UpdateVB(VB);
+
+  UpdateTE(VB);
+
+  UpdateIB(IB);
 
   VertexCount := FV.Count;
 end;
@@ -1976,6 +1987,9 @@ end;
 
 procedure TFederMeshBuilder.UpdateFromMeshParams(vp: TMeshParams);
 begin
+  WantUpdateTE := True;
+  WantTexCoord := False;
+
   WantFlippedHands := vp.WantFlippedHands;
   WantMirroredBottom := vp.WantMirroredBottom;
   IsFlippedHand := WantFlippedHands;

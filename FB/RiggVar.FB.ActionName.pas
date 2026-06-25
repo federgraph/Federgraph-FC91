@@ -47,6 +47,16 @@ begin
     faActionPage5: result := 'faActionPage5';
     faActionPage6: result := 'faActionPage6';
 
+    { Forms }
+    faShowMemo: result := 'faShowMemo';
+    faShowActions: result := 'faShowActions';
+    faShowInfo: result := 'faShowInfo';
+
+    { TouchLayout }
+    faTouchTablet: result := 'faTouchTablet';
+    faTouchPhone: result := 'faTouchPhone';
+    faTouchDesk: result := 'faTouchDesk';
+
     { SystemParam }
     faParamX1: result := 'faParamX1';
     faParamY1: result := 'faParamY1';
@@ -243,6 +253,12 @@ begin
 
     { UI }
     faToggleColorPanel: result := 'faToggleColorPanel';
+    faColorPanelOn: result := 'faColorPanelOn';
+    faColorPanelOff: result := 'faColorPanelOff';
+
+    { FederText }
+    faToggleAllText: result := 'faToggleAllText';
+    faToggleTouchFrame: result := 'faToggleTouchFrame';
 
     { ViewParams }
     faPan: result := 'faPan';
@@ -257,10 +273,70 @@ begin
     faParamT3: result := 'faParamT3';
     faParamT4: result := 'faParamT4';
 
+    { ViewFlags }
+    faToggleTouchMenu: result := 'faToggleTouchMenu';
+    faToggleEquationText: result := 'faToggleEquationText';
+    faTogglePrimeText: result := 'faTogglePrimeText';
+    faToggleSecondText: result := 'faToggleSecondText';
+    faToggleLabelText: result := 'faToggleLabelText';
+    faLabelBatchM: result := 'faLabelBatchM';
+    faLabelBatchP: result := 'faLabelBatchP';
+    faLabelTextP: result := 'faLabelTextP';
+    faLabelTextM: result := 'faLabelTextM';
+
     { Bahn }
     faNorthCap: result := 'faNorthCap';
     faSouthCap: result := 'faSouthCap';
     faParamCapValue: result := 'faParamCapValue';
+
+    { SampleNavigation }
+    faGotoSample1: result := 'faGotoSample1';
+
+    { BtnLegendTablet }
+    faTL01: result := 'faTL01';
+    faTL02: result := 'faTL02';
+    faTL03: result := 'faTL03';
+    faTL04: result := 'faTL04';
+    faTL05: result := 'faTL05';
+    faTL06: result := 'faTL06';
+    faTR01: result := 'faTR01';
+    faTR02: result := 'faTR02';
+    faTR03: result := 'faTR03';
+    faTR04: result := 'faTR04';
+    faTR05: result := 'faTR05';
+    faTR06: result := 'faTR06';
+    faTR07: result := 'faTR07';
+    faTR08: result := 'faTR08';
+    faBL01: result := 'faBL01';
+    faBL02: result := 'faBL02';
+    faBL03: result := 'faBL03';
+    faBL04: result := 'faBL04';
+    faBL05: result := 'faBL05';
+    faBL06: result := 'faBL06';
+    faBL07: result := 'faBL07';
+    faBL08: result := 'faBL08';
+    faBR01: result := 'faBR01';
+    faBR02: result := 'faBR02';
+    faBR03: result := 'faBR03';
+    faBR04: result := 'faBR04';
+    faBR05: result := 'faBR05';
+    faBR06: result := 'faBR06';
+
+    { BtnLegendPhone }
+    faMB01: result := 'faMB01';
+    faMB02: result := 'faMB02';
+    faMB03: result := 'faMB03';
+    faMB04: result := 'faMB04';
+    faMB05: result := 'faMB05';
+    faMB06: result := 'faMB06';
+    faMB07: result := 'faMB07';
+    faMB08: result := 'faMB08';
+
+    { TouchBarLegend }
+    faTouchBarTop: result := 'faTouchBarTop';
+    faTouchBarBottom: result := 'faTouchBarBottom';
+    faTouchBarLeft: result := 'faTouchBarLeft';
+    faTouchBarRight: result := 'faTouchBarRight';
 
     { Reset }
     faReset: result := 'faReset';
@@ -277,6 +353,21 @@ begin
     faBitmapEscape: result := 'faBitmapEscape';
     faBitmapOne: result := 'faBitmapOne';
     faToggleContour: result := 'faToggleContour';
+
+    { Layout0 }
+    faLayout0: result := 'faLayout0';
+    faLayout1: result := 'faLayout1';
+    faLayout2: result := 'faLayout2';
+    faLayout3: result := 'faLayout3';
+    faLayout4: result := 'faLayout4';
+    faLayout5: result := 'faLayout5';
+    faLayout6: result := 'faLayout6';
+    faLayout7: result := 'faLayout7';
+    faLayout8: result := 'faLayout8';
+    faLayout9: result := 'faLayout9';
+
+    { ColorMapping }
+    faCLA: result := 'faCLA';
   end;
 end;
 

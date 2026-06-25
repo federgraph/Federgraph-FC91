@@ -26,12 +26,16 @@ uses
   System.Classes,
   System.Math,
   System.Math.Vectors,
+  System.Messaging,
   System.Types,
   System.UITypes,
   System.UIConsts,
   System.RTLConsts,
+  FMX.Controls,
   FMX.Controls3D,
   FMX.Graphics,
+  FMX.StdCtrls,
+  FMX.Platform,
   FMX.Types,
   FMX.Types3D,
   FMX.Forms,
@@ -42,6 +46,7 @@ uses
 
 type
   TFormMain = class(TForm)
+    procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
@@ -53,7 +58,10 @@ type
     procedure ViewportMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
     procedure ViewportMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
   private
+    AllowResizing: Boolean;
     Down: TPointF;
+    DrawingNeeded: Boolean;
+    ExitSizeMoveCounter: Integer;
     FBandColor: TAlphaColor;
     FormShown: Boolean;
     FShowColorPanel: Boolean;
@@ -64,23 +72,35 @@ type
     NorthLight: TLight;
     SouthLight: TLight;
     MouseDown: Boolean;
+    ResizeCounter: Integer;
+    ZInfoCounter: Integer;
+    procedure ActionsBtnClick(Sender: TObject);
     procedure ApplicationEventsException(Sender: TObject; E: Exception);
     procedure ApplicationEventsIdle(Sender: TObject; var Done: Boolean);
     procedure ColorPanelChange(Sender: TObject);
     procedure CreateColorPanel;
+    procedure CreateHintText;
+    procedure DestroyForms;
+    procedure DoOnResize;
+    procedure DoOrientationChanged(const Sender: TObject; const M: TMessage);
+    function GetContentHeight: single;
+    function GetContentParent: TFmxObject;
+    function GetContentWidth: single;
     function GetIsUp: Boolean;
+    function HandleAppEvent(AAppEvent: TApplicationEvent; AContext: TObject): Boolean;
     procedure HandleColorPanelChanged;
     procedure HandleRingWidthChanged;
     procedure Init;
     procedure InitCamera;
-    procedure InitColorBox;
     procedure InitColorPanel;
     procedure InitLight;
     procedure InitMesh;
-    procedure InitTouch;
     procedure InitViewport;
+    procedure LayoutHintText;
+    procedure Log(s: string);
+    procedure MemoBtnClick(Sender: TObject);
+    procedure RegisterForAppEvents;
     procedure ResizeColorPanel;
-    procedure ResizeColorBox;
     procedure RingPicked(Sender: TObject);
     procedure SetBandColor(const Value: TAlphaColor);
     procedure SetIsUp(const Value: Boolean);
@@ -90,32 +110,38 @@ type
     procedure SetShowColorPanel(const Value: Boolean);
     procedure SetValueText(const Value: string);
     procedure SetZoomText(const Value: string);
+    procedure UpdateHintTextPosition;
     procedure UpdateRotation;
-  protected
-    procedure ActionsBtnClick(Sender: TObject);
-    procedure DestroyForms;
-    procedure Log(s: string);
   public
     claBackground: TAlphaColor;
     Camera: TCamera;
     CameraDummy: TDummy;
     CameraDummyRotationAngle: TPoint3D;
-    ColorBox: TColorBox;
     ColorPanel: TColorPanel;
     ColorPanelChanged: Boolean;
+    HintText: TText;
     Viewport: TViewport3D;
     WantColorPanel: Boolean;
     procedure DoMM(fmk: TFederMessageKind; X, Y: Single);
     procedure DoZoom(Delta: single);
+    procedure FormResizeEnd(Sender: TObject);
     procedure HandleAction(fa: TFederAction);
     procedure HandleKey(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+    procedure HandleShowHint(Sender: TObject);
+    procedure InitZOrderInfo(ML: TStrings);
     procedure InvalidateGraph(Sender: TObject);
+    function MakeScreenshot: TBitmap;
+    procedure UpdateBackground;
     procedure ResetCamera;
     procedure ResetRotation;
     procedure ResetPosition;
     procedure ResetZoom;
     procedure ToggleLux;
+    procedure UpdateHintText(fa: Integer);
     property BandColor: TAlphaColor read FBandColor write SetBandColor;
+    property ContentHeight: single read GetContentHeight;
+    property ContentParent: TFmxObject read GetContentParent;
+    property ContentWidth: single read GetContentWidth;
     property IsUp: Boolean read GetIsUp write SetIsUp;
     property MeshText: string write SetMeshText;
     property ParamText: string write SetParamText;
@@ -134,8 +160,12 @@ implementation
 
 uses
   FrmAction,
+  FrmMemo,
   RiggVar.App.Main,
-  RiggVar.FB.Bitmap;
+  RiggVar.FederModel.TouchBase,
+  RiggVar.FB.Action,
+  RiggVar.FB.Bitmap,
+  RiggVar.FB.Classes;
 
 { TFormMain }
 
@@ -160,6 +190,8 @@ begin
   begin
     if Main <> nil then
     begin
+      if not MainVar.AppIsClosing then
+      begin
         if Main.BitmapBuilder.RingWidthChanged then
         begin
           HandleRingWidthChanged;
@@ -168,6 +200,13 @@ begin
         begin
           HandleColorPanelChanged;
         end;
+
+        if DrawingNeeded then
+        begin
+          DrawingNeeded := False;
+          InvalidateGraph(nil);
+        end;
+      end;
     end;
   end;
   Done := True;
@@ -189,12 +228,31 @@ begin
   end;
 end;
 
+procedure TFormMain.CreateHintText;
+begin
+  HintText := TText.Create(Self);
+  HintText.Name := 'HintText';
+  HintText.Parent := Self;
+  HintText.WordWrap := False;
+  HintText.AutoSize := True;
+  HintText.HorzTextAlign := TTextAlign.Leading;
+  HintText.Font.Family := 'Consolas';
+  HintText.Font.Size := 18;
+  HintText.Text := 'HintText';
+  HintText.TextSettings.FontColor := claYellow;
+end;
+
 procedure TFormMain.DestroyForms;
 begin
   if FormAction <> nil then
   begin
     FormAction.Free;
     FormAction := nil;
+  end;
+  if FormMemo <> nil then
+  begin
+    FormMemo.Free;
+    FormMemo := nil;
   end;
 end;
 
@@ -228,6 +286,34 @@ begin
   end;
 end;
 
+procedure TFormMain.DoOnResize;
+begin
+  MainVar.ClientWidth := ClientWidth;
+  MainVar.ClientHeight := ClientHeight;
+
+  if IsUp and AllowResizing then
+  begin
+    Inc(ResizeCounter);
+    ResizeColorPanel;
+
+    Main.UpdateTouch;
+    Main.UpdateText;
+    UpdateHintTextPosition;
+
+//    HandleAction(faNoop);
+  end;
+end;
+
+procedure TFormMain.DoOrientationChanged(const Sender: TObject; const M: TMessage);
+var
+  screenService: IFMXScreenService;
+begin
+  if TPlatformServices.Current.SupportsPlatformService(IFMXScreenService, screenService) then
+  begin
+    DrawingNeeded := True;
+  end;
+end;
+
 procedure TFormMain.DoZoom(Delta: single);
 var
   l: single;
@@ -249,6 +335,16 @@ begin
   end;
 end;
 
+procedure TFormMain.FormActivate(Sender: TObject);
+begin
+{$ifdef MSWINDOWS}
+  if IsUp then
+  begin
+    Viewport.SetFocus;
+  end;
+{$endif}
+end;
+
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
   Init;
@@ -256,6 +352,8 @@ end;
 
 procedure TFormMain.FormDestroy(Sender: TObject);
 begin
+  TMessageManager.DefaultManager.Unsubscribe(TOrientationChangedMessage, DoOrientationChanged);
+
   DestroyForms;
   Main.Free;
   Main := nil;
@@ -287,38 +385,65 @@ end;
 
 procedure TFormMain.FormResize(Sender: TObject);
 begin
-  MainVar.ClientWidth := ClientWidth;
-  MainVar.ClientHeight := ClientHeight;
+  DoOnResize;
+end;
 
-  ResizeColorBox;
-  ResizeColorPanel;
-
-  if FormShown then
-  begin
-    Main.FederTouch.UpdateShape;
-  end;
+procedure TFormMain.FormResizeEnd(Sender: TObject);
+begin
+  Inc(ExitSizeMoveCounter);
 end;
 
 procedure TFormMain.FormShow(Sender: TObject);
 begin
   if not FormShown then
   begin
-    Main.IsUp := True;
-    InitTouch;
     FormShown := True;
+    Main.IsUp := True;
+
+    UpdateBackground;
     Viewport.SetFocus;
-    Caption := 'Federgraph FC91P';
-    Main.ActionHandler.Execute(faReset);
+
+    Main.TextUpdateNeeded;
+    Main.BubbleUpAction(faNoop);
   end;
+end;
+
+function TFormMain.GetContentHeight: single;
+begin
+  if Assigned(Viewport) then
+    result := Viewport.Height
+  else
+    result := ClientHeight;
+end;
+
+function TFormMain.GetContentParent: TFmxObject;
+begin
+  result := Viewport;
+end;
+
+function TFormMain.GetContentWidth: single;
+begin
+  if Assigned(Viewport) then
+    result := Viewport.Width
+  else
+    result := ClientWidth;
 end;
 
 function TFormMain.GetIsUp: Boolean;
 begin
-  result := Main.IsUp;
+  if not MainVar.AppIsClosing and (Main <> nil) then
+    result := Main.IsUp
+  else
+    result := False;
 end;
 
 procedure TFormMain.HandleAction(fa: TFederAction);
 begin
+  case fa of
+    faShowActions: ActionsBtnClick(nil);
+    faShowMemo: MemoBtnClick(nil);
+  end;
+
   if Main.GraphUpdatingNeeded then
   begin
     Main.GraphUpdatingNeeded := False;
@@ -327,15 +452,70 @@ begin
 
   if Main.StateCheckingNeeded then
   begin
-    Main.FederTouch.CheckState;
+    Main.FederText.CheckState;
     Main.StateCheckingNeeded := False;
+  end;
+
+  if Main.FlashClearingNeeded then
+  begin
+    Main.FederText.ClearFlash;
+    Main.FlashClearingNeeded := False;
   end;
 
   if Main.TextUpdatingNeeded then
   begin
-    Main.UpdateText;
+    Main.FederText.UpdateText;
     Main.TextUpdatingNeeded := False;
   end;
+
+  UpdateHintText(fa);
+end;
+
+function TFormMain.HandleAppEvent(AAppEvent: TApplicationEvent; AContext: TObject): Boolean;
+begin
+  case AAppEvent of
+    TApplicationEvent.FinishedLaunching:
+    begin
+      Log('Finished Launching');
+      DrawingNeeded := True;
+    end;
+    TApplicationEvent.BecameActive:
+    begin
+      Log('Became Active');
+      DrawingNeeded := True;
+    end;
+    TApplicationEvent.WillBecomeInactive:
+    begin
+//      MainVar.ShouldRecycleSocket := True;
+      Log('Will Become Inactive');
+    end;
+    TApplicationEvent.EnteredBackground:
+    begin
+//      MainVar.ShouldRecycleSocket := True;
+      Log('Entered Background');
+    end;
+    TApplicationEvent.WillBecomeForeground:
+    begin
+      Log('Will Become Foreground');
+    end;
+    TApplicationEvent.WillTerminate:
+    begin
+      Log('Will Terminate');
+    end;
+    TApplicationEvent.LowMemory:
+    begin
+      Log('Low Memory');
+    end;
+    TApplicationEvent.TimeChange:
+    begin
+      Log('Time Change');
+    end;
+    TApplicationEvent.OpenURL:
+    begin
+      Log('Open URL');
+    end;
+  end;
+  result := True;
 end;
 
 procedure TFormMain.HandleColorPanelChanged;
@@ -359,6 +539,119 @@ begin
     InvalidateGraph(nil);
   end;
   ColorPanelChanged := False;
+end;
+
+procedure TFormMain.HandleKey(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+begin
+  if KeyChar = '{' then
+    Main.MeshSize := 32
+  else if KeyChar = '}' then
+    Main.MeshSize := 64
+  else if KeyChar = '(' then
+    Main.MeshSize := 128
+  else if KeyChar = ')' then
+    Main.MeshSize := 256
+
+  else if Key = vkEscape then
+    Main.DoReset
+
+  else if KeyChar = 'E' then
+    Main.ExportObj
+
+  else if KeyChar = '+' then
+  begin
+    Main.ActionHandler.Execute(faActionPageP);
+    Exit;
+  end
+
+  else if KeyChar = '*' then
+  begin
+    Main.ActionHandler.Execute(faActionPageM);
+    Exit;
+  end
+
+  else if KeyChar = 'h' then
+  begin
+    Main.ActionHandler.Execute(faToggleSolidFlip);
+    Exit;
+  end
+
+  else if KeyChar = ' ' then
+  begin
+    Main.ActionHandler.Execute(faToggleShowEdges);
+    Exit;
+  end
+
+  else if KeyChar = 'l' then
+  begin
+    Main.ActionHandler.Execute(faToggleLux);
+    Exit;
+  end
+
+  else if KeyChar = 'b' then
+  begin
+    Main.ActionHandler.Execute(faWantBottom);
+    Exit;
+  end
+
+  else if KeyChar = 'y' then
+  begin
+    Main.ActionHandler.Execute(faWantSpecialY);
+    Exit;
+  end
+
+  else if KeyChar = 'C' then
+  begin
+    Main.ActionHandler.Execute(faToggleColorPanel);
+    Exit;
+  end
+
+  else if Key = vkLeft then
+  begin
+    Main.ActionHandler.Execute(faWheelLeft);
+    Exit;
+  end
+
+  else if Key = vkRight then
+  begin
+    Main.ActionHandler.Execute(faWheelRight);
+    Exit;
+  end
+
+  else if Key = vkUp then
+  begin
+    Main.ActionHandler.Execute(faWheelUp);
+    Exit;
+  end
+
+  else if Key = vkDown then
+  begin
+    Main.ActionHandler.Execute(faWheelDown);
+    Exit;
+  end
+
+  else if KeyChar = 'c' then
+    Main.FederParam := fpParamCapValue
+  else if KeyChar = 'n' then
+    Main.FederParam := fpNorthCapValue
+  else if KeyChar = 's' then
+    Main.FederParam := fpSouthCapValue
+  else if KeyChar = 't' then
+    Main.FederParam := fpT1
+  else if KeyChar = 'T' then
+    Main.FederParam := fpT2
+  else if KeyChar = 'L' then
+    Main.FederParam := fpL
+  else if KeyChar = 'R' then
+    Main.FederParam := fpAbsoluteRange
+
+  ;
+
+  Main.CheckStateNeeded;
+  Main.TextUpdateNeeded;
+  Main.GraphUpdateNeeded;
+
+  Main.BubbleUpAction(faNoop);
 end;
 
 procedure TFormMain.HandleMouseDown(Shift: TShiftState; X, Y: Single);
@@ -391,6 +684,12 @@ begin
       UpdateRotation;
       Down := PointF(X, Y);
     end;
+
+    if Main.CurrentReportPage = rpViewStatus then
+    begin
+      Main.TextUpdateNeeded;
+      Main.BubbleUpAction(faNoop);
+    end;
   end;
 end;
 
@@ -400,6 +699,16 @@ begin
   Main.BitmapBuilder.UpdateReason := TUpdateReason.cuParamBandWidth;
   Main.BitmapBuilder.RingWidthChanged := False;
   InvalidateGraph(nil);
+end;
+
+procedure TFormMain.HandleShowHint(Sender: TObject);
+begin
+{$ifdef MSWINDOWS}
+  HintText.Text := Application.Hint;
+{$endif}
+{$ifdef OSX}
+  HintText.Text := Application.Hint;
+{$endif}
 end;
 
 procedure TFormMain.Init;
@@ -413,6 +722,11 @@ begin
   ReportMemoryLeaksOnShutdown := True;
 {$endif}
 
+{$ifdef MSWindows}
+  Width := 1200;
+  Height := 800;
+{$endif}
+
   FormatSettings.DecimalSeparator := '.';
   Caption := 'Federgraph ' + Application.Title.ToUpper;
 
@@ -423,15 +737,51 @@ begin
 
   Main := TMain.Create;
 
+  RegisterForAppEvents;
+
   InitViewport;
   InitCamera;
   InitLight;
   InitMesh;
 
+  Main.Init;
+
+  CreateHintText;
+  LayoutHintText;
+
+  Main.IsReady := True;
+
+  Main.FederText1.AllVisible := True;
+  Main.FederText1.TextVisible := True;
+  Main.FederText1.TransitBarLayout := 0;
+  Main.FederText1.EquationVisible := True;
+  Main.FederText1.MenuVisible := True;
+
+  IsUp := True;
+  AllowResizing := True;
+  Main.FederModel.Refresh;
+
   if WantColorPanel then
     InitColorPanel;
 
-  InitColorBox;
+  HintText.BringToFront;
+  Application.OnHint := HandleShowHint;
+
+//  Main.ActionHandler.Execute(faReset);
+
+//  Main.ActionHandler.Execute(faToggleColorPanel);
+  Main.ActionHandler.Execute(faToggleColorSwat);
+//  Main.ActionHandler.Execute(faResetRotation);
+
+//  Main.ActionHandler.ReportPage := rpColorInfo2;
+//  Main.ActionHandler.Execute(faToggleReportLock);
+  Main.FederText1.ActionPage := 1;
+
+  TMessageManager.DefaultManager.SubscribeToMessage(TOrientationChangedMessage, DoOrientationChanged);
+
+{$ifdef MSWINDOWS}
+  Viewport.SetFocus;
+{$endif}
 end;
 
 procedure TFormMain.InitCamera;
@@ -447,19 +797,6 @@ begin
   Viewport.Camera := Camera;
 
   ResetCamera;
-end;
-
-procedure TFormMain.ResizeColorBox;
-begin
-  ColorBox.Position.Point := TPointF.Create(75, 75);
-end;
-
-procedure TFormMain.InitColorBox;
-begin
-  ColorBox := TColorBox.Create(Self);
-  ColorBox.Parent := Self;
-  ColorBox.Name := 'ColorBox';
-  ResizeColorBox;
 end;
 
 procedure TFormMain.InitColorPanel;
@@ -484,33 +821,31 @@ begin
 
   BackLight := TLight.Create(Self);
   BackLight.LightType := TLightType.Point;
-  BackLight.Position.Z := LightConst.Back;
+  BackLight.Position.Z := 80;
   BackLight.Color := claWhite;
   Viewport.AddObject(BackLight);
 
   WestLight := TLight.Create(Self);
   WestLight.LightType := TLightType.Point;
-  WestLight.Position.X := LightConst.West;
-  WestLight.Position.Z := LightConst.WestZ;
+  WestLight.Position.X := -100;
   WestLight.Color := claLime;
   Viewport.AddObject(WestLight);
 
   EastLight := TLight.Create(Self);
   EastLight.LightType := TLightType.Point;
-  EastLight.Position.X := LightConst.East;
-  EastLight.Position.Z := LightConst.WestZ;
+  EastLight.Position.X := 100;
   EastLight.Color := claFuchsia;
   Viewport.AddObject(EastLight);
 
   NorthLight := TLight.Create(Self);
   NorthLight.LightType := TLightType.Point;
-  NorthLight.Position.Y := LightConst.North;
+  NorthLight.Position.Y := 150;
   NorthLight.Color := claWhite;
   Viewport.AddObject(NorthLight);
 
   SouthLight := TLight.Create(Self);
   SouthLight.LightType := TLightType.Point;
-  SouthLight.Position.Y := LightConst.South;
+  SouthLight.Position.Y := -150;
   SouthLight.Color := claWhite;
   Viewport.AddObject(SouthLight);
 end;
@@ -521,16 +856,9 @@ begin
   Main.FederMesh.OnRingPicked := RingPicked;
 end;
 
-procedure TFormMain.InitTouch;
-begin
-  Main.FederTouch.OwnerComponent := Self;
-  Main.FederTouch.ParentObject := Viewport;
-  MainVar.ClientWidth := ClientWidth;
-  MainVar.ClientHeight := ClientHeight;
-  Main.FederTouch.Init;
-end;
-
 procedure TFormMain.InitViewport;
+var
+  t: single;
 begin
   Viewport := TViewport3D.Create(self);
   Viewport.Parent := self;
@@ -550,20 +878,86 @@ begin
 
   Viewport.Color := claBackground;
   Viewport.CanFocus := true;
+
+  t := Viewport.Scene.GetSceneScale;
+  if t > 1 then
+    Main.IsRetina := True;
+end;
+
+procedure TFormMain.InitZOrderInfo(ML: TStrings);
+var
+  i: Integer;
+  o: TFMXObject;
+  c: TControl;
+begin
+  ML.Add('ZOrder-Report for FormMain.Children:');
+  ML.Add('Item - Visible; HitTest; Name: ClassName');
+  Inc(ZInfoCounter);
+  for i := 0 to Self.ChildrenCount-1 do
+  begin
+    o := Self.Children.Items[i];
+    if o is TControl then
+    begin
+      c := o as TControl;
+      ML.Add(Format('%2d - %d; %d; %s: %s', [i, BoolInt[c.Visible], BoolInt[c.HitTest], c.Name, c.ClassName]));
+    end;
+  end;
+
+  ML.Add('');
+  ML.Add(Format('ZInfoCounter = %d', [ZInfoCounter]));
+  ML.Add(Format('Self.Fill.Color = %s', [AlphaColorToString(Self.Fill.Color)]));
 end;
 
 procedure TFormMain.InvalidateGraph(Sender: TObject);
 begin
-  if Viewport <> nil then
+  if IsUp and (Viewport <> nil) then
   begin
     Viewport.InvalidateRect(Viewport.ClipRect);
     Viewport.Repaint;
+    Inc(Main.CounterDrawing3D);
   end;
+end;
+
+procedure TFormMain.LayoutHintText;
+begin
+  HintText.Position.Y := 1 * MainVar.Raster + 10;
+  UpdateHintTextPosition;
 end;
 
 procedure TFormMain.Log(s: string);
 begin
 
+end;
+
+function TFormMain.MakeScreenshot: TBitmap;
+begin
+  Result := TBitmap.Create(Round(ClientWidth), Round(ClientHeight));
+  Result.Clear(0);
+  if Result.Canvas.BeginScene then
+  try
+    PaintTo(Result.Canvas);
+  finally
+    Result.Canvas.EndScene;
+  end;
+end;
+
+procedure TFormMain.MemoBtnClick(Sender: TObject);
+begin
+  if not Assigned(FormMemo) then
+  begin
+    FormMemo := TFormMemo.Create(nil);
+    FormMemo.Memo.Lines.Clear;
+  end;
+  FormMemo.Visible := True;
+end;
+
+procedure TFormMain.RegisterForAppEvents;
+var aFMXApplicationEventService: IFMXApplicationEventService;
+begin
+  if TPlatformServices.Current.SupportsPlatformService(IFMXApplicationEventService, IInterface(aFMXApplicationEventService)) then
+    aFMXApplicationEventService.SetApplicationEventHandler(HandleAppEvent)
+  else
+    Log('Application Event Service is not supported.');
 end;
 
 procedure TFormMain.ResetCamera;
@@ -612,7 +1006,7 @@ begin
     if Main.IsPhone then
     begin
       ColorPanel.Position.X := MainVar.Raster;
-      ColorPanel.Position.Y := 6 * MainVar.Raster;
+      ColorPanel.Position.Y := 2 * MainVar.Raster;
     end
     else
     begin
@@ -628,9 +1022,13 @@ var
 begin
   r := Main.CurrentRing;
 
-  if (ColorBox <> nil) and ColorBox.Visible then
+  if (Main.FederText1 <> nil) and Main.FederText1.SwatVisible then
   begin
-    ColorBox.Color := Main.BitmapBuilder.RingColor[r];
+    Main.FederText1.SwatColor := Main.BitmapBuilder.RingColor[r];
+  end;
+  if (Main.FederText2 <> nil) then
+  begin
+    Main.FederText2.SwatColor := Main.BitmapBuilder.RingColor[r];
   end;
 
   ColorPanel.Color := Main.BitmapBuilder.RingColor[r];
@@ -654,17 +1052,17 @@ end;
 
 procedure TFormMain.SetMeshText(const Value: string);
 begin
-  Main.FederTouch.SR00.Caption := Value;
+//  Main.FederText.SR00.Caption := Value;
 end;
 
 procedure TFormMain.SetParamText(const Value: string);
 begin
-  Main.FederTouch.ST00.Caption := Value;
+//  Main.FederText.ST00.Caption := Value;
 end;
 
 procedure TFormMain.SetRingText(const Value: string);
 begin
-  Main.FederTouch.SL00.Caption := Value;
+//  Main.FederText.SL00.Caption := Value;
 end;
 
 procedure TFormMain.SetShowColorPanel(const Value: Boolean);
@@ -683,12 +1081,21 @@ end;
 
 procedure TFormMain.SetValueText(const Value: string);
 begin
-  Main.FederTouch.SB00.Caption := Value;
+  Main.FederText.SB00.Caption := Value;
+end;
+
+procedure TFormMain.UpdateBackground;
+begin
+  Self.Fill.Color := MainVar.ColorScheme.claBackground;
+  Viewport.Color := MainVar.ColorScheme.claBackground;
+
+  if HintText <> nil then
+    HintText.TextSettings.FontColor := MainVar.ColorScheme.claHint;
 end;
 
 procedure TFormMain.SetZoomText(const Value: string);
 begin
-  Main.FederTouch.SB00.Caption := Value;
+  Main.FederText.SB00.Caption := Value;
 end;
 
 procedure TFormMain.ToggleLux;
@@ -715,97 +1122,38 @@ begin
   CameraDummy.RotationAngle.Point := CameraDummyRotationAngle;
 end;
 
-procedure TFormMain.HandleKey(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
+procedure TFormMain.UpdateHintText(fa: Integer);
 begin
-  if KeyChar = '{' then
-    Main.MeshSize := 32
-  else if KeyChar = '}' then
-    Main.MeshSize := 64
-  else if KeyChar = '(' then
-    Main.MeshSize := 128
-  else if KeyChar = ')' then
-    Main.MeshSize := 256
-
-  else if Key = vkEscape then
-    Main.DoReset
-
-  else if KeyChar = 'E' then
-    Main.ExportObj
-
-  else if KeyChar = 'h' then
+  if (HintText <> nil) and HintText.Visible then
   begin
-    Main.ActionHandler.Execute(faToggleSolidFlip);
-    Exit;
-  end
+{$ifdef IOS}
+  if fa = faCLA then
+    HintText.Text := Main.FederText.GetHintForColorBtn(Main.FederText.ClickedID)
+  else if fa <> faNoop then
+    HintText.Text := Main.ActionHandler.GetCaption(fa) + #10 + Main.ActionHandler.GetShortcutString(fa)
+  else
+    HintText.Text := '';
+{$endif}
+{$ifdef Android}
+  if fa = faCLA then
+    HintText.Text := Main.FederText.GetHintForColorBtn(Main.FederText.ClickedID)
+  else if fa <> faNoop then
+    HintText.Text := Main.ActionHandler.GetCaption(fa) + #10 + Main.ActionHandler.GetShortcutString(fa)
+  else
+    HintText.Text := '';
+{$endif}
+  end;
+end;
 
-  else if KeyChar = ' ' then
+procedure TFormMain.UpdateHintTextPosition;
+begin
+  if (HintText <> nil) then
   begin
-    Main.ActionHandler.Execute(faToggleShowEdges);
-    Exit;
-  end
-
-  else if KeyChar = 'l' then
-  begin
-    Main.ActionHandler.Execute(faToggleLux);
-    Exit;
-  end
-
-  else if KeyChar = 'b' then
-  begin
-    Main.ActionHandler.Execute(faWantBottom);
-    Exit;
-  end
-  else if KeyChar = 's' then
-  begin
-    Main.ActionHandler.Execute(faWantSideCaps);
-    Exit;
-  end
-
-  else if KeyChar = 'm' then
-  begin
-    Main.ActionHandler.Execute(faWantBottomMirrored);
-    Exit;
-  end
-
-  else if KeyChar = 'y' then
-  begin
-    Main.ActionHandler.Execute(faWantSpecialY);
-    Exit;
-  end
-
-  else if KeyChar = 'C' then
-  begin
-    Main.ActionHandler.Execute(faToggleColorPanel);
-    Exit;
-  end
-  else if KeyChar = 'F' then
-  begin
-    Main.ActionHandler.Execute(faToggleColorSwat);
-    Exit;
-  end
-
-  else if KeyChar = 'c' then
-    Main.FederParam := fpParamCapValue
-  else if KeyChar = 'n' then
-    Main.FederParam := fpNorthCapValue
-  else if KeyChar = 's' then
-    Main.FederParam := fpSouthCapValue
-  else if KeyChar = 't' then
-    Main.FederParam := fpT1
-  else if KeyChar = 'T' then
-    Main.FederParam := fpT2
-  else if KeyChar = 'L' then
-    Main.FederParam := fpL
-  else if KeyChar = 'R' then
-    Main.FederParam := fpAbsoluteRange
-
-  ;
-
-  Main.CheckStateNeeded;
-  Main.TextUpdateNeeded;
-  Main.GraphUpdateNeeded;
-
-  Main.BubbleUpAction(faNoop);
+    if Main.IsPhone and (ClientWidth < ClientHeight) then
+      HintText.Position.X := 2 * MainVar.Raster + 30
+    else
+      HintText.Position.X := 7 * MainVar.Raster + 30;
+  end;
 end;
 
 procedure TFormMain.ViewportMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);

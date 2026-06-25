@@ -44,16 +44,25 @@ begin
     Exit;
 
   case fa of
+    faToggleAllText: result := M.FederText.AllVisible;
+    faToggleTouchFrame: result := M.FederText.FrameVisible;
+    faToggleTouchMenu: result := M.FederText.MenuVisible;
+    faToggleEquationText: result := M.FederText.EquationVisible;
+    faTogglePrimeText: result := M.FederText.TextVisible;
+    faToggleSecondText: result := M.FederText.TitleVisible;
+
     faToggleContour: result := M.BitmapBuilder.WantContour;
 
     faShowCurrentBand0: result := not M.ShowCurrentBand;
     faShowCurrentBand1: result := M.ShowCurrentBand;
     faShowCurrentBandT: result := M.ShowCurrentBand;
 
+    faMeshSize16: result := M.MeshSize = 16;
     faMeshSize32: result := M.MeshSize = 32;
     faMeshSize64: result := M.MeshSize = 64;
     faMeshSize128: result := M.MeshSize = 128;
     faMeshSize256: result := M.MeshSize = 256;
+    faMeshSize316: result := M.MeshSize = 316;
     faMeshSize512: result := M.MeshSize = 512;
 
     faParamL: result := M.FederParam = fpL;
@@ -66,6 +75,8 @@ begin
     faParamCZ: result := M.FederParam = fpcz;
 
     faBandWidthRelative: result :=  (M.FederParam = fpBandWidth) and (M.BandWidthOption = bwRelative);
+
+    faLayout0 .. faLayout9: result := M.TransitBarLayout = fa - faLayout0;
 
     faExportCoordsNative: result := M.ExportCoords = TExportCoords.Native;
     faExportCoordsBlender: result := M.ExportCoords = TExportCoords.App_Blender;

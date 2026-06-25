@@ -47,6 +47,16 @@ begin
     faActionPage5: result := 'Action Page 5';
     faActionPage6: result := 'Action Page 6';
 
+    { Forms }
+    faShowMemo: result := 'Form Memo';
+    faShowActions: result := 'Form Actions';
+    faShowInfo: result := 'Form Info';
+
+    { TouchLayout }
+    faTouchTablet: result := 'Touch Tablet';
+    faTouchPhone: result := 'Touch Phone';
+    faTouchDesk: result := 'Touch Desk';
+
     { SystemParam }
     faParamX1: result := 'Param x1';
     faParamY1: result := 'Param y1';
@@ -243,6 +253,12 @@ begin
 
     { UI }
     faToggleColorPanel: result := 'Color Panel';
+    faColorPanelOn: result := 'Toggle Color Panel On';
+    faColorPanelOff: result := 'Toggle Color Panel Off';
+
+    { FederText }
+    faToggleAllText: result := 'Toggle All Text';
+    faToggleTouchFrame: result := 'Toggle Touch Frame';
 
     { ViewParams }
     faPan: result := 'Pan';
@@ -257,10 +273,70 @@ begin
     faParamT3: result := 'Param T3';
     faParamT4: result := 'Param T4';
 
+    { ViewFlags }
+    faToggleTouchMenu: result := 'Toggle Touch Menu';
+    faToggleEquationText: result := 'Equation text visibility';
+    faTogglePrimeText: result := 'Primary text visibility';
+    faToggleSecondText: result := 'Secondary text visibility';
+    faToggleLabelText: result := 'Label text visibility';
+    faLabelBatchM: result := 'cycle label batch -';
+    faLabelBatchP: result := 'cycle label batch +';
+    faLabelTextP: result := 'LabelText plus';
+    faLabelTextM: result := 'LabelText minus';
+
     { Bahn }
     faNorthCap: result := 'Param North Cap Value';
     faSouthCap: result := 'Param South Cap Value';
     faParamCapValue: result := 'Param Cap Value';
+
+    { SampleNavigation }
+    faGotoSample1: result := 'Goto Sample 1';
+
+    { BtnLegendTablet }
+    faTL01: result := 'Top Left 1';
+    faTL02: result := 'Top Left 2';
+    faTL03: result := 'Top Left 3';
+    faTL04: result := 'Top Left 4';
+    faTL05: result := 'Top Left 5';
+    faTL06: result := 'Top Left 6';
+    faTR01: result := 'Top Right 1';
+    faTR02: result := 'Top Right 2';
+    faTR03: result := 'Top Right 3';
+    faTR04: result := 'Top Right 4';
+    faTR05: result := 'Top Right 5';
+    faTR06: result := 'Top Right 6';
+    faTR07: result := 'Top Right 7';
+    faTR08: result := 'Top Right 8';
+    faBL01: result := 'Bottom Left 1';
+    faBL02: result := 'Bottom Left 2';
+    faBL03: result := 'Bottom Left 3';
+    faBL04: result := 'Bottom Left 4';
+    faBL05: result := 'Bottom Left 5';
+    faBL06: result := 'Bottom Left 6';
+    faBL07: result := 'Bottom Left 7';
+    faBL08: result := 'Bottom Left 8';
+    faBR01: result := 'Bottom Right 1';
+    faBR02: result := 'Bottom Right 2';
+    faBR03: result := 'Bottom Right 3';
+    faBR04: result := 'Bottom Right 4';
+    faBR05: result := 'Bottom Right 5';
+    faBR06: result := 'Bottom Right 6';
+
+    { BtnLegendPhone }
+    faMB01: result := 'Mobile Btn 1';
+    faMB02: result := 'Mobile Btn 2';
+    faMB03: result := 'Mobile Btn 3';
+    faMB04: result := 'Mobile Btn 4';
+    faMB05: result := 'Mobile Btn 5';
+    faMB06: result := 'Mobile Btn 6';
+    faMB07: result := 'Mobile Btn 7';
+    faMB08: result := 'Mobile Btn 8';
+
+    { TouchBarLegend }
+    faTouchBarTop: result := 'TouchBar Top';
+    faTouchBarBottom: result := 'TouchBar Bottom';
+    faTouchBarLeft: result := 'TouchBar Left';
+    faTouchBarRight: result := 'TouchBar Right';
 
     { Reset }
     faReset: result := 'Reset';
@@ -277,6 +353,21 @@ begin
     faBitmapEscape: result := 'Enter outer cycle';
     faBitmapOne: result := 'goto bitmap one';
     faToggleContour: result := 'Toggle contour rings';
+
+    { Layout0 }
+    faLayout0: result := 'Transitbar Layout 0';
+    faLayout1: result := 'Transitbar Layout 1';
+    faLayout2: result := 'Transitbar Layout 2';
+    faLayout3: result := 'Transitbar Layout 3';
+    faLayout4: result := 'Transitbar Layout 4';
+    faLayout5: result := 'Transitbar Layout 5';
+    faLayout6: result := 'Transitbar Layout 6';
+    faLayout7: result := 'Transitbar Layout 7';
+    faLayout8: result := 'Transitbar Layout 8';
+    faLayout9: result := 'Transitbar Layout 9';
+
+    { ColorMapping }
+    faCLA: result := 'Apply Color';
   end;
 end;
 

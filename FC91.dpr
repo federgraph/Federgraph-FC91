@@ -5,6 +5,7 @@ uses
   FMX.Forms,
   FrmMain in 'App\FrmMain.pas' {FormMain},
   FrmAction in 'App\FrmAction.pas' {FormAction},
+  FrmMemo in 'App\FrmMemo.pas' {FormMemo},
   RiggVar.App.Main in 'App\RiggVar.App.Main.pas',
   RiggVar.App.Main0 in 'App\RiggVar.App.Main0.pas',
   RiggVar.Bitmap.Bands in 'Bitmap\RiggVar.Bitmap.Bands.pas',
@@ -27,6 +28,7 @@ uses
   RiggVar.EQ.Model in 'EQ\RiggVar.EQ.Model.pas',
   RiggVar.EQ.SimpleFormula in 'EQ\RiggVar.EQ.SimpleFormula.pas',
   RiggVar.FB.Action in 'FB\RiggVar.FB.Action.pas',
+  RiggVar.FB.ActionConfig in 'FB\RiggVar.FB.ActionConfig.pas',
   RiggVar.FB.ActionConst in 'FB\RiggVar.FB.ActionConst.pas',
   RiggVar.FB.ActionDecode in 'FB\RiggVar.FB.ActionDecode.pas',
   RiggVar.FB.ActionDef in 'FB\RiggVar.FB.ActionDef.pas',
@@ -53,9 +55,13 @@ uses
   RiggVar.FB.MeshParams in 'FB\RiggVar.FB.MeshParams.pas',
   RiggVar.FB.Model in 'FB\RiggVar.FB.Model.pas',
   RiggVar.FB.ParamDef in 'FB\RiggVar.FB.ParamDef.pas',
+  RiggVar.FB.Report in 'FB\RiggVar.FB.Report.pas',
   RiggVar.FB.Scheme in 'FB\RiggVar.FB.Scheme.pas',
   RiggVar.FB.StopWatch in 'FB\RiggVar.FB.StopWatch.pas',
+  RiggVar.FB.Text in 'FB\RiggVar.FB.Text.pas',
+  RiggVar.FB.TextBase in 'FB\RiggVar.FB.TextBase.pas',
   RiggVar.FB.Transform in 'FB\RiggVar.FB.Transform.pas',
+  RiggVar.FB.Update in 'FB\RiggVar.FB.Update.pas',
   RiggVar.Mesh.BuilderMesh in 'Mesh\RiggVar.Mesh.BuilderMesh.pas',
   RiggVar.Mesh.ExporterOBJ in 'Mesh\RiggVar.Mesh.ExporterOBJ.pas',
   RiggVar.Mesh.FederShell1 in 'Mesh\RiggVar.Mesh.FederShell1.pas',
@@ -70,8 +76,18 @@ uses
   RiggVar.FederModel.Action in 'Model\RiggVar.FederModel.Action.pas',
   RiggVar.FederModel.ActionChecked in 'Model\RiggVar.FederModel.ActionChecked.pas',
   RiggVar.FederModel.ActionExecute in 'Model\RiggVar.FederModel.ActionExecute.pas',
+  RiggVar.FederModel.ActionMapPhone in 'Model\RiggVar.FederModel.ActionMapPhone.pas',
+  RiggVar.FederModel.ActionMapTablet in 'Model\RiggVar.FederModel.ActionMapTablet.pas',
+  RiggVar.FederModel.ActionMapTransit in 'Model\RiggVar.FederModel.ActionMapTransit.pas',
+  RiggVar.FederModel.Color in 'Model\RiggVar.FederModel.Color.pas',
   RiggVar.FederModel.MaterialSources in 'Model\RiggVar.FederModel.MaterialSources.pas',
+  RiggVar.FederModel.Report in 'Model\RiggVar.FederModel.Report.pas',
+  RiggVar.FederModel.RingBuilder in 'Model\RiggVar.FederModel.RingBuilder.pas',
+  RiggVar.FederModel.TextContainer in 'Model\RiggVar.FederModel.TextContainer.pas',
+  RiggVar.FederModel.Touch in 'Model\RiggVar.FederModel.Touch.pas',
   RiggVar.FederModel.TouchBase in 'Model\RiggVar.FederModel.TouchBase.pas',
+  RiggVar.FederModel.TouchPhone in 'Model\RiggVar.FederModel.TouchPhone.pas',
+  RiggVar.Util.AppUtils in 'Util\RiggVar.Util.AppUtils.pas',
   RiggVar.Poly.Rack in 'Poly\RiggVar.Poly.Rack.pas',
   RiggVar.Poly.Rad in 'Poly\RiggVar.Poly.Rad.pas';
 
@@ -79,7 +95,7 @@ uses
 
 begin
   Application.Initialize;
-  Application.Title := 'FC91P';
+  Application.Title := 'FC91N';
   Application.CreateForm(TFormMain, FormMain);
   Application.Run;
 end.

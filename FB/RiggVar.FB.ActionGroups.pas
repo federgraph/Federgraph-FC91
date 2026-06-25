@@ -81,6 +81,8 @@ begin
   { App }
   AddSpecial(ActionGroupEmptyAction, 'EmptyAction');
   AddSpecial(ActionGroupPages, 'Pages');
+  AddSpecial(ActionGroupForms, 'Forms');
+  AddSpecial(ActionGroupTouchLayout, 'TouchLayout');
 
   { Params }
   AddSpecial(ActionGroupSystemParam, 'SystemParam');
@@ -100,23 +102,47 @@ begin
   { Mesh }
   AddSpecial(ActionGroupMeshSize, 'MeshSize');
   AddSpecial(ActionGroupMeshExport, 'MeshExport');
+  AddSpecial(ActionGroupMeshExportCoords, 'MeshExportCoords');
+  AddSpecial(ActionGroupExporterOBJ, 'ExporterOBJ');
   AddSpecial(ActionGroupMeshBuilderOptions, 'MeshBuilderOptions');
 
   { Texture }
   AddSpecial(ActionGroupColorSwat, 'ColorSwat');
 
-   { UI }
+  { Light }
+  AddSpecial(ActionGroupLux, 'Lux');
+
+  { UI }
   AddSpecial(ActionGroupWheel, 'Wheel');
+  AddSpecial(ActionGroupWheelFrequency, 'WheelFrequency');
   AddSpecial(ActionGroupColorScheme, 'ColorScheme');
   AddSpecial(ActionGroupUI, 'UI');
 
   { View }
+  AddSpecial(ActionGroupFederText, 'FederText');
   AddSpecial(ActionGroupViewParams, 'ViewParams');
   AddSpecial(ActionGroupParamT, 'ParamT');
+  AddSpecial(ActionGroupViewFlags, 'ViewFlags');
+
+  { 2D }
+  AddSpecial(ActionGroupBahn, 'Bahn');
+
+  { DB }
+  AddSpecial(ActionGroupSampleNavigation, 'SampleNavigation');
+
+  { TouchFrame Buttons }
+  AddSpecial(ActionGroupBtnLegendTablet, 'BtnLegendTablet');
+  AddSpecial(ActionGroupBtnLegendPhone, 'BtnLegendPhone');
+  AddSpecial(ActionGroupTouchBarLegend, 'TouchBarLegend');
 
   AddSpecial(ActionGroupReset, 'Reset');
-
   AddSpecial(ActionGroupBitmapCycle, 'BitmapCycle');
+
+  { Layout }
+  AddSpecial(ActionGroupLayout0, 'Layout0');
+
+  { Bambu }
+  AddSpecial(ActionGroupColorMapping, 'ColorMapping');
 end;
 
 function TActionGroupList.GetGroup(fa: TFederAction): Integer;

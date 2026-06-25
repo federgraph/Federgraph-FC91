@@ -47,6 +47,16 @@ begin
     faActionPage5: result := 'ap5';
     faActionPage6: result := 'ap6';
 
+    { Forms }
+    faShowMemo: result := 'FM';
+    faShowActions: result := 'FA';
+    faShowInfo: result := 'FI';
+
+    { TouchLayout }
+    faTouchTablet: result := 'tab';
+    faTouchPhone: result := 'pho';
+    faTouchDesk: result := 'dsk';
+
     { SystemParam }
     faParamX1: result := 'x1';
     faParamY1: result := 'y1';
@@ -243,6 +253,12 @@ begin
 
     { UI }
     faToggleColorPanel: result := 'cp';
+    faColorPanelOn: result := 'CPA';
+    faColorPanelOff: result := 'cpa';
+
+    { FederText }
+    faToggleAllText: result := 'tat';
+    faToggleTouchFrame: result := 'fra';
 
     { ViewParams }
     faPan: result := 'pan';
@@ -257,10 +273,70 @@ begin
     faParamT3: result := 't3';
     faParamT4: result := 't4';
 
+    { ViewFlags }
+    faToggleTouchMenu: result := 'men';
+    faToggleEquationText: result := 'tbl';
+    faTogglePrimeText: result := 'txt';
+    faToggleSecondText: result := 'lbl';
+    faToggleLabelText: result := 'ltv';
+    faLabelBatchM: result := 'lb-';
+    faLabelBatchP: result := 'lb+';
+    faLabelTextP: result := 'ltp';
+    faLabelTextM: result := 'ltm';
+
     { Bahn }
     faNorthCap: result := 'ncv';
     faSouthCap: result := 'scv';
     faParamCapValue: result := 'pcv';
+
+    { SampleNavigation }
+    faGotoSample1: result := 'gs1';
+
+    { BtnLegendTablet }
+    faTL01: result := '#1';
+    faTL02: result := '#2';
+    faTL03: result := '#3';
+    faTL04: result := '#4';
+    faTL05: result := '#5';
+    faTL06: result := '#6';
+    faTR01: result := '1#';
+    faTR02: result := '2#';
+    faTR03: result := '3#';
+    faTR04: result := '4#';
+    faTR05: result := '5#';
+    faTR06: result := '6#';
+    faTR07: result := '7#';
+    faTR08: result := '8#';
+    faBL01: result := '1*';
+    faBL02: result := '2*';
+    faBL03: result := '3*';
+    faBL04: result := '4*';
+    faBL05: result := '5*';
+    faBL06: result := '6*';
+    faBL07: result := '7*';
+    faBL08: result := '8*';
+    faBR01: result := '*1';
+    faBR02: result := '*2';
+    faBR03: result := '*3';
+    faBR04: result := '*4';
+    faBR05: result := '*5';
+    faBR06: result := '*6';
+
+    { BtnLegendPhone }
+    faMB01: result := '_1';
+    faMB02: result := '_2';
+    faMB03: result := '_3';
+    faMB04: result := '_4';
+    faMB05: result := '_5';
+    faMB06: result := '_6';
+    faMB07: result := '_7';
+    faMB08: result := '_8';
+
+    { TouchBarLegend }
+    faTouchBarTop: result := 'tbT';
+    faTouchBarBottom: result := 'tbB';
+    faTouchBarLeft: result := 'tbL';
+    faTouchBarRight: result := 'tbR';
 
     { Reset }
     faReset: result := 'res';
@@ -277,6 +353,21 @@ begin
     faBitmapEscape: result := 'be';
     faBitmapOne: result := 'bf';
     faToggleContour: result := 'ct';
+
+    { Layout0 }
+    faLayout0: result := '0';
+    faLayout1: result := '1';
+    faLayout2: result := '2';
+    faLayout3: result := '3';
+    faLayout4: result := '4';
+    faLayout5: result := '5';
+    faLayout6: result := '6';
+    faLayout7: result := '7';
+    faLayout8: result := '8';
+    faLayout9: result := '9';
+
+    { ColorMapping }
+    faCLA: result := '.';
   end;
 end;
 

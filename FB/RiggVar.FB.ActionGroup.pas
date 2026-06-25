@@ -44,6 +44,16 @@ const
     faActionPage5,
     faActionPage6];
 
+  ActionGroupForms: TActionGroup = [
+    faShowMemo,
+    faShowActions,
+    faShowInfo];
+
+  ActionGroupTouchLayout: TActionGroup = [
+    faTouchTablet,
+    faTouchPhone,
+    faTouchDesk];
+
   ActionGroupSystemParam: TActionGroup = [
     faParamX1,
     faParamY1,
@@ -239,7 +249,13 @@ const
     faCycleColorSchemeP];
 
   ActionGroupUI: TActionGroup = [
-    faToggleColorPanel];
+    faToggleColorPanel,
+    faColorPanelOn,
+    faColorPanelOff];
+
+  ActionGroupFederText: TActionGroup = [
+    faToggleAllText,
+    faToggleTouchFrame];
 
   ActionGroupViewParams: TActionGroup = [
     faPan,
@@ -254,10 +270,70 @@ const
     faParamT3,
     faParamT4];
 
+  ActionGroupViewFlags: TActionGroup = [
+    faToggleTouchMenu,
+    faToggleEquationText,
+    faTogglePrimeText,
+    faToggleSecondText,
+    faToggleLabelText,
+    faLabelBatchM,
+    faLabelBatchP,
+    faLabelTextP,
+    faLabelTextM];
+
   ActionGroupBahn: TActionGroup = [
     faNorthCap,
     faSouthCap,
     faParamCapValue];
+
+  ActionGroupSampleNavigation: TActionGroup = [
+    faGotoSample1];
+
+  ActionGroupBtnLegendTablet: TActionGroup = [
+    faTL01,
+    faTL02,
+    faTL03,
+    faTL04,
+    faTL05,
+    faTL06,
+    faTR01,
+    faTR02,
+    faTR03,
+    faTR04,
+    faTR05,
+    faTR06,
+    faTR07,
+    faTR08,
+    faBL01,
+    faBL02,
+    faBL03,
+    faBL04,
+    faBL05,
+    faBL06,
+    faBL07,
+    faBL08,
+    faBR01,
+    faBR02,
+    faBR03,
+    faBR04,
+    faBR05,
+    faBR06];
+
+  ActionGroupBtnLegendPhone: TActionGroup = [
+    faMB01,
+    faMB02,
+    faMB03,
+    faMB04,
+    faMB05,
+    faMB06,
+    faMB07,
+    faMB08];
+
+  ActionGroupTouchBarLegend: TActionGroup = [
+    faTouchBarTop,
+    faTouchBarBottom,
+    faTouchBarLeft,
+    faTouchBarRight];
 
   ActionGroupReset: TActionGroup = [
     faReset,
@@ -274,6 +350,21 @@ const
     faBitmapEscape,
     faBitmapOne,
     faToggleContour];
+
+  ActionGroupLayout0: TActionGroup = [
+    faLayout0,
+    faLayout1,
+    faLayout2,
+    faLayout3,
+    faLayout4,
+    faLayout5,
+    faLayout6,
+    faLayout7,
+    faLayout8,
+    faLayout9];
+
+  ActionGroupColorMapping: TActionGroup = [
+    faCLA];
 
 implementation
 

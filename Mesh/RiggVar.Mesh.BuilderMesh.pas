@@ -49,8 +49,14 @@ type
 
     function GetCapValue: single;
     function GetColorName: string;
+    function GetAbsoluteRange: single;
     function GetOffsetY: single;
   protected
+    FSL: TStrings;
+    procedure RememberSL(SL: TStrings);
+    procedure ForgetSL(SL: TStrings);
+    procedure SL_Add(s: string; TargetLength: Integer = 36); overload;
+    procedure SL_Add(SL: TStrings; s: string; TargetLength: Integer = 36); overload;
     procedure RebuildMesh; virtual;
     procedure Render; override;
     procedure DrawWireFrame(const Opacity: Single; const Color: TAlphaColor);
@@ -69,11 +75,13 @@ type
 
     procedure UpdateScale(WantPositionZ: Boolean = False);
 
+    procedure AddReport(SL: TStrings); virtual;
     procedure ExportOBJ(Exporter: TExporterOBJ; flipT: Boolean; StandAlone: Boolean; PartName: string); virtual;
     procedure UpdateMeshProps;
 
     property MeshBuilder: TMeshBuilderBase read FMeshBuilder write SetMeshBuilder;
 
+    property AbsoluteRange: single read GetAbsoluteRange;
     property OffsetY: single read GetOffsetY;
     property CapValue: single read GetCapValue;
     property Color: TAlphaColor read FColor write FColor;
@@ -84,7 +92,14 @@ type
   TBuilderMeshList = TList<TBuilderMesh>;
 
   TFederGroup = class(TDummy)
+  protected
+    FSL: TStrings;
+    procedure RememberSL(SL: TStrings);
+    procedure ForgetSL(SL: TStrings);
+    procedure SL_Add(s: string; TargetLength: Integer = 36); overload;
+    procedure SL_Add(SL: TStrings; s: string; TargetLength: Integer = 36); overload;
   public
+    procedure AddReport(SL: TStrings); virtual;
     procedure ExportOBJ(Exporter: TExporterOBJ; StandAlone: Boolean); virtual;
     procedure UpdateMeshList(ML: TBuilderMeshList);
   end;
@@ -130,6 +145,11 @@ begin
   RebuildMesh;
 end;
 
+function TBuilderMesh.GetAbsoluteRange: single;
+begin
+  result := Main.vp.range;
+end;
+
 function TBuilderMesh.GetCapValue: single;
 begin
   result := Main.CapValue;
@@ -140,14 +160,42 @@ begin
   result := AlphaColorToString(Color);
 end;
 
+procedure TBuilderMesh.RebuildMesh;
+begin
+  { virtual }
+end;
+
 function TBuilderMesh.GetOffsetY: single;
 begin
   result := Main.vp.OffsetY;
 end;
 
-procedure TBuilderMesh.RebuildMesh;
+procedure TBuilderMesh.SL_Add(s: string; TargetLength: Integer);
 begin
-  { virtual }
+  if FSL <> nil then
+    SL_Add(FSL, s, TargetLength);
+end;
+
+procedure TBuilderMesh.SL_Add(SL: TStrings; s: string; TargetLength: Integer);
+var
+  c: Integer;
+  t: string;
+begin
+  c := TargetLength - s.Length;
+  if c > 0 then
+    t := StringOfChar(' ', c);
+  SL.Add(s + t + '|');
+  FSL := SL;
+end;
+
+procedure TBuilderMesh.ForgetSL(SL: TStrings);
+begin
+  FSL := nil;
+end;
+
+procedure TBuilderMesh.RememberSL(SL: TStrings);
+begin
+  FSL := SL;
 end;
 
 procedure TBuilderMesh.Render;
@@ -157,6 +205,14 @@ begin
   begin
     DrawWireFrame(0.2, claBlue);
   end;
+end;
+
+procedure TBuilderMesh.AddReport(SL: TStrings);
+begin
+  RememberSL(SL);
+  SL.Add(Format('%s', [ClassName]));
+  if Name <> '' then
+    SL_Add(Format('Name = %s', [Name]));
 end;
 
 procedure TBuilderMesh.UpdateScale(WantPositionZ: Boolean);
@@ -245,7 +301,40 @@ end;
 
 { TFederGroup }
 
+procedure TFederGroup.SL_Add(s: string; TargetLength: Integer);
+begin
+  if FSL <> nil then
+    SL_Add(FSL, s, TargetLength);
+end;
+
+procedure TFederGroup.SL_Add(SL: TStrings; s: string; TargetLength: Integer);
+var
+  c: Integer;
+  t: string;
+begin
+  c := TargetLength - s.Length;
+  if c > 0 then
+    t := StringOfChar(' ', c);
+  SL.Add(s + t + '|');
+  FSL := SL;
+end;
+
 procedure TFederGroup.ExportOBJ(Exporter: TExporterOBJ; StandAlone: Boolean);
+begin
+
+end;
+
+procedure TFederGroup.ForgetSL(SL: TStrings);
+begin
+  FSL := nil;
+end;
+
+procedure TFederGroup.RememberSL(SL: TStrings);
+begin
+  FSL := SL;
+end;
+
+procedure TFederGroup.AddReport(SL: TStrings);
 begin
 
 end;

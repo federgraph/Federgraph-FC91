@@ -51,6 +51,16 @@ begin
     faActionPage5: result := fagActionPage5;
     faActionPage6: result := fagActionPage6;
 
+    { Forms }
+    faShowMemo: result := fagShowMemo;
+    faShowActions: result := fagShowActions;
+    faShowInfo: result := fagShowInfo;
+
+    { TouchLayout }
+    faTouchTablet: result := fagTouchTablet;
+    faTouchPhone: result := fagTouchPhone;
+    faTouchDesk: result := fagTouchDesk;
+
     { SystemParam }
     faParamX1: result := fagParamX1;
     faParamY1: result := fagParamY1;
@@ -247,6 +257,12 @@ begin
 
     { UI }
     faToggleColorPanel: result := fagToggleColorPanel;
+    faColorPanelOn: result := fagColorPanelOn;
+    faColorPanelOff: result := fagColorPanelOff;
+
+    { FederText }
+    faToggleAllText: result := fagToggleAllText;
+    faToggleTouchFrame: result := fagToggleTouchFrame;
 
     { ViewParams }
     faPan: result := fagPan;
@@ -261,10 +277,70 @@ begin
     faParamT3: result := fagParamT3;
     faParamT4: result := fagParamT4;
 
+    { ViewFlags }
+    faToggleTouchMenu: result := fagToggleTouchMenu;
+    faToggleEquationText: result := fagToggleEquationText;
+    faTogglePrimeText: result := fagTogglePrimeText;
+    faToggleSecondText: result := fagToggleSecondText;
+    faToggleLabelText: result := fagToggleLabelText;
+    faLabelBatchM: result := fagLabelBatchM;
+    faLabelBatchP: result := fagLabelBatchP;
+    faLabelTextP: result := fagLabelTextP;
+    faLabelTextM: result := fagLabelTextM;
+
     { Bahn }
     faNorthCap: result := fagNorthCap;
     faSouthCap: result := fagSouthCap;
     faParamCapValue: result := fagParamCapValue;
+
+    { SampleNavigation }
+    faGotoSample1: result := fagGotoSample1;
+
+    { BtnLegendTablet }
+    faTL01: result := fagTL01;
+    faTL02: result := fagTL02;
+    faTL03: result := fagTL03;
+    faTL04: result := fagTL04;
+    faTL05: result := fagTL05;
+    faTL06: result := fagTL06;
+    faTR01: result := fagTR01;
+    faTR02: result := fagTR02;
+    faTR03: result := fagTR03;
+    faTR04: result := fagTR04;
+    faTR05: result := fagTR05;
+    faTR06: result := fagTR06;
+    faTR07: result := fagTR07;
+    faTR08: result := fagTR08;
+    faBL01: result := fagBL01;
+    faBL02: result := fagBL02;
+    faBL03: result := fagBL03;
+    faBL04: result := fagBL04;
+    faBL05: result := fagBL05;
+    faBL06: result := fagBL06;
+    faBL07: result := fagBL07;
+    faBL08: result := fagBL08;
+    faBR01: result := fagBR01;
+    faBR02: result := fagBR02;
+    faBR03: result := fagBR03;
+    faBR04: result := fagBR04;
+    faBR05: result := fagBR05;
+    faBR06: result := fagBR06;
+
+    { BtnLegendPhone }
+    faMB01: result := fagMB01;
+    faMB02: result := fagMB02;
+    faMB03: result := fagMB03;
+    faMB04: result := fagMB04;
+    faMB05: result := fagMB05;
+    faMB06: result := fagMB06;
+    faMB07: result := fagMB07;
+    faMB08: result := fagMB08;
+
+    { TouchBarLegend }
+    faTouchBarTop: result := fagTouchBarTop;
+    faTouchBarBottom: result := fagTouchBarBottom;
+    faTouchBarLeft: result := fagTouchBarLeft;
+    faTouchBarRight: result := fagTouchBarRight;
 
     { Reset }
     faReset: result := fagReset;
@@ -281,6 +357,21 @@ begin
     faBitmapEscape: result := fagBitmapEscape;
     faBitmapOne: result := fagBitmapOne;
     faToggleContour: result := fagToggleContour;
+
+    { Layout0 }
+    faLayout0: result := fagLayout0;
+    faLayout1: result := fagLayout1;
+    faLayout2: result := fagLayout2;
+    faLayout3: result := fagLayout3;
+    faLayout4: result := fagLayout4;
+    faLayout5: result := fagLayout5;
+    faLayout6: result := fagLayout6;
+    faLayout7: result := fagLayout7;
+    faLayout8: result := fagLayout8;
+    faLayout9: result := fagLayout9;
+
+    { ColorMapping }
+    faCLA: result := fagCLA;
   end;
 end;
 

@@ -37,6 +37,16 @@ const
   fagActionPage5 = 10;
   fagActionPage6 = 11;
 
+  { Forms }
+  fagShowMemo = 15;
+  fagShowActions = 16;
+  fagShowInfo = 21;
+
+  { TouchLayout }
+  fagTouchTablet = 45;
+  fagTouchPhone = 46;
+  fagTouchDesk = 47;
+
   { SystemParam }
   fagParamX1 = 95;
   fagParamY1 = 96;
@@ -233,6 +243,12 @@ const
 
   { UI }
   fagToggleColorPanel = 534;
+  fagColorPanelOn = 535;
+  fagColorPanelOff = 536;
+
+  { FederText }
+  fagToggleAllText = 552;
+  fagToggleTouchFrame = 553;
 
   { ViewParams }
   fagPan = 554;
@@ -247,10 +263,70 @@ const
   fagParamT3 = 588;
   fagParamT4 = 589;
 
+  { ViewFlags }
+  fagToggleTouchMenu = 595;
+  fagToggleEquationText = 596;
+  fagTogglePrimeText = 597;
+  fagToggleSecondText = 598;
+  fagToggleLabelText = 599;
+  fagLabelBatchM = 600;
+  fagLabelBatchP = 601;
+  fagLabelTextP = 602;
+  fagLabelTextM = 603;
+
   { Bahn }
   fagNorthCap = 1700;
   fagSouthCap = 1701;
   fagParamCapValue = 712;
+
+  { SampleNavigation }
+  fagGotoSample1 = 771;
+
+  { BtnLegendTablet }
+  fagTL01 = 964;
+  fagTL02 = 965;
+  fagTL03 = 966;
+  fagTL04 = 967;
+  fagTL05 = 968;
+  fagTL06 = 969;
+  fagTR01 = 970;
+  fagTR02 = 971;
+  fagTR03 = 972;
+  fagTR04 = 973;
+  fagTR05 = 974;
+  fagTR06 = 975;
+  fagTR07 = 976;
+  fagTR08 = 977;
+  fagBL01 = 978;
+  fagBL02 = 979;
+  fagBL03 = 980;
+  fagBL04 = 981;
+  fagBL05 = 982;
+  fagBL06 = 983;
+  fagBL07 = 984;
+  fagBL08 = 985;
+  fagBR01 = 986;
+  fagBR02 = 987;
+  fagBR03 = 988;
+  fagBR04 = 989;
+  fagBR05 = 990;
+  fagBR06 = 991;
+
+  { BtnLegendPhone }
+  fagMB01 = 992;
+  fagMB02 = 993;
+  fagMB03 = 994;
+  fagMB04 = 995;
+  fagMB05 = 996;
+  fagMB06 = 997;
+  fagMB07 = 998;
+  fagMB08 = 999;
+
+  { TouchBarLegend }
+  fagTouchBarTop = 1000;
+  fagTouchBarBottom = 1001;
+  fagTouchBarLeft = 1002;
+  fagTouchBarRight = 1003;
 
   { Reset }
   fagReset = 1033;
@@ -268,7 +344,22 @@ const
   fagBitmapOne = 1061;
   fagToggleContour = 1062;
 
-  fagMax = 1063;
+  { Layout0 }
+  fagLayout0 = 1237;
+  fagLayout1 = 1238;
+  fagLayout2 = 1239;
+  fagLayout3 = 1240;
+  fagLayout4 = 1241;
+  fagLayout5 = 1242;
+  fagLayout6 = 1243;
+  fagLayout7 = 1244;
+  fagLayout8 = 1245;
+  fagLayout9 = 1246;
+
+  { ColorMapping }
+  fagCLA = 1664;
+
+  fagMax = 1665;
 
 implementation
 
