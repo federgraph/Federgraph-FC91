@@ -48,6 +48,7 @@ uses
   RiggVar.FB.Model,
   RiggVar.FB.StopWatch,
   RiggVar.FederModel.Action,
+  RiggVar.FederModel.TouchBase,
   RiggVar.Mesh.ExporterOBJ,
   RiggVar.Mesh.FederShell1,
   RiggVar.Mesh.SolidPart,
@@ -135,6 +136,7 @@ type
     Sample: Integer;
 
     FMeshSize: Integer;
+    FederTouch: TFederTouchBase;
     IsOrthoProjection: Boolean;
     IsPhone: Boolean;
 
@@ -263,6 +265,8 @@ begin
   ActionTest := TActionTest.Create;
   ActionHandler := TFederActionHandler.Create;
 
+  FederTouch := TFederTouchBase.Create(nil);
+
   FederData.InitDefault;
   InitSample1(FederData);
   LoadFromFederData;
@@ -317,6 +321,7 @@ begin
   Inner.Free;
   SolidPart.Free;
 
+  FederTouch.Free;
   vp.Free;
 
   FMaterialSource.Free;

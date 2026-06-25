@@ -71,6 +71,7 @@ uses
   RiggVar.FederModel.ActionChecked in 'Model\RiggVar.FederModel.ActionChecked.pas',
   RiggVar.FederModel.ActionExecute in 'Model\RiggVar.FederModel.ActionExecute.pas',
   RiggVar.FederModel.MaterialSources in 'Model\RiggVar.FederModel.MaterialSources.pas',
+  RiggVar.FederModel.TouchBase in 'Model\RiggVar.FederModel.TouchBase.pas',
   RiggVar.Poly.Rack in 'Poly\RiggVar.Poly.Rack.pas',
   RiggVar.Poly.Rad in 'Poly\RiggVar.Poly.Rad.pas';
 
@@ -78,7 +79,7 @@ uses
 
 begin
   Application.Initialize;
-  Application.Title := 'FC91Q';
+  Application.Title := 'FC91P';
   Application.CreateForm(TFormMain, FormMain);
   Application.Run;
 end.

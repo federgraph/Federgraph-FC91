@@ -292,6 +292,11 @@ begin
 
   ResizeColorBox;
   ResizeColorPanel;
+
+  if FormShown then
+  begin
+    Main.FederTouch.UpdateShape;
+  end;
 end;
 
 procedure TFormMain.FormShow(Sender: TObject);
@@ -302,7 +307,7 @@ begin
     InitTouch;
     FormShown := True;
     Viewport.SetFocus;
-    Caption := 'Federgraph FC91Q';
+    Caption := 'Federgraph FC91P';
     Main.ActionHandler.Execute(faReset);
   end;
 end;
@@ -322,7 +327,7 @@ begin
 
   if Main.StateCheckingNeeded then
   begin
-//    Main.FederTouch.CheckState;
+    Main.FederTouch.CheckState;
     Main.StateCheckingNeeded := False;
   end;
 
@@ -518,11 +523,11 @@ end;
 
 procedure TFormMain.InitTouch;
 begin
-//  Main.FederTouch.OwnerComponent := Self;
-//  Main.FederTouch.ParentObject := Viewport;
+  Main.FederTouch.OwnerComponent := Self;
+  Main.FederTouch.ParentObject := Viewport;
   MainVar.ClientWidth := ClientWidth;
   MainVar.ClientHeight := ClientHeight;
-//  Main.FederTouch.Init;
+  Main.FederTouch.Init;
 end;
 
 procedure TFormMain.InitViewport;
@@ -628,10 +633,8 @@ begin
     ColorBox.Color := Main.BitmapBuilder.RingColor[r];
   end;
 
-    ColorPanel.Color := Main.BitmapBuilder.RingColor[r];
-    Main.RingIndexUpdated;
-
-  Caption := Application.Title +  ' -  CurrentRing = ' + IntToStr(r);
+  ColorPanel.Color := Main.BitmapBuilder.RingColor[r];
+  Main.RingIndexUpdated;
 end;
 
 procedure TFormMain.SetBandColor(const Value: TAlphaColor);
@@ -651,17 +654,17 @@ end;
 
 procedure TFormMain.SetMeshText(const Value: string);
 begin
-//  Main.FederTouch.SR00.Caption := Value;
+  Main.FederTouch.SR00.Caption := Value;
 end;
 
 procedure TFormMain.SetParamText(const Value: string);
 begin
-//  Main.FederTouch.ST00.Caption := Value;
+  Main.FederTouch.ST00.Caption := Value;
 end;
 
 procedure TFormMain.SetRingText(const Value: string);
 begin
-//  Main.FederTouch.SL00.Caption := Value;
+  Main.FederTouch.SL00.Caption := Value;
 end;
 
 procedure TFormMain.SetShowColorPanel(const Value: Boolean);
@@ -680,12 +683,12 @@ end;
 
 procedure TFormMain.SetValueText(const Value: string);
 begin
-//  Main.FederTouch.SB00.Caption := Value;
+  Main.FederTouch.SB00.Caption := Value;
 end;
 
 procedure TFormMain.SetZoomText(const Value: string);
 begin
-//  Main.FederTouch.SB00.Caption := Value;
+  Main.FederTouch.SB00.Caption := Value;
 end;
 
 procedure TFormMain.ToggleLux;
