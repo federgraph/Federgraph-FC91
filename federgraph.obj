@@ -45962,9 +45962,4 @@ f 15298 15313 15297
 f 15297 15313 15296
 f 15296 15313 7836
 
-# 
-usemtl Orange
-
-# 
-usemtl Aquamarine
 # TriangleCount = 30628
