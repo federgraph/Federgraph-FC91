@@ -38,6 +38,7 @@ const
   fagActionPage6 = 11;
 
   { Forms }
+  fagShowImage = 1677;
   fagShowMemo = 15;
   fagShowActions = 16;
   fagShowInfo = 21;

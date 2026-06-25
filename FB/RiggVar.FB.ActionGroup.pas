@@ -45,6 +45,7 @@ const
     faActionPage6];
 
   ActionGroupForms: TActionGroup = [
+    faShowImage,
     faShowMemo,
     faShowActions,
     faShowInfo];

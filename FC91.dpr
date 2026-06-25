@@ -5,6 +5,7 @@ uses
   FrmMain in 'App\FrmMain.pas' {FormMain},
   FrmAction in 'App\FrmAction.pas' {FormAction},
   FrmMemo in 'App\FrmMemo.pas' {FormMemo},
+  FrmImage in 'App\FrmImage.pas' {FormImage},
   RiggVar.App.Main in 'App\RiggVar.App.Main.pas',
   RiggVar.App.Main0 in 'App\RiggVar.App.Main0.pas',
   RiggVar.Bitmap.Bands in 'Bitmap\RiggVar.Bitmap.Bands.pas',
@@ -97,6 +98,7 @@ uses
   RiggVar.FederModel.Keyboard01 in 'Model\RiggVar.FederModel.Keyboard01.pas',
   RiggVar.FederModel.MaterialSources in 'Model\RiggVar.FederModel.MaterialSources.pas',
   RiggVar.FederModel.Memory in 'Model\RiggVar.FederModel.Memory.pas',
+  RiggVar.FederModel.Menu in 'Model\RiggVar.FederModel.Menu.pas',
   RiggVar.FederModel.Palette in 'Model\RiggVar.FederModel.Palette.pas',
   RiggVar.FederModel.Report in 'Model\RiggVar.FederModel.Report.pas',
   RiggVar.FederModel.RingBuilder in 'Model\RiggVar.FederModel.RingBuilder.pas',
@@ -121,7 +123,7 @@ begin
   if Assigned(Application) then
   begin
     Application.Initialize;
-    Application.Title := 'FC91M';
+    Application.Title := 'FC91L';
     Application.CreateForm(TFormMain, FormMain);
     Application.Run;
   end;

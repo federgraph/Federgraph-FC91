@@ -52,6 +52,7 @@ begin
     faActionPage6: result := fagActionPage6;
 
     { Forms }
+    faShowImage: result := fagShowImage;
     faShowMemo: result := fagShowMemo;
     faShowActions: result := fagShowActions;
     faShowInfo: result := fagShowInfo;

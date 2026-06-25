@@ -98,6 +98,7 @@ type
     procedure WriteCode(Sender: TObject);
     procedure SaveVirtualClick(Sender: TObject);
     procedure WriteEquationText(Sender: TObject);
+    procedure AllDiffBtnClick(Sender: TObject);
     procedure DiffBtnClick(Sender: TObject);
     procedure BinBtnClick(Sender: TObject);
     procedure HelpCycleClick(Sender: TObject);
@@ -404,6 +405,14 @@ begin
   Main.WriteSampleDiff(Memo.Lines);
   MemoEndUpdate;
   AutoUpdateID := Diff;
+end;
+
+procedure TFormMemo.AllDiffBtnClick(Sender: TObject);
+begin
+  MemoBeginUpdate;
+  Main.WriteAllSampleDiff(Memo.Lines);
+  MemoEndUpdate;
+  AutoUpdateOff;
 end;
 
 procedure TFormMemo.CacheReport1BtnClick(Sender: TObject);

@@ -48,6 +48,7 @@ begin
     faActionPage6: result := 'faActionPage6';
 
     { Forms }
+    faShowImage: result := 'faShowImage';
     faShowMemo: result := 'faShowMemo';
     faShowActions: result := 'faShowActions';
     faShowInfo: result := 'faShowInfo';

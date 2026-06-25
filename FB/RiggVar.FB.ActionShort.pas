@@ -48,6 +48,7 @@ begin
     faActionPage6: result := 'ap6';
 
     { Forms }
+    faShowImage: result := 'BI';
     faShowMemo: result := 'FM';
     faShowActions: result := 'FA';
     faShowInfo: result := 'FI';

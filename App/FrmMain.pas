@@ -41,6 +41,7 @@ uses
   FMX.Controls,
   FMX.ExtCtrls,
   FMX.Layouts,
+  FMX.Menus,
   FMX.Colors,
   FMX.Layers3D,
   FMX.Objects;
@@ -52,6 +53,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
     procedure FormResize(Sender: TObject);
+    procedure FormShow(Sender: TObject);
     procedure InitTimerTimer(Sender: TObject);
   private
     AllowResizing: Boolean;
@@ -79,9 +81,11 @@ type
     function GetContentParent: TFmxObject;
     function GetContentWidth: single;
     function GetIsUp: Boolean;
+    function GetMainMenuVisible: Boolean;
     function HandleAppEvent(AAppEvent: TApplicationEvent; AContext: TObject): Boolean;
     procedure HandleColorPanelChanged;
     procedure HandleRingWidthChanged;
+    procedure ImageBtnClick(Sender: TObject);
     procedure Init;
     procedure InitChecker;
     procedure InitColorPanel;
@@ -91,11 +95,13 @@ type
     procedure LayoutHintText;
     procedure Log(s: string);
     procedure MemoBtnClick(Sender: TObject);
+    procedure PopulateMenu;
     procedure RegisterForAppEvents;
     procedure ResizeColorPanel;
     procedure RingPicked(Sender: TObject);
     procedure SetBandColor(const Value: TAlphaColor);
     procedure SetIsUp(const Value: Boolean);
+    procedure SetMainMenuVisible(const Value: Boolean);
     procedure SetShowColorPanel(const Value: Boolean);
     procedure SetViewportState(const Value: Integer);
     procedure UpdateHintTextPosition;
@@ -109,6 +115,8 @@ type
     InitTimer: TTimer;
     KeyCharReceived: Boolean;
     Layout3D: TLayout;
+    MainMenu: TMainMenu;
+    MenuItem: TMenuItem;
     Viewport: TViewport3D;
     WantColorPanel: Boolean;
     WantPhone: Boolean;
@@ -127,11 +135,13 @@ type
     procedure UpdateDisplay;
     procedure UpdateHintText(fa: Integer);
     procedure UpdateLayout(l: TLayout);
+    procedure UpdateMenu;
     property BandColor: TAlphaColor read FBandColor write SetBandColor;
     property ContentHeight: single read GetContentHeight;
     property ContentParent: TFmxObject read GetContentParent;
     property ContentWidth: single read GetContentWidth;
     property IsUp: Boolean read GetIsUp write SetIsUp;
+    property MainMenuVisible: Boolean read GetMainMenuVisible write SetMainMenuVisible;
     property ShowColorPanel: Boolean read FShowColorPanel write SetShowColorPanel;
     property ViewportState: Integer read FViewportState write SetViewportState;
   end;
@@ -145,6 +155,7 @@ implementation
 
 uses
   FrmAction,
+  FrmImage,
   FrmMemo,
   RiggVar.App.Main,
   RiggVar.FederModel.TouchBase,
@@ -281,6 +292,11 @@ end;
 
 procedure TFormMain.DestroyForms;
 begin
+  if FormImage <> nil then
+  begin
+    FormImage.Free;
+    FormImage := nil;
+  end;
   if FormAction <> nil then
   begin
     FormAction.Free;
@@ -345,33 +361,7 @@ end;
 
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
-{$ifdef IOS}
-  InitTimer := TTimer.Create(Self);
-  InitTimer.Interval := 1000;
-  InitTimer.OnTimer := InitTimerTimer;
-  InitTimer.Enabled := True;
-{$endif}
-
-{$ifdef MSWINDOWS}
-  InitTimer := TTimer.Create(Self);
-  InitTimer.Interval := 10;
-  InitTimer.OnTimer := InitTimerTimer;
-  InitTimer.Enabled := True;
-{$endif}
-
-{$ifdef ANDROID}
-  InitTimer := TTimer.Create(Self);
-  InitTimer.Interval := 1000;
-  InitTimer.OnTimer := InitTimerTimer;
-  InitTimer.Enabled := True;
-{$endif}
-
-{$ifdef OSX}
-  InitTimer := TTimer.Create(Self);
-  InitTimer.Interval := 10;
-  InitTimer.OnTimer := InitTimerTimer;
-  InitTimer.Enabled := True;
-{$endif}
+  Init;
 end;
 
 procedure TFormMain.FormDestroy(Sender: TObject);
@@ -405,6 +395,16 @@ begin
   Inc(ExitSizeMoveCounter);
 end;
 
+procedure TFormMain.FormShow(Sender: TObject);
+begin
+  if IsUp then
+  begin
+//    ViewportState := 0;
+//    Viewport1.SetFocus;
+    AllowResizing := True;
+  end;
+end;
+
 function TFormMain.GetContentHeight: single;
 begin
   if Assigned(Viewport) then
@@ -434,11 +434,32 @@ begin
     result := False;
 end;
 
+function TFormMain.GetMainMenuVisible: Boolean;
+begin
+  result := MainMenu <> nil;
+end;
+
 procedure TFormMain.HandleAction(fa: TFederAction);
 begin
   case fa of
+    faShowImage: ImageBtnClick(nil);
     faShowActions: ActionsBtnClick(nil);
     faShowMemo: MemoBtnClick(nil);
+
+    faWheelFrequency1 .. faWheelFrequency0001,
+
+    faToggleColorPanel,
+    faToggleColorSwat,
+
+    faTogglePngCopy,
+    faPngCopyOn,
+    faPngCopyOff,
+    faToggleNoCopy,
+    faNoCopyOn,
+    faNoCopyOff,
+    faToggleHardCopy,
+    faHardCopyOn,
+    faHardCopyOff: UpdateMenu;
   end;
 
   if Main.GraphUpdatingNeeded then
@@ -561,6 +582,17 @@ begin
 {$endif}
 end;
 
+procedure TFormMain.ImageBtnClick(Sender: TObject);
+begin
+  if not Assigned(FormImage) then
+  begin
+    FormImage := TFormImage.Create(nil);
+    FormImage.Memo.Lines.Clear;
+  end;
+  FormImage.Visible := True;
+  FormImage.Activate;
+end;
+
 procedure TFormMain.Init;
 begin
   FormMain := self;
@@ -573,6 +605,14 @@ begin
 {$ifdef debug}
   ReportMemoryLeaksOnShutdown := True;
 {$endif}
+
+  Self.Position := TFormPosition.ScreenCenter;
+
+  { Create MainMenu before setting ClientHeight in InitFormat. }
+  MainMenu := TMainMenu.Create(self);
+  MainMenu.Parent := self;
+  MenuItem := TMenuItem.Create(self);
+  MainMenu.AddObject(MenuItem);
 
   InitFormat;
 
@@ -624,6 +664,8 @@ begin
   Main.Want3D := True;
   Main.WantAnimation := False;
 
+  PopulateMenu;
+
   Main.MeshSize := MainConst.DefaultMeshSize;
 
   Main.WantTimedParams := True;
@@ -651,6 +693,9 @@ begin
 
   HintText.BringToFront;
   Application.OnHint := HandleShowHint;
+
+  UpdateMenu;
+//  InitFormat; // again, so that it works with wrapped MainMenu
 
 //  Main.ActionHandler.Execute(faReset);
 
@@ -853,6 +898,7 @@ procedure TFormMain.InvalidateGraph(Sender: TObject);
 begin
   if IsUp and (Viewport <> nil) then
   begin
+    UpdateMenu;
     Viewport.InvalidateRect(Viewport.ClipRect);
     Draw;
     Inc(Main.CounterDrawing3D);
@@ -897,6 +943,21 @@ begin
   end;
   FormMemo.Visible := True;
   FormMemo.Activate;
+end;
+
+procedure TFormMain.PopulateMenu;
+begin
+  { need dummy MenuItem to set correct client height from beginning }
+  if MenuItem.Parent = MainMenu then
+  begin
+    MainMenu.RemoveObject(MenuItem);
+    //MenuItem.Parent := nil; // automatic
+  end;
+
+  if Assigned(MainMenu) and Assigned(Main) then
+  begin
+    Main.FederMenu.InitMainMenu(MainMenu);
+  end;
 end;
 
 procedure TFormMain.RegisterForAppEvents;
@@ -961,6 +1022,27 @@ end;
 procedure TFormMain.SetIsUp(const Value: Boolean);
 begin
   Main.IsUp := Value;
+end;
+
+procedure TFormMain.SetMainMenuVisible(const Value: Boolean);
+begin
+  if Value and not Assigned(MainMenu) then
+  begin
+    MainMenu := TMainMenu.Create(self);
+    MainMenu.Tag := -1;
+    MainMenu.Parent := self;
+    PopulateMenu;
+    UpdateMenu;
+    MainMenu.Tag := 1;
+    MainMenu.RecreateOSMenu;
+  end
+  else if Assigned(MainMenu) and not Value then
+  begin
+    MainMenu.Free;
+    MainMenu := nil;
+    Viewport.Height := ClientHeight;
+    Main.UpdateTouch;
+  end;
 end;
 
 procedure TFormMain.SetShowColorPanel(const Value: Boolean);
@@ -1261,6 +1343,28 @@ begin
       l.Width := cw2;
       l.Height := ch2;
       l.SendToBack;
+    end;
+  end;
+end;
+
+procedure TFormMain.UpdateMenu;
+var
+  mt, md: TMenuItem;
+  i, j: Integer;
+  fa: TFederAction;
+begin
+  if (MainMenu <> nil) and (Main <> nil) then
+  begin
+    for i := 0 to MainMenu.ItemsCount-1 do
+    begin
+      mt := TMenuItem(MainMenu.Items[i]);
+      for j := 0 to mt.ItemsCount - 1 do
+      begin
+        md := mt.Items[j] as TMenuItem;
+        fa := TFederAction(md.tag);
+        if fa <> faNoop then
+          md.IsChecked := Main.ActionHandler.GetChecked(fa);
+      end;
     end;
   end;
 end;

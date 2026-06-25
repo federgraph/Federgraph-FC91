@@ -80,6 +80,7 @@ uses
   RiggVar.FederModel.Graph,
   RiggVar.FederModel.Keyboard01,
   RiggVar.FederModel.Memory,
+  RiggVar.FederModel.Menu,
   RiggVar.FederModel.Palette,
   RiggVar.FederModel.RingBuilder,
   RiggVar.FederModel.SampleManager,
@@ -166,6 +167,7 @@ type
     function GetLightMode: Boolean;
     function GetLimitPulling: Boolean;
     function GetLoopFaktor: single;
+    function GetMainMenuVisible: Boolean;
     function GetMaterialSource: TMaterialSource;
     function GetMenubarLayout: Integer;
     function GetMeshBuilder: TFederMeshBuilder;
@@ -240,6 +242,7 @@ type
     procedure SetKeyBinding(const Value: Integer);
     procedure SetLevel(const Value: Integer);
     procedure SetLimitPulling(const Value: Boolean);
+    procedure SetMainMenuVisible(const Value: Boolean);
     procedure SetMenubarLayout(const Value: Integer);
     procedure SetMeshChanged(const Value: Boolean);
     procedure SetMeshSize(const Value: Integer);
@@ -314,6 +317,7 @@ type
     FederData: TFederData;
     FederFrame3D: TFederFrame3D;
     FederKeyboard1: TFederKeyboard01;
+    FederMenu: TFederMenu;
     Outer: TFederShell1;
     Inner: TFederShell1;
     SolidPart: TSolidPart;
@@ -689,6 +693,7 @@ type
     property LimitPulling: Boolean read GetLimitPulling write SetLimitPulling;
     property Loading: Boolean read GetLoading write SetLoading;
     property LoopFaktor: single read GetLoopFaktor;
+    property MainMenuVisible: Boolean read GetMainMenuVisible write SetMainMenuVisible;
     property MaterialSource: TMaterialSource read GetMaterialSource;
     property MenubarLayout: Integer read GetMenubarLayout write SetMenubarLayout;
     property MeshBuilder: TFederMeshBuilder read GetMeshBuilder;
@@ -964,7 +969,7 @@ begin
   ActionMapTablet.CollectOne(fa, ML);
   ActionMapPhone.CollectOne(fa, ML);
 {$endif}
-//  FederMenu.CollectOne(fa, ML);
+  FederMenu.CollectOne(fa, ML);
 end;
 
 procedure TMain0.ColorChanged(NewItemIndex: Integer);
@@ -1173,6 +1178,7 @@ begin
   ModelUpdate.OnUpdateView := TrackbarUpdate;
 
   DefaultFederData.InitDefault;
+  FederMenu := TFederMenu.Create;
 
   FederColor := TFederColor.Create;
 
@@ -1537,6 +1543,7 @@ begin
   SampleManager.Free;
 
   FederColor.Free;
+  FederMenu.Free;
 
   FormatManager.Free;
   FederReport.Free;
@@ -2206,6 +2213,11 @@ end;
 function TMain0.GetLoopFaktor: single;
 begin
   result := FederModel._fp0 / MainVar.WheelFrequency;
+end;
+
+function TMain0.GetMainMenuVisible: Boolean;
+begin
+  result := Assigned(FormMain.MainMenu);
 end;
 
 function TMain0.GetMaterialSource: TMaterialSource;
@@ -3703,6 +3715,11 @@ end;
 procedure TMain0.SetLoading(const Value: Boolean);
 begin
   FederModel.Loading := Value;
+end;
+
+procedure TMain0.SetMainMenuVisible(const Value: Boolean);
+begin
+  FormMain.MainMenuVisible := Value;
 end;
 
 procedure TMain0.SetMenubarLayout(const Value: Integer);
