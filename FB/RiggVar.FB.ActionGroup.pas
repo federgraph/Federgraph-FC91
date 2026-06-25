@@ -48,6 +48,8 @@ const
     faShowImage,
     faShowMemo,
     faShowActions,
+    faShowColor,
+    faShowBambu,
     faShowInfo];
 
   ActionGroupTouchLayout: TActionGroup = [
@@ -552,9 +554,20 @@ const
     faExample08,
     faExample09];
 
+  ActionGroupRepo: TActionGroup = [
+    faSwapBundle,
+    faRepo010,
+    faRepo020,
+    faRepo050];
+
   ActionGroupSampleNavigation: TActionGroup = [
+    faLevelM,
+    faLevelP,
+    faHubM,
+    faHubP,
     faSampleM,
     faSampleP,
+    faGotoSample0,
     faGotoSample1];
 
   ActionGroupHelp: TActionGroup = [
@@ -658,6 +671,127 @@ const
     faLayout7,
     faLayout8,
     faLayout9];
+
+  ActionGroupLayout1: TActionGroup = [
+    faLayout10,
+    faLayout11,
+    faLayout12,
+    faLayout13,
+    faLayout14,
+    faLayout15,
+    faLayout16,
+    faLayout17,
+    faLayout18,
+    faLayout19];
+
+  ActionGroupLayout2: TActionGroup = [
+    faLayout20,
+    faLayout21,
+    faLayout22,
+    faLayout23,
+    faLayout24,
+    faLayout25,
+    faLayout26,
+    faLayout27,
+    faLayout28,
+    faLayout29];
+
+  ActionGroupLayout3: TActionGroup = [
+    faLayout30,
+    faLayout31,
+    faLayout32,
+    faLayout33,
+    faLayout34,
+    faLayout35,
+    faLayout36,
+    faLayout37,
+    faLayout38,
+    faLayout39];
+
+  ActionGroupLayout4: TActionGroup = [
+    faLayout40,
+    faLayout41,
+    faLayout42,
+    faLayout43,
+    faLayout44,
+    faLayout45,
+    faLayout46,
+    faLayout47,
+    faLayout48,
+    faLayout49];
+
+  ActionGroupLayout5: TActionGroup = [
+    faLayout50,
+    faLayout51,
+    faLayout52,
+    faLayout53,
+    faLayout54,
+    faLayout55,
+    faLayout56,
+    faLayout57,
+    faLayout58,
+    faLayout59];
+
+  ActionGroupLayout6: TActionGroup = [
+    faLayout60,
+    faLayout61,
+    faLayout62,
+    faLayout63,
+    faLayout64,
+    faLayout65,
+    faLayout66,
+    faLayout67,
+    faLayout68,
+    faLayout69];
+
+  ActionGroupLayout7: TActionGroup = [
+    faLayout70,
+    faLayout71,
+    faLayout72,
+    faLayout73,
+    faLayout74,
+    faLayout75,
+    faLayout76,
+    faLayout77,
+    faLayout78,
+    faLayout79];
+
+  ActionGroupLayout8: TActionGroup = [
+    faLayout80,
+    faLayout81,
+    faLayout82,
+    faLayout83,
+    faLayout84,
+    faLayout85,
+    faLayout86,
+    faLayout87,
+    faLayout88,
+    faLayout89];
+
+  ActionGroupLayout9: TActionGroup = [
+    faLayout90,
+    faLayout91,
+    faLayout92,
+    faLayout93,
+    faLayout94,
+    faLayout95,
+    faLayout96,
+    faLayout97,
+    faLayout98,
+    faLayout99];
+
+  ActionGroupMenuNav: TActionGroup = [
+    faMenuXX,
+    faMenu00,
+    faMenu10,
+    faMenu20,
+    faMenu30,
+    faMenu40,
+    faMenu50,
+    faMenu60,
+    faMenu70,
+    faMenu80,
+    faMenu90];
 
   ActionGroupFigureSize: TActionGroup = [
     faFigureSizeXS,

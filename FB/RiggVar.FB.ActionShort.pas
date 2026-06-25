@@ -51,6 +51,8 @@ begin
     faShowImage: result := 'BI';
     faShowMemo: result := 'FM';
     faShowActions: result := 'FA';
+    faShowColor: result := 'FF';
+    faShowBambu: result := 'FB';
     faShowInfo: result := 'FI';
 
     { TouchLayout }
@@ -555,9 +557,20 @@ begin
     faExample08: result := 'e08';
     faExample09: result := 'e09';
 
+    { Repo }
+    faSwapBundle: result := 'sb';
+    faRepo010: result := 'db1';
+    faRepo020: result := 'db2';
+    faRepo050: result := 'db5';
+
     { SampleNavigation }
+    faLevelM: result := 'L-';
+    faLevelP: result := 'L+';
+    faHubM: result := 'H-';
+    faHubP: result := 'H+';
     faSampleM: result := 'S-';
     faSampleP: result := 'S+';
+    faGotoSample0: result := 'gs0';
     faGotoSample1: result := 'gs1';
 
     { Help }
@@ -661,6 +674,127 @@ begin
     faLayout7: result := '7';
     faLayout8: result := '8';
     faLayout9: result := '9';
+
+    { Layout1 }
+    faLayout10: result := '10';
+    faLayout11: result := '11';
+    faLayout12: result := '12';
+    faLayout13: result := '13';
+    faLayout14: result := '14';
+    faLayout15: result := '15';
+    faLayout16: result := '16';
+    faLayout17: result := '17';
+    faLayout18: result := '18';
+    faLayout19: result := '19';
+
+    { Layout2 }
+    faLayout20: result := '20';
+    faLayout21: result := '21';
+    faLayout22: result := '22';
+    faLayout23: result := '23';
+    faLayout24: result := '24';
+    faLayout25: result := '25';
+    faLayout26: result := '26';
+    faLayout27: result := '27';
+    faLayout28: result := '28';
+    faLayout29: result := '29';
+
+    { Layout3 }
+    faLayout30: result := '30';
+    faLayout31: result := '31';
+    faLayout32: result := '32';
+    faLayout33: result := '33';
+    faLayout34: result := '34';
+    faLayout35: result := '35';
+    faLayout36: result := '36';
+    faLayout37: result := '37';
+    faLayout38: result := '38';
+    faLayout39: result := '39';
+
+    { Layout4 }
+    faLayout40: result := '40';
+    faLayout41: result := '41';
+    faLayout42: result := '42';
+    faLayout43: result := '43';
+    faLayout44: result := '44';
+    faLayout45: result := '45';
+    faLayout46: result := '46';
+    faLayout47: result := '47';
+    faLayout48: result := '48';
+    faLayout49: result := '49';
+
+    { Layout5 }
+    faLayout50: result := '50';
+    faLayout51: result := '51';
+    faLayout52: result := '52';
+    faLayout53: result := '53';
+    faLayout54: result := '54';
+    faLayout55: result := '55';
+    faLayout56: result := '56';
+    faLayout57: result := '57';
+    faLayout58: result := '58';
+    faLayout59: result := '59';
+
+    { Layout6 }
+    faLayout60: result := '60';
+    faLayout61: result := '61';
+    faLayout62: result := '62';
+    faLayout63: result := '63';
+    faLayout64: result := '64';
+    faLayout65: result := '65';
+    faLayout66: result := '66';
+    faLayout67: result := '67';
+    faLayout68: result := '68';
+    faLayout69: result := '69';
+
+    { Layout7 }
+    faLayout70: result := '70';
+    faLayout71: result := '71';
+    faLayout72: result := '72';
+    faLayout73: result := '73';
+    faLayout74: result := '74';
+    faLayout75: result := '75';
+    faLayout76: result := '76';
+    faLayout77: result := '77';
+    faLayout78: result := '78';
+    faLayout79: result := '79';
+
+    { Layout8 }
+    faLayout80: result := '80';
+    faLayout81: result := '81';
+    faLayout82: result := '82';
+    faLayout83: result := '83';
+    faLayout84: result := '84';
+    faLayout85: result := '85';
+    faLayout86: result := '86';
+    faLayout87: result := '87';
+    faLayout88: result := '88';
+    faLayout89: result := '89';
+
+    { Layout9 }
+    faLayout90: result := '90';
+    faLayout91: result := '91';
+    faLayout92: result := '92';
+    faLayout93: result := '93';
+    faLayout94: result := '94';
+    faLayout95: result := '95';
+    faLayout96: result := '96';
+    faLayout97: result := '97';
+    faLayout98: result := '98';
+    faLayout99: result := '99';
+
+    { MenuNav }
+    faMenuXX: result := ':X';
+    faMenu00: result := ':0';
+    faMenu10: result := ':1';
+    faMenu20: result := ':2';
+    faMenu30: result := ':3';
+    faMenu40: result := ':4';
+    faMenu50: result := ':5';
+    faMenu60: result := ':6';
+    faMenu70: result := ':7';
+    faMenu80: result := ':8';
+    faMenu90: result := ':9';
 
     { FigureSize }
     faFigureSizeXS: result := '.XS';

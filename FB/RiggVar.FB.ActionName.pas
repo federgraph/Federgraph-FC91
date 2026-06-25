@@ -51,6 +51,8 @@ begin
     faShowImage: result := 'faShowImage';
     faShowMemo: result := 'faShowMemo';
     faShowActions: result := 'faShowActions';
+    faShowColor: result := 'faShowColor';
+    faShowBambu: result := 'faShowBambu';
     faShowInfo: result := 'faShowInfo';
 
     { TouchLayout }
@@ -555,9 +557,20 @@ begin
     faExample08: result := 'faExample08';
     faExample09: result := 'faExample09';
 
+    { Repo }
+    faSwapBundle: result := 'faSwapBundle';
+    faRepo010: result := 'faRepo010';
+    faRepo020: result := 'faRepo020';
+    faRepo050: result := 'faRepo050';
+
     { SampleNavigation }
+    faLevelM: result := 'faLevelM';
+    faLevelP: result := 'faLevelP';
+    faHubM: result := 'faHubM';
+    faHubP: result := 'faHubP';
     faSampleM: result := 'faSampleM';
     faSampleP: result := 'faSampleP';
+    faGotoSample0: result := 'faGotoSample0';
     faGotoSample1: result := 'faGotoSample1';
 
     { Help }
@@ -661,6 +674,127 @@ begin
     faLayout7: result := 'faLayout7';
     faLayout8: result := 'faLayout8';
     faLayout9: result := 'faLayout9';
+
+    { Layout1 }
+    faLayout10: result := 'faLayout10';
+    faLayout11: result := 'faLayout11';
+    faLayout12: result := 'faLayout12';
+    faLayout13: result := 'faLayout13';
+    faLayout14: result := 'faLayout14';
+    faLayout15: result := 'faLayout15';
+    faLayout16: result := 'faLayout16';
+    faLayout17: result := 'faLayout17';
+    faLayout18: result := 'faLayout18';
+    faLayout19: result := 'faLayout19';
+
+    { Layout2 }
+    faLayout20: result := 'faLayout20';
+    faLayout21: result := 'faLayout21';
+    faLayout22: result := 'faLayout22';
+    faLayout23: result := 'faLayout23';
+    faLayout24: result := 'faLayout24';
+    faLayout25: result := 'faLayout25';
+    faLayout26: result := 'faLayout26';
+    faLayout27: result := 'faLayout27';
+    faLayout28: result := 'faLayout28';
+    faLayout29: result := 'faLayout29';
+
+    { Layout3 }
+    faLayout30: result := 'faLayout30';
+    faLayout31: result := 'faLayout31';
+    faLayout32: result := 'faLayout32';
+    faLayout33: result := 'faLayout33';
+    faLayout34: result := 'faLayout34';
+    faLayout35: result := 'faLayout35';
+    faLayout36: result := 'faLayout36';
+    faLayout37: result := 'faLayout37';
+    faLayout38: result := 'faLayout38';
+    faLayout39: result := 'faLayout39';
+
+    { Layout4 }
+    faLayout40: result := 'faLayout40';
+    faLayout41: result := 'faLayout41';
+    faLayout42: result := 'faLayout42';
+    faLayout43: result := 'faLayout43';
+    faLayout44: result := 'faLayout44';
+    faLayout45: result := 'faLayout45';
+    faLayout46: result := 'faLayout46';
+    faLayout47: result := 'faLayout47';
+    faLayout48: result := 'faLayout48';
+    faLayout49: result := 'faLayout49';
+
+    { Layout5 }
+    faLayout50: result := 'faLayout50';
+    faLayout51: result := 'faLayout51';
+    faLayout52: result := 'faLayout52';
+    faLayout53: result := 'faLayout53';
+    faLayout54: result := 'faLayout54';
+    faLayout55: result := 'faLayout55';
+    faLayout56: result := 'faLayout56';
+    faLayout57: result := 'faLayout57';
+    faLayout58: result := 'faLayout58';
+    faLayout59: result := 'faLayout59';
+
+    { Layout6 }
+    faLayout60: result := 'faLayout60';
+    faLayout61: result := 'faLayout61';
+    faLayout62: result := 'faLayout62';
+    faLayout63: result := 'faLayout63';
+    faLayout64: result := 'faLayout64';
+    faLayout65: result := 'faLayout65';
+    faLayout66: result := 'faLayout66';
+    faLayout67: result := 'faLayout67';
+    faLayout68: result := 'faLayout68';
+    faLayout69: result := 'faLayout69';
+
+    { Layout7 }
+    faLayout70: result := 'faLayout70';
+    faLayout71: result := 'faLayout71';
+    faLayout72: result := 'faLayout72';
+    faLayout73: result := 'faLayout73';
+    faLayout74: result := 'faLayout74';
+    faLayout75: result := 'faLayout75';
+    faLayout76: result := 'faLayout76';
+    faLayout77: result := 'faLayout77';
+    faLayout78: result := 'faLayout78';
+    faLayout79: result := 'faLayout79';
+
+    { Layout8 }
+    faLayout80: result := 'faLayout80';
+    faLayout81: result := 'faLayout81';
+    faLayout82: result := 'faLayout82';
+    faLayout83: result := 'faLayout83';
+    faLayout84: result := 'faLayout84';
+    faLayout85: result := 'faLayout85';
+    faLayout86: result := 'faLayout86';
+    faLayout87: result := 'faLayout87';
+    faLayout88: result := 'faLayout88';
+    faLayout89: result := 'faLayout89';
+
+    { Layout9 }
+    faLayout90: result := 'faLayout90';
+    faLayout91: result := 'faLayout91';
+    faLayout92: result := 'faLayout92';
+    faLayout93: result := 'faLayout93';
+    faLayout94: result := 'faLayout94';
+    faLayout95: result := 'faLayout95';
+    faLayout96: result := 'faLayout96';
+    faLayout97: result := 'faLayout97';
+    faLayout98: result := 'faLayout98';
+    faLayout99: result := 'faLayout99';
+
+    { MenuNav }
+    faMenuXX: result := 'faMenuXX';
+    faMenu00: result := 'faMenu00';
+    faMenu10: result := 'faMenu10';
+    faMenu20: result := 'faMenu20';
+    faMenu30: result := 'faMenu30';
+    faMenu40: result := 'faMenu40';
+    faMenu50: result := 'faMenu50';
+    faMenu60: result := 'faMenu60';
+    faMenu70: result := 'faMenu70';
+    faMenu80: result := 'faMenu80';
+    faMenu90: result := 'faMenu90';
 
     { FigureSize }
     faFigureSizeXS: result := 'faFigureSizeXS';

@@ -5,6 +5,8 @@ uses
   FrmMain in 'App\FrmMain.pas' {FormMain},
   FrmAction in 'App\FrmAction.pas' {FormAction},
   FrmMemo in 'App\FrmMemo.pas' {FormMemo},
+  FrmBambu in 'App\FrmBambu.pas' {FormBambu},
+  FrmColor in 'App\FrmColor.pas' {FormColor},
   FrmImage in 'App\FrmImage.pas' {FormImage},
   RiggVar.App.Main in 'App\RiggVar.App.Main.pas',
   RiggVar.App.Main0 in 'App\RiggVar.App.Main0.pas',
@@ -49,6 +51,9 @@ uses
   RiggVar.FB.ColorConst in 'FB\RiggVar.FB.ColorConst.pas',
   RiggVar.FB.ColorGroup in 'FB\RiggVar.FB.ColorGroup.pas',
   RiggVar.FB.ColorList in 'FB\RiggVar.FB.ColorList.pas',
+  RiggVar.FB.ColorListBox in 'FB\RiggVar.FB.ColorListBox.pas',
+  RiggVar.FB.ColorListBoxP in 'FB\RiggVar.FB.ColorListBoxP.pas',
+  RiggVar.FB.ColorListBoxWeb in 'FB\RiggVar.FB.ColorListBoxWeb.pas',
   RiggVar.FB.Data in 'FB\RiggVar.FB.Data.pas',
   RiggVar.FB.Def in 'FB\RiggVar.FB.Def.pas',
   RiggVar.FB.DefConst in 'FB\RiggVar.FB.DefConst.pas',
@@ -105,6 +110,11 @@ uses
   RiggVar.FederModel.SampleManager in 'Model\RiggVar.FederModel.SampleManager.pas',
   RiggVar.FederModel.SampleRepo in 'Model\RiggVar.FederModel.SampleRepo.pas',
   RiggVar.FederModel.SDB010H00 in 'SDB010\RiggVar.FederModel.SDB010H00.pas',
+  RiggVar.FederModel.SDB050H00 in 'SDB050\RiggVar.FederModel.SDB050H00.pas',
+  RiggVar.FederModel.SDB050H01 in 'SDB050\RiggVar.FederModel.SDB050H01.pas',
+  RiggVar.FederModel.SDB050H02 in 'SDB050\RiggVar.FederModel.SDB050H02.pas',
+  RiggVar.FederModel.SDB050H03 in 'SDB050\RiggVar.FederModel.SDB050H03.pas',
+  RiggVar.FederModel.SDB050H04 in 'SDB050\RiggVar.FederModel.SDB050H04.pas',
   RiggVar.FederModel.TextContainer in 'Model\RiggVar.FederModel.TextContainer.pas',
   RiggVar.FederModel.Touch in 'Model\RiggVar.FederModel.Touch.pas',
   RiggVar.FederModel.TouchBase in 'Model\RiggVar.FederModel.TouchBase.pas',
@@ -123,7 +133,7 @@ begin
   if Assigned(Application) then
   begin
     Application.Initialize;
-    Application.Title := 'FC91L';
+    Application.Title := 'FC91K';
     Application.CreateForm(TFormMain, FormMain);
     Application.Run;
   end;

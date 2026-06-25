@@ -253,6 +253,8 @@ begin
   fag := TFederActionGroup.Create;
   fag.Add(faSampleM);
   fag.Add(faSampleP);
+  fag.Add(faHubM);
+  fag.Add(faHubP);
   AddGroup('Sample', fag);
 end;
 

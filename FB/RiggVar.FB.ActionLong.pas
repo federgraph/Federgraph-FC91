@@ -51,6 +51,8 @@ begin
     faShowImage: result := 'Form Image';
     faShowMemo: result := 'Form Memo';
     faShowActions: result := 'Form Actions';
+    faShowColor: result := 'Form Color';
+    faShowBambu: result := 'Form Bambu';
     faShowInfo: result := 'Form Info';
 
     { TouchLayout }
@@ -555,9 +557,20 @@ begin
     faExample08: result := 'Example 08';
     faExample09: result := 'Example 09';
 
+    { Repo }
+    faSwapBundle: result := 'swap bundle';
+    faRepo010: result := 'Repo 10';
+    faRepo020: result := 'Repo 20';
+    faRepo050: result := 'Repo 50';
+
     { SampleNavigation }
+    faLevelM: result := 'Level -';
+    faLevelP: result := 'Level +';
+    faHubM: result := 'Hub -';
+    faHubP: result := 'Hub +';
     faSampleM: result := 'Sample -';
     faSampleP: result := 'Sample +';
+    faGotoSample0: result := 'Goto Sample 0';
     faGotoSample1: result := 'Goto Sample 1';
 
     { Help }
@@ -661,6 +674,127 @@ begin
     faLayout7: result := 'Transitbar Layout 7';
     faLayout8: result := 'Transitbar Layout 8';
     faLayout9: result := 'Transitbar Layout 9';
+
+    { Layout1 }
+    faLayout10: result := 'Transitbar Layout 10';
+    faLayout11: result := 'Transitbar Layout 11';
+    faLayout12: result := 'Transitbar Layout 12';
+    faLayout13: result := 'Transitbar Layout 13';
+    faLayout14: result := 'Transitbar Layout 14';
+    faLayout15: result := 'Transitbar Layout 15';
+    faLayout16: result := 'Transitbar Layout 16';
+    faLayout17: result := 'Transitbar Layout 17';
+    faLayout18: result := 'Transitbar Layout 18';
+    faLayout19: result := 'Transitbar Layout 19';
+
+    { Layout2 }
+    faLayout20: result := 'Transitbar Layout 20';
+    faLayout21: result := 'Transitbar Layout 21';
+    faLayout22: result := 'Transitbar Layout 22';
+    faLayout23: result := 'Transitbar Layout 23';
+    faLayout24: result := 'Transitbar Layout 24';
+    faLayout25: result := 'Transitbar Layout 25';
+    faLayout26: result := 'Transitbar Layout 26';
+    faLayout27: result := 'Transitbar Layout 27';
+    faLayout28: result := 'Transitbar Layout 28';
+    faLayout29: result := 'Transitbar Layout 29';
+
+    { Layout3 }
+    faLayout30: result := 'Transitbar Layout 30';
+    faLayout31: result := 'Transitbar Layout 31';
+    faLayout32: result := 'Transitbar Layout 32';
+    faLayout33: result := 'Transitbar Layout 33';
+    faLayout34: result := 'Transitbar Layout 34';
+    faLayout35: result := 'Transitbar Layout 35';
+    faLayout36: result := 'Transitbar Layout 36';
+    faLayout37: result := 'Transitbar Layout 37';
+    faLayout38: result := 'Transitbar Layout 38';
+    faLayout39: result := 'Transitbar Layout 39';
+
+    { Layout4 }
+    faLayout40: result := 'Transitbar Layout 40';
+    faLayout41: result := 'Transitbar Layout 41';
+    faLayout42: result := 'Transitbar Layout 42';
+    faLayout43: result := 'Transitbar Layout 43';
+    faLayout44: result := 'Transitbar Layout 44';
+    faLayout45: result := 'Transitbar Layout 45';
+    faLayout46: result := 'Transitbar Layout 46';
+    faLayout47: result := 'Transitbar Layout 47';
+    faLayout48: result := 'Transitbar Layout 48';
+    faLayout49: result := 'Transitbar Layout 49';
+
+    { Layout5 }
+    faLayout50: result := 'Transitbar Layout 50';
+    faLayout51: result := 'Transitbar Layout 51';
+    faLayout52: result := 'Transitbar Layout 52';
+    faLayout53: result := 'Transitbar Layout 53';
+    faLayout54: result := 'Transitbar Layout 54';
+    faLayout55: result := 'Transitbar Layout 55';
+    faLayout56: result := 'Transitbar Layout 56';
+    faLayout57: result := 'Transitbar Layout 57';
+    faLayout58: result := 'Transitbar Layout 58';
+    faLayout59: result := 'Transitbar Layout 59';
+
+    { Layout6 }
+    faLayout60: result := 'Transitbar Layout 60';
+    faLayout61: result := 'Transitbar Layout 61';
+    faLayout62: result := 'Transitbar Layout 62';
+    faLayout63: result := 'Transitbar Layout 63';
+    faLayout64: result := 'Transitbar Layout 64';
+    faLayout65: result := 'Transitbar Layout 65';
+    faLayout66: result := 'Transitbar Layout 66';
+    faLayout67: result := 'Transitbar Layout 67';
+    faLayout68: result := 'Transitbar Layout 68';
+    faLayout69: result := 'Transitbar Layout 69';
+
+    { Layout7 }
+    faLayout70: result := 'Transitbar Layout 70';
+    faLayout71: result := 'Transitbar Layout 71';
+    faLayout72: result := 'Transitbar Layout 72';
+    faLayout73: result := 'Transitbar Layout 73';
+    faLayout74: result := 'Transitbar Layout 74';
+    faLayout75: result := 'Transitbar Layout 75';
+    faLayout76: result := 'Transitbar Layout 76';
+    faLayout77: result := 'Transitbar Layout 77';
+    faLayout78: result := 'Transitbar Layout 78';
+    faLayout79: result := 'Transitbar Layout 79';
+
+    { Layout8 }
+    faLayout80: result := 'Transitbar Layout 80';
+    faLayout81: result := 'Transitbar Layout 81';
+    faLayout82: result := 'Transitbar Layout 82';
+    faLayout83: result := 'Transitbar Layout 83';
+    faLayout84: result := 'Transitbar Layout 84';
+    faLayout85: result := 'Transitbar Layout 85';
+    faLayout86: result := 'Transitbar Layout 86';
+    faLayout87: result := 'Transitbar Layout 87';
+    faLayout88: result := 'Transitbar Layout 88';
+    faLayout89: result := 'Transitbar Layout 89';
+
+    { Layout9 }
+    faLayout90: result := 'Transitbar Layout 90';
+    faLayout91: result := 'Transitbar Layout 91';
+    faLayout92: result := 'Transitbar Layout 92';
+    faLayout93: result := 'Transitbar Layout 93';
+    faLayout94: result := 'Transitbar Layout 94';
+    faLayout95: result := 'Transitbar Layout 95';
+    faLayout96: result := 'Transitbar Layout 96';
+    faLayout97: result := 'Transitbar Layout 97';
+    faLayout98: result := 'Transitbar Layout 98';
+    faLayout99: result := 'Transitbar Layout 99';
+
+    { MenuNav }
+    faMenuXX: result := 'Menubar Layout XX';
+    faMenu00: result := 'Menubar Layout 00';
+    faMenu10: result := 'Menubar Layout 10';
+    faMenu20: result := 'Menubar Layout 20';
+    faMenu30: result := 'Menubar Layout 30';
+    faMenu40: result := 'Menubar Layout 40';
+    faMenu50: result := 'Menubar Layout 50';
+    faMenu60: result := 'Menubar Layout 60';
+    faMenu70: result := 'Menubar Layout 70';
+    faMenu80: result := 'Menubar Layout 80';
+    faMenu90: result := 'Menubar Layout 90';
 
     { FigureSize }
     faFigureSizeXS: result := 'Figure Size XS';

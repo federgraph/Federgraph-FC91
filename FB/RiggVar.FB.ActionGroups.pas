@@ -125,7 +125,6 @@ begin
   AddSpecial(ActionGroupMeshBuilderOptions, 'MeshBuilderOptions');
 
   { Texture }
-  AddSpecial(ActionGroupTextureExport, 'TextureExport');
   AddSpecial(ActionGroupColorMix, 'ColorMix');
   AddSpecial(ActionGroupColorSwat, 'ColorSwat');
 
@@ -165,6 +164,7 @@ begin
 
   { DB }
   AddSpecial(ActionGroupExampleData, 'ExampleData');
+  AddSpecial(ActionGroupRepo, 'Repo');
   AddSpecial(ActionGroupSampleNavigation, 'SampleNavigation');
 
   { App }
@@ -184,6 +184,18 @@ begin
 
   { Layout }
   AddSpecial(ActionGroupLayout0, 'Layout0');
+  AddSpecial(ActionGroupLayout1, 'Layout1');
+  AddSpecial(ActionGroupLayout2, 'Layout2');
+  AddSpecial(ActionGroupLayout3, 'Layout3');
+  AddSpecial(ActionGroupLayout4, 'Layout4');
+  AddSpecial(ActionGroupLayout5, 'Layout5');
+  AddSpecial(ActionGroupLayout6, 'Layout6');
+  AddSpecial(ActionGroupLayout7, 'Layout7');
+  AddSpecial(ActionGroupLayout8, 'Layout8');
+  AddSpecial(ActionGroupLayout9, 'Layout9');
+
+  { Nav }
+  AddSpecial(ActionGroupMenuNav, 'MenuNav');
 
   { Bambu }
   AddSpecial(ActionGroupFigureSize, 'FigureSize');

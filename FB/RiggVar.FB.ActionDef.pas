@@ -41,6 +41,8 @@ const
   fagShowImage = 1677;
   fagShowMemo = 15;
   fagShowActions = 16;
+  fagShowColor = 1446;
+  fagShowBambu = 1661;
   fagShowInfo = 21;
 
   { TouchLayout }
@@ -545,9 +547,20 @@ const
   fagExample08 = 1533;
   fagExample09 = 1534;
 
+  { Repo }
+  fagSwapBundle = 757;
+  fagRepo010 = 758;
+  fagRepo020 = 759;
+  fagRepo050 = 760;
+
   { SampleNavigation }
+  fagLevelM = 764;
+  fagLevelP = 765;
+  fagHubM = 766;
+  fagHubP = 767;
   fagSampleM = 768;
   fagSampleP = 769;
+  fagGotoSample0 = 770;
   fagGotoSample1 = 771;
 
   { Help }
@@ -651,6 +664,127 @@ const
   fagLayout7 = 1244;
   fagLayout8 = 1245;
   fagLayout9 = 1246;
+
+  { Layout1 }
+  fagLayout10 = 1247;
+  fagLayout11 = 1248;
+  fagLayout12 = 1249;
+  fagLayout13 = 1250;
+  fagLayout14 = 1251;
+  fagLayout15 = 1252;
+  fagLayout16 = 1253;
+  fagLayout17 = 1254;
+  fagLayout18 = 1255;
+  fagLayout19 = 1256;
+
+  { Layout2 }
+  fagLayout20 = 1257;
+  fagLayout21 = 1258;
+  fagLayout22 = 1259;
+  fagLayout23 = 1260;
+  fagLayout24 = 1261;
+  fagLayout25 = 1262;
+  fagLayout26 = 1263;
+  fagLayout27 = 1264;
+  fagLayout28 = 1265;
+  fagLayout29 = 1266;
+
+  { Layout3 }
+  fagLayout30 = 1267;
+  fagLayout31 = 1268;
+  fagLayout32 = 1269;
+  fagLayout33 = 1270;
+  fagLayout34 = 1271;
+  fagLayout35 = 1272;
+  fagLayout36 = 1273;
+  fagLayout37 = 1274;
+  fagLayout38 = 1275;
+  fagLayout39 = 1276;
+
+  { Layout4 }
+  fagLayout40 = 1277;
+  fagLayout41 = 1278;
+  fagLayout42 = 1279;
+  fagLayout43 = 1280;
+  fagLayout44 = 1281;
+  fagLayout45 = 1282;
+  fagLayout46 = 1283;
+  fagLayout47 = 1284;
+  fagLayout48 = 1285;
+  fagLayout49 = 1286;
+
+  { Layout5 }
+  fagLayout50 = 1287;
+  fagLayout51 = 1288;
+  fagLayout52 = 1289;
+  fagLayout53 = 1290;
+  fagLayout54 = 1291;
+  fagLayout55 = 1292;
+  fagLayout56 = 1293;
+  fagLayout57 = 1294;
+  fagLayout58 = 1295;
+  fagLayout59 = 1296;
+
+  { Layout6 }
+  fagLayout60 = 1297;
+  fagLayout61 = 1298;
+  fagLayout62 = 1299;
+  fagLayout63 = 1300;
+  fagLayout64 = 1301;
+  fagLayout65 = 1302;
+  fagLayout66 = 1303;
+  fagLayout67 = 1304;
+  fagLayout68 = 1305;
+  fagLayout69 = 1306;
+
+  { Layout7 }
+  fagLayout70 = 1307;
+  fagLayout71 = 1308;
+  fagLayout72 = 1309;
+  fagLayout73 = 1310;
+  fagLayout74 = 1311;
+  fagLayout75 = 1312;
+  fagLayout76 = 1313;
+  fagLayout77 = 1314;
+  fagLayout78 = 1315;
+  fagLayout79 = 1316;
+
+  { Layout8 }
+  fagLayout80 = 1317;
+  fagLayout81 = 1318;
+  fagLayout82 = 1319;
+  fagLayout83 = 1320;
+  fagLayout84 = 1321;
+  fagLayout85 = 1322;
+  fagLayout86 = 1323;
+  fagLayout87 = 1324;
+  fagLayout88 = 1325;
+  fagLayout89 = 1326;
+
+  { Layout9 }
+  fagLayout90 = 1327;
+  fagLayout91 = 1328;
+  fagLayout92 = 1329;
+  fagLayout93 = 1330;
+  fagLayout94 = 1331;
+  fagLayout95 = 1332;
+  fagLayout96 = 1333;
+  fagLayout97 = 1334;
+  fagLayout98 = 1335;
+  fagLayout99 = 1336;
+
+  { MenuNav }
+  fagMenuXX = 1340;
+  fagMenu00 = 1341;
+  fagMenu10 = 1342;
+  fagMenu20 = 1343;
+  fagMenu30 = 1344;
+  fagMenu40 = 1345;
+  fagMenu50 = 1346;
+  fagMenu60 = 1347;
+  fagMenu70 = 1348;
+  fagMenu80 = 1349;
+  fagMenu90 = 1350;
 
   { FigureSize }
   fagFigureSizeXS = 1636;

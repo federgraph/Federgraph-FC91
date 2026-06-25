@@ -2025,6 +2025,7 @@ begin
    result := False;
   case fa of
     faNoop: ;
+    faSwapBundle: result := SampleManager.BundleID = 1;
   end;
 end;
 

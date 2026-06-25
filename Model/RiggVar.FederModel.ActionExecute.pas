@@ -105,6 +105,10 @@ begin
     faFigure5: M.Figure := 5;
     faFigure6: M.Figure := 6;
 
+    faLevelM: M.CycleDBM;
+    faLevelP: M.CycleDBP;
+    faHubM: M.LoadHub(true);
+    faHubP: M.LoadHub(false);
     faSampleM: M.LoadSample(true);
     faSampleP: M.LoadSample(false);
 
@@ -220,6 +224,19 @@ begin
     faToggleLabelText: M.FederScene.ToggleLabel;
 
     faLayout0 .. faLayout9: M.TransitBarLayout := fa - faLayout0;
+    faLayout10 .. faLayout99: M.TransitBarLayout := fa - faLayout0;
+
+    faMenuXX: M.MenubarLayout := -1;
+    faMenu00: M.MenubarLayout := 0;
+    faMenu10: M.MenubarLayout := 10;
+    faMenu20: M.MenubarLayout := 20;
+    faMenu30: M.MenubarLayout := 30;
+    faMenu40: M.MenubarLayout := 40;
+    faMenu50: M.MenubarLayout := 50;
+    faMenu60: M.MenubarLayout := 60;
+    faMenu70: M.MenubarLayout := 70;
+    faMenu80: M.MenubarLayout := 80;
+    faMenu90: M.MenubarLayout := 90;
 
     faToggleParamLock: M.FederData.ParamLock := not M.FederData.ParamLock;
     faToggleTextureLock: M.FederData.TextureLock := not M.FederData.TextureLock;
@@ -426,6 +443,10 @@ begin
     faLightMode3: M.ToggleLightMode(3);
     faLightMode4: M.ToggleLightMode(4);
 
+    faRepo010: M.InitRepo(10);
+    faRepo020: M.InitRepo(20);
+    faRepo050: M.InitRepo(50);
+
     faColorPanelOn: M.ShowColorPanel := True;
     faColorPanelOff: M.ShowColorPanel := False;
 
@@ -445,6 +466,7 @@ begin
     faStepCZM: M.DoZoom(0.3);
     faStepCZP: M.DoZoom(-0.3);
 
+    faGotoSample0: M.GotoSample(0);
     faGotoSample1: M.GotoSample(1);
 
     faToggleOpacity: M.Opacity := not M.Opacity;
@@ -515,6 +537,8 @@ begin
     faWriteActionTable,
     faWriteActionConst,
     faWriteActionNames: M.HandleAction(fa);
+
+    faSwapBundle: M.SwapBundle;
 
     faWriteVersion1,
     faWriteVersion2,

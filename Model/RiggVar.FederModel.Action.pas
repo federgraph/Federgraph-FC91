@@ -196,6 +196,15 @@ function TFederActionHandler.GetEnabled(fa: TFederAction): Boolean;
 begin
   result := True;
   case fa of
+    faHubM,
+    faHubP: result := Main.SampleManager.HubCount > 1;
+
+    faLevelM,
+    faLevelP: result :=
+      (Main.SampleManager.BundleID = 2) and
+      (Main.SampleManager.HubCount > 1) and
+      (Main.SampleManager.Hub  > 0);
+
     faTogglePCap: result := not Main.ReducedMesh;
     faToggleMCap: result := not Main.ReducedMesh;
 

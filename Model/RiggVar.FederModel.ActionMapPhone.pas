@@ -64,7 +64,7 @@ uses
 constructor TActionMapPhone.Create;
 begin
   inherited;
-  FPageCount := 20;
+  FPageCount := 21;
   FEscapeIndex := 6;
   TestName := 'Phone Page';
 end;
@@ -372,6 +372,21 @@ begin
 
     17:
     begin
+      CurrentPageCaptionPhone := 'Sample Bundle';
+      IAC(1, faSwapBundle, claSample);
+      IAC(2, faCycleBitmapP, cla);
+      IAC(3, faCycleBitmapM, cla);
+
+      IAC(4, faGotoSample1, claSample);
+      IAC(5, faSampleP, claSample);
+      IAC(6, faSampleM, claSample);
+
+      IAC(7, faHubM, claSample);
+      IAC(8, faHubP, claSample);
+    end;
+
+    18:
+    begin
       CurrentPageCaptionPhone := 'Color Play';
       IAC(1, faColor1, cla);
       IAC(2, faColor2, cla);
@@ -385,7 +400,7 @@ begin
       IAC(8, faColorMix0, cla);
     end;
 
-    18:
+    19:
     begin
       CurrentPageCaptionPhone := 'Plot Cycle';
       IAC(1, faCyclePlotP, cla);
@@ -400,7 +415,7 @@ begin
       IAC(8, faMeshSize128, cla);
     end;
 
-    19:
+    20:
     begin
       CurrentPageCaptionPhone := 'Texture Params';
       IAC(1, faParamT1, claParam);
@@ -415,7 +430,7 @@ begin
       IAC(8, faActionPageE, claPage);
     end;
 
-    20:
+    21:
     begin
       CurrentPageCaptionPhone := 'Param Value';
       IAC(1, faParamValuePlus10, cla);

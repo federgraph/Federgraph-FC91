@@ -201,6 +201,12 @@ begin
   Self.Add(cr);
 
   cr.Page := APage;
+  cr.Position := BL03;
+  cr.Action := faShowBambu;
+  cr.Color := claPlum;
+  Self.Add(cr);
+
+  cr.Page := APage;
   cr.Position := BL04;
   cr.Action := faShowInfo;
   cr.Color := claPlum;

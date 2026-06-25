@@ -109,7 +109,7 @@ uses
 constructor TActionMapTablet.Create;
 begin
   inherited;
-  FPageCount := 15;
+  FPageCount := 19;
   FEscapeIndex := 6;
   ForceActionPageMP := True;
   TestName := 'Tablet Page';
@@ -365,8 +365,8 @@ var
   claExample: TAlphaColor;
   claFigureSize: TAlphaColor;
   claEyeSize: TAlphaColor;
-//  claLayerSelection: TAlphaColor;
-//  claColorSelection: TAlphaColor;
+  claLayerSelection: TAlphaColor;
+  claColorSelection: TAlphaColor;
   claColorMapping: TAlphaColor;
   claSample: TAlphaColor;
   claExporter: TAlphaColor;
@@ -384,8 +384,8 @@ begin
   claExample := claAquamarine;
   claFigureSize := claDarksalmon;
   claEyeSize := claPlum;
-//  claLayerSelection := claCornflowerblue;
-//  claColorSelection := claAquamarine;
+  claLayerSelection := claCornflowerblue;
+  claColorSelection := claAquamarine;
   claColorMapping := claDarkkhaki;
   claExporter := claOrange;
   claObject := claAquamarine;
@@ -668,10 +668,10 @@ begin
       InitAC(cl, 8, faParamT1, claParam);
 
       cl := BottomRight;
-      InitAC(cl, 1, faNoop, cla);
-      InitAC(cl, 2, faNoop, cla);
-      InitAC(cl, 3, faNoop, cla);
-      InitAC(cl, 4, faNoop, cla);
+      InitAC(cl, 1, faMenu30, cla);
+      InitAC(cl, 2, faMenu20, cla);
+      InitAC(cl, 3, faMenu10, cla);
+      InitAC(cl, 4, faMenu00, cla);
       InitAC(cl, 5, faActionPageX, claPage);
       InitAC(cl, 6, faNoop, claNoop);
     end;
@@ -965,6 +965,168 @@ begin
     end;
 
     15:
+    begin
+      CurrentPageCaption := 'Example';
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faExample01, claExample);
+      InitAC(cl, 3, faExample02, claExample);
+      InitAC(cl, 4, faExample03, claExample);
+      InitAC(cl, 5, faExample04, claExample);
+      InitAC(cl, 6, faExample09, claExample);
+
+      cl := TopRight;
+      InitAC(cl, 1, faExample05, claExample);
+      InitAC(cl, 2, faExample06, claExample);
+      InitAC(cl, 3, faExample07, claExample);
+      InitAC(cl, 4, faExample08, claExample);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faEyeSizeS, claEyeSize);
+      InitAC(cl, 7, faEyeSizeM, claEyeSize);
+      InitAC(cl, 8, faEyeSizeL, claEyeSize);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faFigureSizeXS, claFigureSize);
+      InitAC(cl, 2, faFigureSizeS, claFigureSize);
+      InitAC(cl, 3, faFigureSizeM, claFigureSize);
+      InitAC(cl, 4, faFigureSizeL, claFigureSize);
+      InitAC(cl, 5, faFigureSizeXL, claFigureSize);
+      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 7, faNoop, claNoop);
+      InitAC(cl, 8, faNoop, claNoop);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faSelectColorMapping1, claColorMapping);
+      InitAC(cl, 2, faSelectColorMapping2, claColorMapping);
+      InitAC(cl, 3, faSelectColorMapping3, claColorMapping);
+      InitAC(cl, 4, faSelectColorMapping4, claColorMapping);
+      InitAC(cl, 5, faSelectColorMapping5, claColorMapping);
+      InitAC(cl, 6, faSelectColorMapping6, claColorMapping);
+    end;
+
+    16:
+    begin
+      CurrentPageCaption := 'Manual Mapping';
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faSelectLayer1, claLayerSelection);
+      InitAC(cl, 3, faSelectLayer2, claLayerSelection);
+      InitAC(cl, 4, faSelectLayer3, claLayerSelection);
+      InitAC(cl, 5, faSelectLayer4, claLayerSelection);
+      InitAC(cl, 6, faNoop, claNoop);
+
+      cl := TopRight;
+      InitAC(cl, 1, faSelectLayer5, claLayerSelection);
+      InitAC(cl, 2, faSelectLayer6, claLayerSelection);
+      InitAC(cl, 3, faSelectLayer7, claLayerSelection);
+      InitAC(cl, 4, faNoop, claNoop);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 7, faNoop, claNoop);
+      InitAC(cl, 8, faMapColorToLayer, claCrimson);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faNoop, claNoop);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 7, faNoop, claNoop);
+      InitAC(cl, 8, faNoop, claNoop);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faSelectColor1, claColorSelection);
+      InitAC(cl, 2, faSelectColor2, claColorSelection);
+      InitAC(cl, 3, faSelectColor3, claColorSelection);
+      InitAC(cl, 4, faSelectColor4, claColorSelection);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faNoop, claNoop);
+    end;
+
+    17:
+    begin
+      CurrentPageCaption := 'Palette';
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faNoop, claNoop);
+
+      cl := TopRight;
+      InitAC(cl, 1, faNoop, claNoop);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claNoop);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 7, faNoop, claNoop);
+      InitAC(cl, 8, faNoop, claNoop);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faNoop, claNoop);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 7, faNoop, claNoop);
+      InitAC(cl, 8, faNoop, claNoop);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faSelectColor1, claColorSelection);
+      InitAC(cl, 2, faSelectColor2, claColorSelection);
+      InitAC(cl, 3, faSelectColor3, claColorSelection);
+      InitAC(cl, 4, faSelectColor4, claColorSelection);
+      InitAC(cl, 5, faActionPageE, claPage);
+      InitAC(cl, 6, faPaletteOn, claCrimson);
+    end;
+
+    18:
+    begin
+      CurrentPageCaption := 'Sample';
+
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faCycleBitmapM, cla);
+      InitAC(cl, 3, faCycleBitmapP, cla);
+      InitAC(cl, 4, faBitmapEscape, cla);
+      InitAC(cl, 5, faBitmapOne, cla);
+      InitAC(cl, 6, faCLA, claNavy);
+
+      cl := TopRight;
+      cla := claWhite;
+      InitAC(cl, 1, faCycleColorSchemeM, cla);
+      InitAC(cl, 2, faCycleColorSchemeP, cla);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claNoop);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 7, faSwapBundle, claSample);
+      InitAC(cl, 8, faGotoSample1, claSample);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faActionPage1, claPage);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 7, faNoop, claNoop);
+      InitAC(cl, 8, faShowInfo, cla);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faHubM, claSample);
+      InitAC(cl, 2, faHubP, claSample);
+      InitAC(cl, 3, faSampleM, claSample);
+      InitAC(cl, 4, faSampleP, claSample);
+      InitAC(cl, 5, faActionPageE, claPage);
+      InitAC(cl, 6, faNoop, claNoop);
+    end;
+
+    19:
     begin
       CurrentPageCaption := 'Exporter OBJ';
       cl := TopLeft;

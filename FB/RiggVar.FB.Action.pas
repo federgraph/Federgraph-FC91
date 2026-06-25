@@ -161,6 +161,7 @@ begin
     faSampleM,
     faSampleP,
     faGotoSample1,
+    faSwapBundle,
     faParamX12,
     faParamY12,
     faParamZ12,

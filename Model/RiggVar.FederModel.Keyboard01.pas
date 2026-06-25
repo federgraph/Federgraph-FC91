@@ -110,20 +110,20 @@ begin
       if ssShift in Shift then
         result := faWheelUp
       else
-//        result := faHubP
+        result := faHubP
     end
     else if Key = vkDown then
     begin
       if ssShift in Shift then
         result := faWheelDown
       else
-//        result := faHubM
+        result := faHubM
     end
 
     else if Key = vkPrior then
-//      result := faHubP
+      result := faHubP
     else if Key = vkNext then
-//      result := faHubM
+      result := faHubM
 
     else if Key = vkHome then
       result := faHelpHome
@@ -397,7 +397,7 @@ begin
       result := faParamCapValue
 
     else if KeyChar = ',' then
-      result := faToggleOrbitMode
+//      result := faParamSliceHeight
     else if KeyChar = '.' then
       result := faParamCapValue
     else if KeyChar = '-' then

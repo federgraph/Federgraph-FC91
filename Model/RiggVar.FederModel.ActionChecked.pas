@@ -255,6 +255,8 @@ begin
     faPixelCount2: result := M.PixelCount = 2;
     faPixelCount4: result := M.PixelCount = 4;
 
+    faSwapBundle: result := M.GetChecked(fa);
+
     faToggleColorSwat: result := M.ShowColorSwat;
 
     faLightMode0: result := M.CurrentLight = 0;
@@ -354,7 +356,19 @@ begin
     faExample08: result := M.ExampleID = 8;
     faExample09: result := M.ExampleID = 9;
 
+    faMenu00: result := M.MenubarLayout = 0;
+    faMenu10: result := M.MenubarLayout = 10;
+    faMenu20: result := M.MenubarLayout = 20;
+    faMenu30: result := M.MenubarLayout = 30;
+    faMenu40: result := M.MenubarLayout = 40;
+    faMenu50: result := M.MenubarLayout = 50;
+    faMenu60: result := M.MenubarLayout = 60;
+    faMenu70: result := M.MenubarLayout = 70;
+    faMenu80: result := M.MenubarLayout = 80;
+    faMenu90: result := M.MenubarLayout = 90;
+
     faLayout0 .. faLayout9: result := M.TransitBarLayout = fa - faLayout0;
+    faLayout10 .. faLayout99: result := M.TransitBarLayout = fa - faLayout0;
 
     faExportCoordsNative: result := M.ExportCoords = TExportCoords.Native;
     faExportCoordsBlender: result := M.ExportCoords = TExportCoords.App_Blender;

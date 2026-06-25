@@ -69,6 +69,8 @@ type
     procedure ActionsBtnClick(Sender: TObject);
     procedure ApplicationEventsException(Sender: TObject; E: Exception);
     procedure ApplicationEventsIdle(Sender: TObject; var Done: Boolean);
+    procedure BambuBtnClick(Sender: TObject);
+    procedure ColorBtnClick(Sender: TObject);
     procedure ColorPanelChange(Sender: TObject);
     procedure CreateColorPanel;
     procedure CreateHintText;
@@ -155,6 +157,8 @@ implementation
 
 uses
   FrmAction,
+  FrmBambu,
+  FrmColor,
   FrmImage,
   FrmMemo,
   RiggVar.App.Main,
@@ -216,6 +220,26 @@ begin
     end;
       end;
   Done := True;
+end;
+
+procedure TFormMain.BambuBtnClick(Sender: TObject);
+begin
+  if not Assigned(FormBambu) then
+  begin
+    FormBambu := TFormBambu.Create(nil);
+  end;
+  FormBambu.Visible := True;
+  FormBambu.Activate;
+end;
+
+procedure TFormMain.ColorBtnClick(Sender: TObject);
+begin
+  if not Assigned(FormColor) then
+  begin
+    FormColor := TFormColor.Create(nil);
+  end;
+  FormColor.Visible := True;
+  FormColor.Activate;
 end;
 
 procedure TFormMain.ColorPanelChange(Sender: TObject);
@@ -306,6 +330,16 @@ begin
   begin
     FormMemo.Free;
     FormMemo := nil;
+  end;
+  if FormColor <> nil then
+  begin
+    FormColor.Free;
+    FormColor := nil;
+  end;
+  if FormBambu <> nil then
+  begin
+    FormBambu.Free;
+    FormBambu := nil;
   end;
 end;
 
@@ -445,6 +479,8 @@ begin
     faShowImage: ImageBtnClick(nil);
     faShowActions: ActionsBtnClick(nil);
     faShowMemo: MemoBtnClick(nil);
+    faShowColor: ColorBtnClick(nil);
+    faShowBambu: BambuBtnClick(nil);
 
     faWheelFrequency1 .. faWheelFrequency0001,
 
