@@ -57,6 +57,68 @@ begin
     faTouchPhone: result := 'Touch Phone';
     faTouchDesk: result := 'Touch Desk';
 
+    { ActionMapping }
+    faProcessAll: result := 'Process All';
+
+    { Scene }
+    faScene1: result := 'S1';
+    faScene2: result := 'S2';
+    faScene3: result := 'S3';
+    faScene4: result := 'S4';
+    faScene5: result := 'S5';
+
+    { Plot }
+    faPlot0: result := 'P0';
+    faPlot1: result := 'P1';
+    faPlot2: result := 'P2';
+    faPlot3: result := 'P3';
+    faPlot4: result := 'P4';
+    faPlot5: result := 'P5';
+    faPlot6: result := 'P6';
+    faPlot7: result := 'P7';
+    faPlot8: result := 'P8';
+    faPlot9: result := 'P9';
+    faPlot10: result := 'P10';
+    faPlot11: result := 'P11';
+    faPlot12: result := 'P12';
+    faPlot13: result := 'P13';
+
+    { Figure }
+    faFigure1: result := 'F1';
+    faFigure2: result := 'F2';
+    faFigure3: result := 'F3';
+    faFigure4: result := 'F4';
+    faFigure5: result := 'F5';
+    faFigure6: result := 'F6';
+
+    { Graph }
+    faGraph1: result := 'G1';
+    faGraph2: result := 'G2';
+    faGraph3: result := 'G3';
+    faGraph4: result := 'G4';
+    faGraph5: result := 'G5';
+
+    { Color }
+    faColor0: result := 'C0';
+    faColor1: result := 'C1';
+    faColor2: result := 'C2';
+    faColor3: result := 'C3';
+    faColor4: result := 'C4';
+    faColor5: result := 'C5';
+    faColor6: result := 'C6';
+
+    { Param }
+    faParam0: result := 'Param 0';
+    faParam1: result := 'Param 1';
+    faParam2: result := 'Param 2';
+    faParam3: result := 'Param 3';
+    faParam4: result := 'Param 4';
+    faParam5: result := 'Param 5';
+    faParam6: result := 'Param 6';
+    faParam7: result := 'Param 7';
+    faParam8: result := 'Param 8';
+    faParam9: result := 'Param 9';
+
     { SystemParam }
     faParamX1: result := 'Param x1';
     faParamY1: result := 'Param y1';
@@ -130,6 +192,37 @@ begin
     faParamL3F: result := 'l3f';
     faParamLF: result := 'Lf';
 
+    { ModelOptions }
+    faToggleSolutionMode: result := 'Solution mode';
+    faToggleVorzeichen: result := 'Vorzeichen (Sign)';
+    faToggleLinearForce: result := 'Linear Force';
+    faToggleGleich: result := 'Gleichseitig (Equilateral)';
+    faToggleMCap: result := 'Minus cap';
+    faTogglePCap: result := 'Plus cap';
+    faForceZ0: result := 'Use original PosZ';
+    faWantZ12: result := 'Use PosZ1 if available';
+    faDiff0: result := 'Set Diffmode to false';
+    faDiff1: result := 'Set Diffmode to true';
+    faDiff10: result := 'Raise Diffmode flag (one time)';
+
+    { OptionCycle }
+    faCyclePlotM: result := 'cycle plot -';
+    faCyclePlotP: result := 'cycle plot +';
+    faCycleGraphM: result := 'cycle graph -';
+    faCycleGraphP: result := 'cycle graph +';
+    faCycleFigureM: result := 'cycle figure -';
+    faCycleFigureP: result := 'cycle figure +';
+
+    { ForceMode }
+    faForceMode0: result := 'Zug-Druck';
+    faForceMode1: result := 'Zug';
+    faForceMode2: result := 'Druck';
+
+    { FederMode }
+    faM1: result := 'm1';
+    faM2: result := 'm2';
+    faM3: result := 'm3';
+
     { RingActions }
     faBlindRingP: result := 'Blind Ring P';
     faBlindRingM: result := 'Blind Ring M';
@@ -181,6 +274,13 @@ begin
     faBandSelection20: result := 'Band Selection 20';
     faBandSelection21: result := 'Band Selection 21';
 
+    { MeshMode }
+    faReducedMesh: result := 'Reduced mesh';
+    faReduceMode0: result := 'Reduce mode 0';
+    faReduceMode1: result := 'Reduce mode 1';
+    faReduceMode2: result := 'Reduce mode 2';
+    faReduceMode3: result := 'Reduce mode 3';
+
     { MeshSize }
     faMeshSize4: result := 'MeshSize 4';
     faMeshSize8: result := 'MeshSize 8';
@@ -197,6 +297,7 @@ begin
     faWantBottomMirrored: result := 'Want Bottom Mirrored';
     faWantSideCaps: result := 'Want Side Caps';
     faTestSingleSide: result := 'Test SingleSide rendering';
+    faTakeCapValueSnapshot: result := 'Take CapValue Snapshot';
 
     { MeshExportCoords }
     faExportCoordsNative: result := 'ExportCoords Native';
@@ -218,6 +319,25 @@ begin
     faObjDigits4: result := '4 Digits';
     faObjDigits5: result := '5 Digits';
 
+    { MeshFigures }
+    faToggleMarker: result := 'Marker';
+    faToggleGrid: result := 'Grid';
+    faToggleGridFrequency: result := 'Grid frequency';
+    faToggleDiameter3: result := 'Toggle Diameter 3';
+    faDiameter3On: result := 'Diameter 3 On';
+    faDiameter3Off: result := 'Diameter 3 Off';
+    faToggleCylinder: result := 'Toggle Cylinder';
+    faToggleCube: result := 'Show Cube';
+    faToggleCorner: result := 'Show Corner';
+    faToggleLimitPlane: result := 'Toggle Limit Plane';
+
+    { VertexPulling }
+    faToggleZeroPulling: result := 'Zero Pulling';
+    faToggleLimitPulling: result := 'Limit Pulling';
+    faToggleSlicePulling: result := 'Slice Pulling';
+    faToggleTargetPulling: result := 'Target Pulling';
+    faToggleRightPulling: result := 'Right Pulling';
+
     { MeshBuilderOptions }
     faToggleSolidFlip: result := 'Toggle SolidFlip';
     faWantSpecialY: result := 'Want Special Y';
@@ -226,11 +346,55 @@ begin
     faUniqueMode2: result := 'Unique Mode 2';
     faToggleUniqueVertices: result := 'Toggle UniqueVertices';
 
+    { TextureExport }
+    faCopyBinCode: result := 'Copy Bin Code';
+    faCopyBinCodeTest: result := 'Copy Bin Code Test';
+
+    { ColorMix }
+    faColorMix0: result := 'Color Mix 0 (rgb)';
+    faColorMix1: result := 'Color Mix 1 (rbg)';
+    faColorMix2: result := 'Color Mix 2 (gbr)';
+    faColorMix3: result := 'Color Mix 3 (grb)';
+    faColorMix4: result := 'Color Mix 4 (brg)';
+    faColorMix5: result := 'Color Mix 5 (bgr)';
+    faColorMixP: result := 'Cycle ColorMix Plus';
+    faColorMixM: result := 'Cycle Color Mix Minus';
+
     { ColorSwat }
     faToggleColorSwat: result := 'Color Swat';
 
     { Lux }
+    faLux1On: result := 'Lux 1 On';
+    faLux1Off: result := 'Lux 1 Off';
+    faToggleLux1: result := 'Lux 1';
+    faLux2On: result := 'Lux 2 On';
+    faLux2Off: result := 'Lux 2 Off';
+    faToggleLux2: result := 'Lux 2';
+    faLux3On: result := 'Lux 3 On';
+    faLux3Off: result := 'Lux 3 Off';
+    faToggleLux3: result := 'Lux 3';
+    faLux4On: result := 'Lux 4 On';
+    faLux4Off: result := 'Lux 4 Off';
+    faToggleLux4: result := 'Lux 4';
+    faLuxOn: result := 'Light On';
+    faLuxOff: result := 'Light Off';
     faToggleLux: result := 'Light';
+
+    { LuxMarker }
+    faLuxMarkerOn: result := 'Lux Marker On';
+    faLuxMarkerOff: result := 'Lux Marker Off';
+    faToggleLuxMarker: result := 'Toggle Lux Marker';
+
+    { LightMode }
+    faLightMode0: result := 'LightMode 0';
+    faLightMode1: result := 'LightMode 1';
+    faLightMode2: result := 'LightMode 2';
+    faLightMode3: result := 'LightMode 3';
+    faLightMode4: result := 'LightMode 4';
+
+    { ResetLight }
+    faResetLightPosition: result := 'Reset Light 1 (Position)';
+    faResetLightParams: result := 'Reset Light 2 (Params)';
 
     { Wheel }
     faParamValuePlus1: result := 'Param Value + 1';
@@ -244,17 +408,45 @@ begin
 
     { WheelFrequency }
     faWheelFrequency1: result := 'Wheel Frequency 1';
+    faWheelFrequency05: result := 'Wheel Frequency 0.5';
+    faWheelFrequency02: result := 'Wheel Frequency 0.2';
     faWheelFrequency01: result := 'Wheel Frequency 0.1';
     faWheelFrequency001: result := 'Wheel Frequency 0.01';
+    faWheelFrequency0001: result := 'Wheel Frequenc 0.001';
 
     { ColorScheme }
     faCycleColorSchemeM: result := 'cycle color scheme -';
     faCycleColorSchemeP: result := 'cycle color scheme +';
 
+    { Step }
+    faStepRXM: result := 'Rotation step x-';
+    faStepRXP: result := 'Rotation step x+';
+    faStepRYM: result := 'Rotation step y-';
+    faStepRYP: result := 'Rotation step y+';
+    faStepRZM: result := 'Rotation step z-';
+    faStepRZP: result := 'Rotation step z+';
+    faStepCZM: result := 'Zoom step cz-';
+    faStepCZP: result := 'Zoom step cz+';
+
     { UI }
     faToggleColorPanel: result := 'Color Panel';
     faColorPanelOn: result := 'Toggle Color Panel On';
     faColorPanelOff: result := 'Toggle Color Panel Off';
+    faPaletteOn: result := 'Toggle Palette On';
+    faPaletteOff: result := 'Toggle Palette Off';
+
+    { Locks }
+    faToggleLuxLock: result := 'Lux Lock';
+    faToggleParamLock: result := 'Param lock';
+    faToggleTextureLock: result := 'Texture lock';
+    faToggleBackgroundLock: result := 'Set background color lock';
+    faToggleForceLock: result := 'Force lock';
+    faToggleReportLock: result := 'Report Lock';
+
+    { Opacity }
+    faToggleOpacity: result := 'Toggle Opacity';
+    faOpacityOn: result := 'Opacity On';
+    faOpacityOff: result := 'Opacity Off';
 
     { FederText }
     faToggleAllText: result := 'Toggle All Text';
@@ -267,6 +459,12 @@ begin
     faParamRZ: result := 'Model Rotation Z';
     faParamCZ: result := 'Camera Position Z';
 
+    { ViewParamsFC }
+    faParamTRS: result := 'Param trs';
+    faParamTRT: result := 'Param trt';
+    faParamTRX: result := 'Param trx';
+    faParamTRY: result := 'Param try';
+
     { ParamT }
     faParamT1: result := 'Param T1';
     faParamT2: result := 'Param T2';
@@ -274,6 +472,8 @@ begin
     faParamT4: result := 'Param T4';
 
     { ViewFlags }
+    faToggleBMap: result := 'Big map';
+    faToggleZoom: result := 'Toggle tile zoom';
     faToggleTouchMenu: result := 'Toggle Touch Menu';
     faToggleEquationText: result := 'Equation text visibility';
     faTogglePrimeText: result := 'Primary text visibility';
@@ -284,13 +484,90 @@ begin
     faLabelTextP: result := 'LabelText plus';
     faLabelTextM: result := 'LabelText minus';
 
+    { Report }
+    faCopyShortCutReport: result := 'Copy Shortcut Report';
+    faWriteActionReport: result := 'Write Action Report';
+    faWriteActionTable: result := 'Write Action Table';
+    faWriteActionConst: result := 'Write Action Constants';
+    faWriteActionNames: result := 'Write Action Names';
+    faWriteVersion1: result := 'Write Version 1 - Java Properties style';
+    faWriteVersion2: result := 'Write Version 2 - Two digit keys';
+    faWriteCode: result := 'Write Code - Pascal style';
+    faWriteDiff1: result := 'Write Version 1 Diff';
+    faWriteDiffCode: result := 'Write Diff Code';
+    faWriteDiffBin: result := 'Write Bin Data';
+    faWriteBandInfo3: result := 'Write Band Info 3: W-R-G-B';
+    faWriteBandInfo5: result := 'Write Band Info 5: W-R-G-B-C-A';
+    faWriteEquationInfo: result := 'Write Equation Info';
+    faWriteVirtual: result := 'Write Virtual';
+    faBlockTest: result := 'Block Test';
+
+    { ReportOptions }
+    faSourcePascal: result := 'Copy Pascal';
+    faSourceMaxima: result := 'Copy Maxima';
+    faSourceMaple: result := 'Copy Maple';
+    faSourceMathematica: result := 'Copy Mathematica';
+
+    { CopyImage }
+    faCopyScreenshot: result := 'Copy Screenshot';
+    faCopyBitmap3D: result := 'Copy 3D Bitmap';
+    faCopyTextureBitmap: result := 'Copy Texture Bitmap';
+    faCopyImprintedBitmap: result := 'Copy Imprinted Bitmap';
+    faCopyImprintedBitmapTest: result := 'Copy Imprinted Bitmap Test';
+
+    { CopyOptions }
+    faToggleHardCopy: result := 'Toggle Hard Copy';
+    faHardCopyOn: result := 'Hard Copy On';
+    faHardCopyOff: result := 'Hard Copy Off';
+    faTogglePngCopy: result := 'Toggle Png Copy';
+    faPngCopyOn: result := 'Png Copy On';
+    faPngCopyOff: result := 'Png Copy Off';
+    faToggleNoCopy: result := 'Toggle No Copy';
+    faNoCopyOn: result := 'No Copy On';
+    faNoCopyOff: result := 'No Copy Off';
+
+    { GraphOptions }
+    faToggleDiameter: result := 'Toggle Diameter';
+    faToggleProbe: result := 'Toggle Probe';
+
     { Bahn }
     faNorthCap: result := 'Param North Cap Value';
     faSouthCap: result := 'Param South Cap Value';
+    faEastCap: result := 'Param East Cap Value';
+    faWestCap: result := 'Param West Cap Value';
     faParamCapValue: result := 'Param Cap Value';
+    faParamBahnRadius: result := 'Param Bahn: Radius';
+    faParamBahnPositionX: result := 'Param Bahn: Position X';
+    faParamBahnPositionY: result := 'Param Bahn: Position Y';
+    faParamBahnAngle: result := 'Param Bahn: Angle';
+    faParamBahnCylinderD: result := 'Param Bahn: Cylinder Depth';
+    faParamBahnCylinderZ: result := 'Param Bahn: Cylinder Position Z';
+
+    { ExampleData }
+    faExample01: result := 'Example 01';
+    faExample02: result := 'Example 02';
+    faExample03: result := 'Example 03';
+    faExample04: result := 'Example 04';
+    faExample05: result := 'Example 05';
+    faExample06: result := 'Example 06';
+    faExample07: result := 'Example 07';
+    faExample08: result := 'Example 08';
+    faExample09: result := 'Example 09';
 
     { SampleNavigation }
+    faSampleM: result := 'Sample -';
+    faSampleP: result := 'Sample +';
     faGotoSample1: result := 'Goto Sample 1';
+
+    { Help }
+    faToggleHelp: result := 'Toggle Help Text';
+    faToggleReport: result := 'Toggle Report';
+    faToggleButtonReport: result := 'Button Frame Report';
+    faCycleHelpM: result := 'cycle help text -';
+    faCycleHelpP: result := 'cycle help text +';
+    faHelpCycle: result := 'Help Cycle';
+    faHelpList: result := 'Help Listing';
+    faHelpHome: result := 'Help home';
 
     { BtnLegendTablet }
     faTL01: result := 'Top Left 1';
@@ -344,12 +621,30 @@ begin
     faResetRotation: result := 'Reset Rotation';
     faResetZoom: result := 'Reset Zoom';
 
+    { Language }
+    faToggleLanguage: result := 'Toggle Language';
+
+    { CopyPaste }
+    faSave: result := 'Save';
+    faLoad: result := 'Load';
+    faOpen: result := 'Open';
+    faCopy: result := 'Copy';
+    faPaste: result := 'Paste';
+
+    { ViewOptions }
+    faToggleMoveMode: result := 'Toggle move mode';
+    faLinearMove: result := 'Linear move';
+    faExpoMove: result := 'Exponential move';
+    faToggleOrbitMode: result := 'fToggle orbit mode';
+
     { BitmapCycle }
     faCycleBitmapM: result := 'cycle bitmap -';
     faCycleBitmapP: result := 'cycle bitmap +';
     faRandom: result := 'Random Param Values';
     faRandomWhite: result := 'random colors white rings';
     faRandomBlack: result := 'random colors black rings';
+    faRandomBambu1: result := 'random PLA colors 1';
+    faRandomBambu2: result := 'random PLA colors 2';
     faBitmapEscape: result := 'Enter outer cycle';
     faBitmapOne: result := 'goto bitmap one';
     faToggleContour: result := 'Toggle contour rings';
@@ -366,8 +661,42 @@ begin
     faLayout8: result := 'Transitbar Layout 8';
     faLayout9: result := 'Transitbar Layout 9';
 
+    { FigureSize }
+    faFigureSizeXS: result := 'Figure Size XS';
+    faFigureSizeS: result := 'Figure Size S';
+    faFigureSizeM: result := 'Figure Size M';
+    faFigureSizeL: result := 'Figure Size L';
+    faFigureSizeXL: result := 'Figure Size XL';
+
+    { EyeSize }
+    faEyeSizeS: result := 'Select Eye Size S';
+    faEyeSizeM: result := 'Select Eye Size M';
+    faEyeSizeL: result := 'Select Eye Size L';
+
+    { LayerSelection }
+    faSelectLayer1: result := 'Select Layer 1';
+    faSelectLayer2: result := 'Select Layer 2';
+    faSelectLayer3: result := 'Select Layer 3';
+    faSelectLayer4: result := 'Select Layer 4';
+    faSelectLayer5: result := 'Select Layer 5';
+    faSelectLayer6: result := 'Select Layer 6';
+    faSelectLayer7: result := 'Select Layer 7';
+
+    { ColorSelection }
+    faSelectColor1: result := 'Select Color 1';
+    faSelectColor2: result := 'Select Color 2';
+    faSelectColor3: result := 'Select Color 3';
+    faSelectColor4: result := 'Select Color 4';
+
     { ColorMapping }
     faCLA: result := 'Apply Color';
+    faMapColorToLayer: result := 'Assign Color To Layer';
+    faSelectColorMapping1: result := 'Select Color Mapping 1';
+    faSelectColorMapping2: result := 'Select Color Mapping 2';
+    faSelectColorMapping3: result := 'Select Color Mapping 3';
+    faSelectColorMapping4: result := 'Select Color Mapping 4';
+    faSelectColorMapping5: result := 'Select Color Mapping 5';
+    faSelectColorMapping6: result := 'Select Color Mapping 6';
   end;
 end;
 

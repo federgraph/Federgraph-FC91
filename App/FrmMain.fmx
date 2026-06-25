@@ -1,9 +1,10 @@
 object FormMain: TFormMain
-  Left = 0
-  Top = 0
-  Caption = 'FC84'
-  ClientHeight = 640
-  ClientWidth = 480
+  Left = 100
+  Top = 100
+  Caption = 'FrmMain'
+  ClientHeight = 400
+  ClientWidth = 600
+  Position = Designed
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop, iPhone, iPad]
@@ -12,6 +13,7 @@ object FormMain: TFormMain
   OnDestroy = FormDestroy
   OnMouseWheel = FormMouseWheel
   OnResize = FormResize
-  OnShow = FormShow
+  Left = 100
+  Top = 100
   DesignerMasterStyle = 0
 end

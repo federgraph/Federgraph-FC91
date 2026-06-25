@@ -109,8 +109,8 @@ uses
 constructor TActionMapTablet.Create;
 begin
   inherited;
-  FPageCount := 6;
-  FEscapeIndex := 7;
+  FPageCount := 15;
+  FEscapeIndex := 6;
   ForceActionPageMP := True;
   TestName := 'Tablet Page';
 end;
@@ -362,15 +362,15 @@ var
   claParam: TAlphaColor;
   claOption: TAlphaColor;
   claReset: TAlphaColor;
-//  claExample: TAlphaColor;
-//  claFigureSize: TAlphaColor;
-//  claEyeSize: TAlphaColor;
+  claExample: TAlphaColor;
+  claFigureSize: TAlphaColor;
+  claEyeSize: TAlphaColor;
 //  claLayerSelection: TAlphaColor;
 //  claColorSelection: TAlphaColor;
-//  claColorMapping: TAlphaColor;
+  claColorMapping: TAlphaColor;
   claSample: TAlphaColor;
   claExporter: TAlphaColor;
-//  claObject: TAlphaColor;
+  claObject: TAlphaColor;
 begin
   cla := claWhite;
   claNoop := claWhite;
@@ -381,14 +381,14 @@ begin
   claReset := claOrange;
   claSample := claAquamarine;
 
-//  claExample := claAquamarine;
-//  claFigureSize := claDarksalmon;
-//  claEyeSize := claPlum;
+  claExample := claAquamarine;
+  claFigureSize := claDarksalmon;
+  claEyeSize := claPlum;
 //  claLayerSelection := claCornflowerblue;
 //  claColorSelection := claAquamarine;
-//  claColorMapping := claDarkkhaki;
+  claColorMapping := claDarkkhaki;
   claExporter := claOrange;
-//  claObject := claAquamarine;
+  claObject := claAquamarine;
 
   case Layout of
 
@@ -429,11 +429,52 @@ begin
       InitAC(cl, 2, faParamL, claParam);
       InitAC(cl, 3, faReset, claReset);
       InitAC(cl, 4, faParamCZ, claParam);
-      InitAC(cl, 5, faActionPage5, claPage);
+      InitAC(cl, 5, faActionPage2, claPage);
       InitAC(cl, 6, faToggleLux, claOption);
     end;
 
     2:
+    begin
+      CurrentPageCaption := 'Page 2';
+
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faPan, claParam);
+
+      cl := TopRight;
+      InitAC(cl, 1, faNoop, claNoop);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faToggleZeroPulling, claOption);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faToggleLimitPulling, claOption);
+      InitAC(cl, 7, faParamCZ, claParam);
+      InitAC(cl, 8, faNoop, claNoop);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faShowInfo, claForm);
+      InitAC(cl, 2, faShowActions, claForm);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faShowMemo, claForm);
+      InitAC(cl, 7, faCyclePlotM, cla);
+      InitAC(cl, 8, faCyclePlotP, cla);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faGotoSample1, claSample);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faSampleM, claSample);
+      InitAC(cl, 4, faSampleP, claSample);
+      InitAC(cl, 5, faActionPage1, claPage);
+      InitAC(cl, 6, faToggleLux, claOption);
+    end;
+
+    3:
     begin
       CurrentPageCaption := 'Color 1';
       cl := TopLeft;
@@ -455,12 +496,12 @@ begin
       InitAC(cl, 8, faCLA, TBambuColors.PLAMatte_MarineBlue);
 
       cl := BottomLeft;
-      InitAC(cl, 1, faNoop, claNoop);
-      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 1, faShowActions, claForm);
+      InitAC(cl, 2, faShowInfo, claForm);
       InitAC(cl, 3, faNoop, claNoop);
       InitAC(cl, 4, faNoop, claNoop);
       InitAC(cl, 5, faNoop, claNoop);
-      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 6, faShowMemo, claForm);
       InitAC(cl, 7, faNoop, claNoop);
       InitAC(cl, 8, faNoop, claNoop);
 
@@ -469,18 +510,18 @@ begin
       InitAC(cl, 2, faNoop, claNoop);
       InitAC(cl, 3, faNoop, claNoop);
       InitAC(cl, 4, faNoop, claNoop);
-      InitAC(cl, 5, faActionPage1, claPage);
-      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 5, faActionPageE, claPage);
+      InitAC(cl, 6, faExample01, claExample);
     end;
 
-    3:
+    4:
     begin
       CurrentPageCaption := 'Color 2';
       cl := TopLeft;
       //InitAC(cl, 1, faActionPageM, claPage);
-      InitAC(cl, 2, faNoop, claNoop);
-      InitAC(cl, 3, faNoop, claNoop);
-      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 2, faEyeSizeS, claEyeSize);
+      InitAC(cl, 3, faEyeSizeM, claEyeSize);
+      InitAC(cl, 4, faEyeSizeL, claEyeSize);
       InitAC(cl, 5, faNoop, claNoop);
       InitAC(cl, 6, faNoop, claNoop);
 
@@ -492,28 +533,28 @@ begin
       //InitAC(cl, 5, faActionPageP, claPage);
       InitAC(cl, 6, faCLA, TBambuColors.PLAMatte_LatteBrown);
       InitAC(cl, 7, faCLA, TBambuColors.PLAMatte_AshGray);
-      InitAC(cl, 8, faNoop, claNoop);
+      InitAC(cl, 8, faCLA, TBambuColors.PLAMatte_SakuraPink);
 
       cl := BottomLeft;
-      InitAC(cl, 1, faNoop, claNoop);
-      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 1, faRandomBambu1, cla);
+      InitAC(cl, 2, faRandomBambu2, cla);
       InitAC(cl, 3, faNoop, claNoop);
       InitAC(cl, 4, faToggleColorPanel, claOption);
       InitAC(cl, 5, faToggleColorSwat, claOption);
       InitAC(cl, 6, faNoop, claNoop);
       InitAC(cl, 7, faNoop, claNoop);
-      InitAC(cl, 8, faNoop, claNoop);
+      InitAC(cl, 8, faHelpHome, claForm);
 
       cl := BottomRight;
-      InitAC(cl, 1, faNoop, claNoop);
-      InitAC(cl, 2, faNoop, claNoop);
-      InitAC(cl, 3, faNoop, claNoop);
-      InitAC(cl, 4, faNoop, claNoop);
-      InitAC(cl, 5, faActionPage1, claPage);
-      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 1, faSelectColorMapping1, claColorMapping);
+      InitAC(cl, 2, faSelectColorMapping2, claColorMapping);
+      InitAC(cl, 3, faSelectColorMapping3, claColorMapping);
+      InitAC(cl, 4, faSelectColorMapping4, claColorMapping);
+      InitAC(cl, 5, faActionPageE, claPage);
+      InitAC(cl, 6, faSelectColorMapping6, claColorMapping);
     end;
 
-    4:
+    5:
     begin
       CurrentPageCaption := 'Color 3';
       cl := TopLeft;
@@ -549,11 +590,340 @@ begin
       InitAC(cl, 2, faCLA, TBambuColors.PLABasic_Pumpkin);
       InitAC(cl, 3, faCLA, TBambuColors.PLABasic_SunflowerYellow);
       InitAC(cl, 4, faCLA, TBambuColors.PLAMatte_LemonYellow);
-      InitAC(cl, 5, faActionPage1, claPage);
+      InitAC(cl, 5, faActionPageE, claPage);
       InitAC(cl, 6, faCLA, TBambuColors.PLABasic_Turquoise);
     end;
 
-    5:
+    6:
+    begin
+      CurrentPageCaption := 'Params Page 1';
+
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faCycleBitmapM, cla);
+      InitAC(cl, 3, faCycleBitmapP, cla);
+      InitAC(cl, 4, faBitmapEscape, cla);
+      InitAC(cl, 5, faBitmapOne, cla);
+      InitAC(cl, 6, faCLA, claCrimson);
+
+      cl := TopRight;
+      InitAC(cl, 1, faRandomBlack, cla);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faParamA, claParam);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faParamT, claParam);
+      InitAC(cl, 7, faParamL, claParam);
+      InitAC(cl, 8, faParamTRT, claParam);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faActionPage1, claPage);
+      InitAC(cl, 2, faToggleColorPanel, claOption);
+      InitAC(cl, 3, faToggleColorSwat, claOption);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faGotoSample1, claSample);
+      InitAC(cl, 6, faToggleBMap, cla);
+      InitAC(cl, 7, faParamT2, claParam);
+      InitAC(cl, 8, faParamT1, claParam);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faTogglePCap, claOption);
+      InitAC(cl, 2, faToggleMCap, claOption);
+      InitAC(cl, 3, faSampleM, claSample);
+      InitAC(cl, 4, faSampleP, claSample);
+      InitAC(cl, 5, faActionPageX, claPage);
+      InitAC(cl, 6, faToggleMoveMode, cla);
+    end;
+
+    7:
+    begin
+      CurrentPageCaption := 'Params Page 2';
+
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faCycleX, claParam);
+      InitAC(cl, 3, faCycleY, claParam);
+      InitAC(cl, 4, faCycleZ, claParam);
+      InitAC(cl, 5, faCycleL, claParam);
+      InitAC(cl, 6, faNoop, claNoop);
+
+      cl := TopRight;
+      InitAC(cl, 1, faCycleO, claParam);
+      InitAC(cl, 2, faParamZ, claParam);
+      InitAC(cl, 3, faParamR, claParam);
+      InitAC(cl, 4, faParamA, claParam);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faParamT, claParam);
+      InitAC(cl, 7, faParamL, claParam);
+      InitAC(cl, 8, faParamTRT, claParam);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faRandomBlack, cla);
+      InitAC(cl, 2, faBitmapOne, cla);
+      InitAC(cl, 3, faBitmapEscape, cla);
+      InitAC(cl, 4, faCycleBitmapM, cla);
+      InitAC(cl, 5, faCycleBitmapP, cla);
+      InitAC(cl, 6, faToggleBMap, cla);
+      InitAC(cl, 7, faParamT2, claParam);
+      InitAC(cl, 8, faParamT1, claParam);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faNoop, cla);
+      InitAC(cl, 2, faNoop, cla);
+      InitAC(cl, 3, faNoop, cla);
+      InitAC(cl, 4, faNoop, cla);
+      InitAC(cl, 5, faActionPageX, claPage);
+      InitAC(cl, 6, faNoop, claNoop);
+    end;
+
+    8:
+    begin
+      CurrentPageCaption := 'Mesh 1';
+
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faCycleBitmapM, cla);
+      InitAC(cl, 3, faCycleBitmapP, cla);
+      InitAC(cl, 4, faBitmapEscape, cla);
+      InitAC(cl, 5, faBitmapOne, cla);
+      InitAC(cl, 6, faCLA, TBambuColors.PLABasic_Blue);
+
+      cl := TopRight;
+      InitAC(cl, 1, faReducedMesh, claOption);
+      InitAC(cl, 2, faTogglePCap, claOption);
+      InitAC(cl, 3, faToggleMCap, claOption);
+      InitAC(cl, 4, faToggleZeroPulling, claOption);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faToggleLimitPulling, claOption);
+      InitAC(cl, 7, faNoop, claNoop);
+      InitAC(cl, 8, faNoop, claNoop);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faNoop, claNoop);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faMeshSize64, cla);
+      InitAC(cl, 7, faMeshSize32, cla);
+      InitAC(cl, 8, faMeshSize128, cla);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faWheelFrequency1, cla);
+      InitAC(cl, 2, faWheelFrequency05, cla);
+      InitAC(cl, 3, faWheelFrequency01, cla);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faParamCapValue, claParam);
+      InitAC(cl, 6, faToggleLux, claOption);
+    end;
+
+    9:
+    begin
+      CurrentPageCaption := 'Mesh 2';
+
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faTakeCapValueSnapshot, claBeige);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faWantBottom, claOption);
+      InitAC(cl, 6, faToggleShowEdges, cla);
+
+      cl := TopRight;
+      InitAC(cl, 1, faReducedMesh, claOption);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faTogglePCap, claOption);
+      InitAC(cl, 4, faToggleZeroPulling, claOption);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faToggleLimitPulling, claOption);
+      InitAC(cl, 7, faNoop, claNoop);
+      InitAC(cl, 8, faToggleContour, claBeige);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faMeshSize64, cla);
+      InitAC(cl, 2, faMeshSize128, cla);
+      InitAC(cl, 3, faMeshSize256, cla);
+      InitAC(cl, 4, faMeshSize316, cla);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faFigureSizeS, claFigureSize);
+      InitAC(cl, 7, faFigureSizeM, claFigureSize);
+      InitAC(cl, 8, faFigureSizeL, claFigureSize);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faParamR, claParam);
+      InitAC(cl, 2, faOffsetY, claParam);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faParamCapValue, claParam);
+      InitAC(cl, 6, faNoop, claNoop);
+    end;
+
+    10:
+    begin
+      CurrentPageCaption := 'Rings';
+
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faBandSelectionM, claBeige);
+      InitAC(cl, 3, faBandSelectionP, claBeige);
+      InitAC(cl, 4, faShowCurrentBandT, claBeige);
+      InitAC(cl, 5, faToggleColorSwat, claBeige);
+      InitAC(cl, 6, faParamBandSelected, claParam);
+
+      cl := TopRight;
+      InitAC(cl, 1, faShirtColorOff, claBeige);
+      InitAC(cl, 2, faShirtColorOn, claBeige);
+      InitAC(cl, 3, faShirtFarbeOff, claBeige);
+      InitAC(cl, 4, faShirtFarbeOn, claBeige);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faCLA, TBambuColors.PLABasic_Blue);
+      InitAC(cl, 7, faBlindRingP, claBeige);
+      InitAC(cl, 8, faBlindRingM, claBeige);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faCLA, claOrange);
+      InitAC(cl, 2, faBandSelection21, claBeige);
+      InitAC(cl, 3, faBandSelection19, claBeige);
+      InitAC(cl, 4, faParamValueMinus1, cla);
+      InitAC(cl, 5, faParamValuePlus1, cla);
+      InitAC(cl, 6, faBandWidthContour, claParam);
+      InitAC(cl, 7, faBandWidthRelative, claParam);
+      InitAC(cl, 8, faBandWidthAbsolute, claParam);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faBlindRing1, cla);
+      InitAC(cl, 2, faBlindRing5, cla);
+      InitAC(cl, 3, faBlindRingA, cla);
+      InitAC(cl, 4, faBlindRingB, cla);
+      InitAC(cl, 5, faBlindRingD, cla);
+      InitAC(cl, 6, faBlindRingF, cla);
+    end;
+
+    11:
+    begin
+      CurrentPageCaption := 'Probe';
+
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faNoop, claNoop);
+
+      cl := TopRight;
+      InitAC(cl, 1, faNoop, claNoop);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claWhite);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 7, faNoop, claNoop);
+      InitAC(cl, 8, faNoop, claNoop);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faToggleCylinder, claOption);
+      InitAC(cl, 2, faToggleDiameter, claOption);
+      InitAC(cl, 3, faParamBahnPositionX, claParam);
+      InitAC(cl, 4, faParamBahnPositionY, claParam);
+      InitAC(cl, 5, faParamBahnCylinderZ, claParam);
+      InitAC(cl, 6, faParamBahnCylinderD, claParam);
+      InitAC(cl, 7, faParamBahnAngle, claParam);
+      InitAC(cl, 8, faParamBahnRadius, claParam);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faNoop, claNoop);
+      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 5, faActionPage1, claPage);
+      InitAC(cl, 6, faNoop, claNoop);
+    end;
+
+    12:
+    begin
+      CurrentPageCaption := 'Texture';
+
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faCycleBitmapM, cla);
+      InitAC(cl, 3, faCycleBitmapP, cla);
+      InitAC(cl, 4, faBitmapEscape, cla);
+      InitAC(cl, 5, faBitmapOne, cla);
+      InitAC(cl, 6, faToggleContour, cla);
+
+      cl := TopRight;
+      InitAC(cl, 1, faColor0, claWhite);
+      InitAC(cl, 2, faColor1, claRed);
+      InitAC(cl, 3, faColor2, claGreen);
+      InitAC(cl, 4, faColor3, claBlue);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faColor4, claMagenta);
+      InitAC(cl, 7, faColor5, claCyan);
+      InitAC(cl, 8, faColor6, claYellow);
+
+      cl := BottomLeft;
+      cla := claWhite;
+      InitAC(cl, 1, faRandomBlack, cla);
+      InitAC(cl, 2, faColorMix0, claBeige);
+      InitAC(cl, 3, faColorMixM, claBeige);
+      InitAC(cl, 4, faColorMixP, claBeige);
+      InitAC(cl, 5, faToggleBMap, cla);
+      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 7, faPixelCount1, cla);
+      InitAC(cl, 8, faPixelCount2, cla);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faParamT1, claParam);
+      InitAC(cl, 2, faParamT2, claParam);
+      InitAC(cl, 3, faParamT3, claParam);
+      InitAC(cl, 4, faParamT4, claParam);
+      InitAC(cl, 5, faActionPage1, claPage);
+      InitAC(cl, 6, faNoop, claNoop);
+    end;
+
+    13:
+    begin
+      CurrentPageCaption := 'Light';
+
+      cl := TopLeft;
+      //InitAC(cl, 1, faActionPageM, claPage);
+      InitAC(cl, 2, faParamL3X, claParam);
+      InitAC(cl, 3, faParamL3Y, claParam);
+      InitAC(cl, 4, faParamL3Z, claParam);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faToggleLuxMarker, claOption);
+
+      cl := TopRight;
+      InitAC(cl, 1, faTestSingleSide, claOrangeRed);
+      InitAC(cl, 2, faUniqueMode1, claOption);
+      InitAC(cl, 3, faUniqueMode2, claOption);
+      InitAC(cl, 4, faToggleUniqueVertices, claOption);
+      //InitAC(cl, 5, faActionPageP, claPage);
+      InitAC(cl, 6, faParamL4X, claParam);
+      InitAC(cl, 7, faParamL4Y, claParam);
+      InitAC(cl, 8, faParamL4Z, claParam);
+
+      cl := BottomLeft;
+      InitAC(cl, 1, faNoop, claNoop);
+      InitAC(cl, 2, faParamL2X, claParam);
+      InitAC(cl, 3, faParamL2Y, claParam);
+      InitAC(cl, 4, faParamL2Z, claParam);
+      InitAC(cl, 5, faNoop, claNoop);
+      InitAC(cl, 6, faToggleShowEdges, cla);
+      InitAC(cl, 7, faWantSideCaps, claOption);
+      InitAC(cl, 8, faWantBottom, claOption);
+
+      cl := BottomRight;
+      InitAC(cl, 1, faToggleLux1, cla);
+      InitAC(cl, 2, faToggleLux2, cla);
+      InitAC(cl, 3, faToggleLux3, cla);
+      InitAC(cl, 4, faToggleLux4, cla);
+      InitAC(cl, 5, faActionPage1, claPage);
+      InitAC(cl, 6, faToggleLux, claOption);
+    end;
+
+    14:
     begin
       CurrentPageCaption := 'Extra';
 
@@ -563,38 +933,38 @@ begin
       InitAC(cl, 3, faCycleBitmapP, cla);
       InitAC(cl, 4, faBitmapEscape, cla);
       InitAC(cl, 5, faBitmapOne, cla);
-      InitAC(cl, 6, faRandomBlack, cla);
+      InitAC(cl, 6, faCLA, TBambuColors.PLABasic_Blue);
 
       cl := TopRight;
       InitAC(cl, 1, faWantBottom, claOption);
-      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 2, faWantSpecialY, claOption);
       InitAC(cl, 3, faToggleShowEdges, cla);
       InitAC(cl, 4, faToggleSolidFlip, claOption);
       //InitAC(cl, 5, faActionPageP, claPage);
-      InitAC(cl, 6, faNorthCap, claParam);
-      InitAC(cl, 7, faSouthCap, claParam);
-      InitAC(cl, 8, faParamCapValue, claParam);
+      InitAC(cl, 6, faToggleUniqueVertices, claOption);
+      InitAC(cl, 7, faNorthCap, claParam);
+      InitAC(cl, 8, faSouthCap, claParam);
 
       cl := BottomLeft;
-      InitAC(cl, 1, faNoop, claNoop);
-      InitAC(cl, 2, faToggleColorPanel, claOption);
-      InitAC(cl, 3, faToggleColorSwat, claOption);
-      InitAC(cl, 4, faShowInfo, claForm);
-      InitAC(cl, 5, faNoop, claNoop);
-      InitAC(cl, 6, faNoop, claNoop);
-      InitAC(cl, 7, faCycleColorSchemeM, cla);
-      InitAC(cl, 8, faCycleColorSchemeP, cla);
+      InitAC(cl, 1, faToggleCube, claObject);
+      InitAC(cl, 2, faToggleCorner, claObject);
+      InitAC(cl, 3, faToggleLimitPlane, claObject);
+      InitAC(cl, 4, faToggleMarker, claObject);
+      InitAC(cl, 5, faToggleReportLock, claOption);
+      InitAC(cl, 6, faToggleOrbitMode, claOption);
+      InitAC(cl, 7, faEastCap, claParam);
+      InitAC(cl, 8, faWestCap, claParam);
 
       cl := BottomRight;
-      InitAC(cl, 1, faParamCZ, claParam);
-      InitAC(cl, 2, faNoop, claNoop);
-      InitAC(cl, 3, faReset, claReset);
-      InitAC(cl, 4, faBandWidthRelative, claParam);
-      InitAC(cl, 5, faActionPage1, claPage);
+      InitAC(cl, 1, faParamCapValue, claParam);
+      InitAC(cl, 2, faParamBahnCylinderZ, claParam);
+      InitAC(cl, 3, faParamBahnAngle, claParam);
+      InitAC(cl, 4, faParamCZ, claParam);
+      InitAC(cl, 5, faActionPageE, claPage);
       InitAC(cl, 6, faToggleLux, claOption);
     end;
 
-    6:
+    15:
     begin
       CurrentPageCaption := 'Exporter OBJ';
       cl := TopLeft;

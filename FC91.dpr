@@ -1,7 +1,6 @@
 ﻿program FC91;
 
 uses
-  System.StartUpCopy,
   FMX.Forms,
   FrmMain in 'App\FrmMain.pas' {FormMain},
   FrmAction in 'App\FrmAction.pas' {FormAction},
@@ -42,18 +41,26 @@ uses
   RiggVar.FB.ActionShort in 'FB\RiggVar.FB.ActionShort.pas',
   RiggVar.FB.ActionTest in 'FB\RiggVar.FB.ActionTest.pas',
   RiggVar.FB.Bitmap in 'FB\RiggVar.FB.Bitmap.pas',
+  RiggVar.FB.Bundle in 'FB\RiggVar.FB.Bundle.pas',
   RiggVar.FB.Classes in 'FB\RiggVar.FB.Classes.pas',
   RiggVar.FB.Color in 'FB\RiggVar.FB.Color.pas',
+  RiggVar.FB.ColorBambu in 'FB\RiggVar.FB.ColorBambu.pas',
   RiggVar.FB.ColorConst in 'FB\RiggVar.FB.ColorConst.pas',
   RiggVar.FB.ColorGroup in 'FB\RiggVar.FB.ColorGroup.pas',
+  RiggVar.FB.ColorList in 'FB\RiggVar.FB.ColorList.pas',
   RiggVar.FB.Data in 'FB\RiggVar.FB.Data.pas',
   RiggVar.FB.Def in 'FB\RiggVar.FB.Def.pas',
   RiggVar.FB.DefConst in 'FB\RiggVar.FB.DefConst.pas',
   RiggVar.FB.Equation in 'FB\RiggVar.FB.Equation.pas',
   RiggVar.FB.Formula in 'FB\RiggVar.FB.Formula.pas',
+  RiggVar.FB.Frame in 'FB\RiggVar.FB.Frame.pas',
+  RiggVar.FB.Graph in 'FB\RiggVar.FB.Graph.pas',
+  RiggVar.FB.Hub in 'FB\RiggVar.FB.Hub.pas',
   RiggVar.FB.ListArray in 'FB\RiggVar.FB.ListArray.pas',
+  RiggVar.FB.Logger in 'FB\RiggVar.FB.Logger.pas',
   RiggVar.FB.MeshParams in 'FB\RiggVar.FB.MeshParams.pas',
   RiggVar.FB.Model in 'FB\RiggVar.FB.Model.pas',
+  RiggVar.FB.Params in 'FB\RiggVar.FB.Params.pas',
   RiggVar.FB.ParamDef in 'FB\RiggVar.FB.ParamDef.pas',
   RiggVar.FB.Report in 'FB\RiggVar.FB.Report.pas',
   RiggVar.FB.Scheme in 'FB\RiggVar.FB.Scheme.pas',
@@ -79,23 +86,44 @@ uses
   RiggVar.FederModel.ActionMapPhone in 'Model\RiggVar.FederModel.ActionMapPhone.pas',
   RiggVar.FederModel.ActionMapTablet in 'Model\RiggVar.FederModel.ActionMapTablet.pas',
   RiggVar.FederModel.ActionMapTransit in 'Model\RiggVar.FederModel.ActionMapTransit.pas',
+  RiggVar.FederModel.Binding in 'Model\RiggVar.FederModel.Binding.pas',
   RiggVar.FederModel.Color in 'Model\RiggVar.FederModel.Color.pas',
+  RiggVar.FederModel.CornerCube in 'Model\RiggVar.FederModel.CornerCube.pas',
+  RiggVar.FederModel.CornerPlane in 'Model\RiggVar.FederModel.CornerPlane.pas',
+  RiggVar.FederModel.Data in 'Model\RiggVar.FederModel.Data.pas',
+  RiggVar.FederModel.Format in 'Model\RiggVar.FederModel.Format.pas',
+  RiggVar.FederModel.Frame3D in 'Model\RiggVar.FederModel.Frame3D.pas',
+  RiggVar.FederModel.Graph in 'Model\RiggVar.FederModel.Graph.pas',
+  RiggVar.FederModel.Keyboard01 in 'Model\RiggVar.FederModel.Keyboard01.pas',
   RiggVar.FederModel.MaterialSources in 'Model\RiggVar.FederModel.MaterialSources.pas',
+  RiggVar.FederModel.Memory in 'Model\RiggVar.FederModel.Memory.pas',
+  RiggVar.FederModel.Palette in 'Model\RiggVar.FederModel.Palette.pas',
   RiggVar.FederModel.Report in 'Model\RiggVar.FederModel.Report.pas',
   RiggVar.FederModel.RingBuilder in 'Model\RiggVar.FederModel.RingBuilder.pas',
+  RiggVar.FederModel.SampleManager in 'Model\RiggVar.FederModel.SampleManager.pas',
+  RiggVar.FederModel.SampleRepo in 'Model\RiggVar.FederModel.SampleRepo.pas',
+  RiggVar.FederModel.SDB010H00 in 'SDB010\RiggVar.FederModel.SDB010H00.pas',
   RiggVar.FederModel.TextContainer in 'Model\RiggVar.FederModel.TextContainer.pas',
   RiggVar.FederModel.Touch in 'Model\RiggVar.FederModel.Touch.pas',
   RiggVar.FederModel.TouchBase in 'Model\RiggVar.FederModel.TouchBase.pas',
   RiggVar.FederModel.TouchPhone in 'Model\RiggVar.FederModel.TouchPhone.pas',
+  RiggVar.Util.ActionSorter in 'Util\RiggVar.Util.ActionSorter.pas',
+  RiggVar.Util.ActionTable in 'Util\RiggVar.Util.ActionTable.pas',
   RiggVar.Util.AppUtils in 'Util\RiggVar.Util.AppUtils.pas',
+  RiggVar.Util.BitmapCache in 'Util\RiggVar.Util.BitmapCache.pas',
+  RiggVar.Util.BitmapImprinter in 'Util\RiggVar.Util.BitmapImprinter.pas',
   RiggVar.Poly.Rack in 'Poly\RiggVar.Poly.Rack.pas',
   RiggVar.Poly.Rad in 'Poly\RiggVar.Poly.Rad.pas';
 
 {$R *.res}
 
 begin
-  Application.Initialize;
-  Application.Title := 'FC91N';
-  Application.CreateForm(TFormMain, FormMain);
-  Application.Run;
+  if Assigned(Application) then
+  begin
+    Application.Initialize;
+    Application.Title := 'FC91M';
+    Application.CreateForm(TFormMain, FormMain);
+    Application.Run;
+  end;
+
 end.

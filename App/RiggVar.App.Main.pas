@@ -29,13 +29,14 @@ type
 
 var
   Main: TMain;
+  CmdLineInt: Integer = 0;
+  CmdLineVal: string = '';
 
 type
   MainConst = class
   public const
     WantOldBandColors: Boolean = False;
     PerspectiveZoomDefault = 10;
-    OrthoZoomDefault = 0.5;
     TrackbarFrequency = 0.1;
     PlotCount = 11;
     SceneCount = 5;
@@ -55,8 +56,12 @@ type
   public class var
     InitDataOK: Boolean;
     GPUScale: Boolean;
+    HasD3DCompiler: Boolean;
     AppIsClosing: Boolean;
+    BatchStopRequested: Boolean;
+    WantTextureRepeat: Boolean;
     TextureRepeat: Boolean;
+    ShouldRecycleSocket: Boolean;
     AppTitle: string;
     AppFolder: string;
 
@@ -70,6 +75,11 @@ type
 
     ClientWidth: Integer;
     ClientHeight: Integer;
+
+    IconSize: Integer;
+    NoCopyFlag: Boolean;
+    PngCopyFlag: Boolean;
+    HardCopyFlag: Boolean;
 
     ShowEdges: Boolean;
     WantUniqueVertices: Boolean;
@@ -107,9 +117,12 @@ begin
   ShiftState := [];
 
   AppIsClosing := False;
-  AppTitle := 'FC91N'; // sometimes initialized in FormMain, from Application.Title set in dpr
+  AppTitle := 'FC91M'; // sometimes initialized in FormMain, from Application.Title set in dpr
   AppFolder := 'FC';
+  BatchStopRequested := False;
+  WantTextureRepeat := False;
   TextureRepeat := False;
+  ShouldRecycleSocket := False;
   WantUniqueVertices := True;
   UniqueMode := 2;
   ShowEdges := False;
@@ -121,6 +134,11 @@ begin
 
   Transform3D := TTransform3D.Create;
   Transform3D.Init;
+
+  IconSize := 640;
+  NoCopyFlag := False;
+  PngCopyFlag := False;
+  HardCopyFlag := False;
 
   RG := False;
   FC := True;

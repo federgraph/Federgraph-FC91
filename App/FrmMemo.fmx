@@ -43,6 +43,7 @@ object FormMemo: TFormMemo
       Size.PlatformDefault = False
       TabOrder = 2
       Text = 'Read Code'
+      TextSettings.Trimming = None
       OnClick = ReadBtnClick
     end
     object ReadDiffBtn: TButton
@@ -53,6 +54,8 @@ object FormMemo: TFormMemo
       Size.PlatformDefault = False
       TabOrder = 1
       Text = 'Read Diff'
+      TextSettings.Trimming = None
+      OnClick = ReadDiffBtnClick
     end
     object BackBtn: TButton
       Position.X = 8.000000000000000000
@@ -63,6 +66,7 @@ object FormMemo: TFormMemo
       StyleLookup = 'buttonstyle'
       TabOrder = 0
       Text = 'Back'
+      TextSettings.Trimming = None
       OnClick = BackBtnClick
     end
   end

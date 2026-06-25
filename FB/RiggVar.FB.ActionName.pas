@@ -57,6 +57,68 @@ begin
     faTouchPhone: result := 'faTouchPhone';
     faTouchDesk: result := 'faTouchDesk';
 
+    { ActionMapping }
+    faProcessAll: result := 'faProcessAll';
+
+    { Scene }
+    faScene1: result := 'faScene1';
+    faScene2: result := 'faScene2';
+    faScene3: result := 'faScene3';
+    faScene4: result := 'faScene4';
+    faScene5: result := 'faScene5';
+
+    { Plot }
+    faPlot0: result := 'faPlot0';
+    faPlot1: result := 'faPlot1';
+    faPlot2: result := 'faPlot2';
+    faPlot3: result := 'faPlot3';
+    faPlot4: result := 'faPlot4';
+    faPlot5: result := 'faPlot5';
+    faPlot6: result := 'faPlot6';
+    faPlot7: result := 'faPlot7';
+    faPlot8: result := 'faPlot8';
+    faPlot9: result := 'faPlot9';
+    faPlot10: result := 'faPlot10';
+    faPlot11: result := 'faPlot11';
+    faPlot12: result := 'faPlot12';
+    faPlot13: result := 'faPlot13';
+
+    { Figure }
+    faFigure1: result := 'faFigure1';
+    faFigure2: result := 'faFigure2';
+    faFigure3: result := 'faFigure3';
+    faFigure4: result := 'faFigure4';
+    faFigure5: result := 'faFigure5';
+    faFigure6: result := 'faFigure6';
+
+    { Graph }
+    faGraph1: result := 'faGraph1';
+    faGraph2: result := 'faGraph2';
+    faGraph3: result := 'faGraph3';
+    faGraph4: result := 'faGraph4';
+    faGraph5: result := 'faGraph5';
+
+    { Color }
+    faColor0: result := 'faColor0';
+    faColor1: result := 'faColor1';
+    faColor2: result := 'faColor2';
+    faColor3: result := 'faColor3';
+    faColor4: result := 'faColor4';
+    faColor5: result := 'faColor5';
+    faColor6: result := 'faColor6';
+
+    { Param }
+    faParam0: result := 'faParam0';
+    faParam1: result := 'faParam1';
+    faParam2: result := 'faParam2';
+    faParam3: result := 'faParam3';
+    faParam4: result := 'faParam4';
+    faParam5: result := 'faParam5';
+    faParam6: result := 'faParam6';
+    faParam7: result := 'faParam7';
+    faParam8: result := 'faParam8';
+    faParam9: result := 'faParam9';
+
     { SystemParam }
     faParamX1: result := 'faParamX1';
     faParamY1: result := 'faParamY1';
@@ -130,6 +192,37 @@ begin
     faParamL3F: result := 'faParamL3F';
     faParamLF: result := 'faParamLF';
 
+    { ModelOptions }
+    faToggleSolutionMode: result := 'faToggleSolutionMode';
+    faToggleVorzeichen: result := 'faToggleVorzeichen';
+    faToggleLinearForce: result := 'faToggleLinearForce';
+    faToggleGleich: result := 'faToggleGleich';
+    faToggleMCap: result := 'faToggleMCap';
+    faTogglePCap: result := 'faTogglePCap';
+    faForceZ0: result := 'faForceZ0';
+    faWantZ12: result := 'faWantZ12';
+    faDiff0: result := 'faDiff0';
+    faDiff1: result := 'faDiff1';
+    faDiff10: result := 'faDiff10';
+
+    { OptionCycle }
+    faCyclePlotM: result := 'faCyclePlotM';
+    faCyclePlotP: result := 'faCyclePlotP';
+    faCycleGraphM: result := 'faCycleGraphM';
+    faCycleGraphP: result := 'faCycleGraphP';
+    faCycleFigureM: result := 'faCycleFigureM';
+    faCycleFigureP: result := 'faCycleFigureP';
+
+    { ForceMode }
+    faForceMode0: result := 'faForceMode0';
+    faForceMode1: result := 'faForceMode1';
+    faForceMode2: result := 'faForceMode2';
+
+    { FederMode }
+    faM1: result := 'faM1';
+    faM2: result := 'faM2';
+    faM3: result := 'faM3';
+
     { RingActions }
     faBlindRingP: result := 'faBlindRingP';
     faBlindRingM: result := 'faBlindRingM';
@@ -181,6 +274,13 @@ begin
     faBandSelection20: result := 'faBandSelection20';
     faBandSelection21: result := 'faBandSelection21';
 
+    { MeshMode }
+    faReducedMesh: result := 'faReducedMesh';
+    faReduceMode0: result := 'faReduceMode0';
+    faReduceMode1: result := 'faReduceMode1';
+    faReduceMode2: result := 'faReduceMode2';
+    faReduceMode3: result := 'faReduceMode3';
+
     { MeshSize }
     faMeshSize4: result := 'faMeshSize4';
     faMeshSize8: result := 'faMeshSize8';
@@ -197,6 +297,7 @@ begin
     faWantBottomMirrored: result := 'faWantBottomMirrored';
     faWantSideCaps: result := 'faWantSideCaps';
     faTestSingleSide: result := 'faTestSingleSide';
+    faTakeCapValueSnapshot: result := 'faTakeCapValueSnapshot';
 
     { MeshExportCoords }
     faExportCoordsNative: result := 'faExportCoordsNative';
@@ -218,6 +319,25 @@ begin
     faObjDigits4: result := 'faObjDigits4';
     faObjDigits5: result := 'faObjDigits5';
 
+    { MeshFigures }
+    faToggleMarker: result := 'faToggleMarker';
+    faToggleGrid: result := 'faToggleGrid';
+    faToggleGridFrequency: result := 'faToggleGridFrequency';
+    faToggleDiameter3: result := 'faToggleDiameter3';
+    faDiameter3On: result := 'faDiameter3On';
+    faDiameter3Off: result := 'faDiameter3Off';
+    faToggleCylinder: result := 'faToggleCylinder';
+    faToggleCube: result := 'faToggleCube';
+    faToggleCorner: result := 'faToggleCorner';
+    faToggleLimitPlane: result := 'faToggleLimitPlane';
+
+    { VertexPulling }
+    faToggleZeroPulling: result := 'faToggleZeroPulling';
+    faToggleLimitPulling: result := 'faToggleLimitPulling';
+    faToggleSlicePulling: result := 'faToggleSlicePulling';
+    faToggleTargetPulling: result := 'faToggleTargetPulling';
+    faToggleRightPulling: result := 'faToggleRightPulling';
+
     { MeshBuilderOptions }
     faToggleSolidFlip: result := 'faToggleSolidFlip';
     faWantSpecialY: result := 'faWantSpecialY';
@@ -226,11 +346,55 @@ begin
     faUniqueMode2: result := 'faUniqueMode2';
     faToggleUniqueVertices: result := 'faToggleUniqueVertices';
 
+    { TextureExport }
+    faCopyBinCode: result := 'faCopyBinCode';
+    faCopyBinCodeTest: result := 'faCopyBinCodeTest';
+
+    { ColorMix }
+    faColorMix0: result := 'faColorMix0';
+    faColorMix1: result := 'faColorMix1';
+    faColorMix2: result := 'faColorMix2';
+    faColorMix3: result := 'faColorMix3';
+    faColorMix4: result := 'faColorMix4';
+    faColorMix5: result := 'faColorMix5';
+    faColorMixP: result := 'faColorMixP';
+    faColorMixM: result := 'faColorMixM';
+
     { ColorSwat }
     faToggleColorSwat: result := 'faToggleColorSwat';
 
     { Lux }
+    faLux1On: result := 'faLux1On';
+    faLux1Off: result := 'faLux1Off';
+    faToggleLux1: result := 'faToggleLux1';
+    faLux2On: result := 'faLux2On';
+    faLux2Off: result := 'faLux2Off';
+    faToggleLux2: result := 'faToggleLux2';
+    faLux3On: result := 'faLux3On';
+    faLux3Off: result := 'faLux3Off';
+    faToggleLux3: result := 'faToggleLux3';
+    faLux4On: result := 'faLux4On';
+    faLux4Off: result := 'faLux4Off';
+    faToggleLux4: result := 'faToggleLux4';
+    faLuxOn: result := 'faLuxOn';
+    faLuxOff: result := 'faLuxOff';
     faToggleLux: result := 'faToggleLux';
+
+    { LuxMarker }
+    faLuxMarkerOn: result := 'faLuxMarkerOn';
+    faLuxMarkerOff: result := 'faLuxMarkerOff';
+    faToggleLuxMarker: result := 'faToggleLuxMarker';
+
+    { LightMode }
+    faLightMode0: result := 'faLightMode0';
+    faLightMode1: result := 'faLightMode1';
+    faLightMode2: result := 'faLightMode2';
+    faLightMode3: result := 'faLightMode3';
+    faLightMode4: result := 'faLightMode4';
+
+    { ResetLight }
+    faResetLightPosition: result := 'faResetLightPosition';
+    faResetLightParams: result := 'faResetLightParams';
 
     { Wheel }
     faParamValuePlus1: result := 'faParamValuePlus1';
@@ -244,17 +408,45 @@ begin
 
     { WheelFrequency }
     faWheelFrequency1: result := 'faWheelFrequency1';
+    faWheelFrequency05: result := 'faWheelFrequency05';
+    faWheelFrequency02: result := 'faWheelFrequency02';
     faWheelFrequency01: result := 'faWheelFrequency01';
     faWheelFrequency001: result := 'faWheelFrequency001';
+    faWheelFrequency0001: result := 'faWheelFrequency0001';
 
     { ColorScheme }
     faCycleColorSchemeM: result := 'faCycleColorSchemeM';
     faCycleColorSchemeP: result := 'faCycleColorSchemeP';
 
+    { Step }
+    faStepRXM: result := 'faStepRXM';
+    faStepRXP: result := 'faStepRXP';
+    faStepRYM: result := 'faStepRYM';
+    faStepRYP: result := 'faStepRYP';
+    faStepRZM: result := 'faStepRZM';
+    faStepRZP: result := 'faStepRZP';
+    faStepCZM: result := 'faStepCZM';
+    faStepCZP: result := 'faStepCZP';
+
     { UI }
     faToggleColorPanel: result := 'faToggleColorPanel';
     faColorPanelOn: result := 'faColorPanelOn';
     faColorPanelOff: result := 'faColorPanelOff';
+    faPaletteOn: result := 'faPaletteOn';
+    faPaletteOff: result := 'faPaletteOff';
+
+    { Locks }
+    faToggleLuxLock: result := 'faToggleLuxLock';
+    faToggleParamLock: result := 'faToggleParamLock';
+    faToggleTextureLock: result := 'faToggleTextureLock';
+    faToggleBackgroundLock: result := 'faToggleBackgroundLock';
+    faToggleForceLock: result := 'faToggleForceLock';
+    faToggleReportLock: result := 'faToggleReportLock';
+
+    { Opacity }
+    faToggleOpacity: result := 'faToggleOpacity';
+    faOpacityOn: result := 'faOpacityOn';
+    faOpacityOff: result := 'faOpacityOff';
 
     { FederText }
     faToggleAllText: result := 'faToggleAllText';
@@ -267,6 +459,12 @@ begin
     faParamRZ: result := 'faParamRZ';
     faParamCZ: result := 'faParamCZ';
 
+    { ViewParamsFC }
+    faParamTRS: result := 'faParamTRS';
+    faParamTRT: result := 'faParamTRT';
+    faParamTRX: result := 'faParamTRX';
+    faParamTRY: result := 'faParamTRY';
+
     { ParamT }
     faParamT1: result := 'faParamT1';
     faParamT2: result := 'faParamT2';
@@ -274,6 +472,8 @@ begin
     faParamT4: result := 'faParamT4';
 
     { ViewFlags }
+    faToggleBMap: result := 'faToggleBMap';
+    faToggleZoom: result := 'faToggleZoom';
     faToggleTouchMenu: result := 'faToggleTouchMenu';
     faToggleEquationText: result := 'faToggleEquationText';
     faTogglePrimeText: result := 'faTogglePrimeText';
@@ -284,13 +484,90 @@ begin
     faLabelTextP: result := 'faLabelTextP';
     faLabelTextM: result := 'faLabelTextM';
 
+    { Report }
+    faCopyShortCutReport: result := 'faCopyShortCutReport';
+    faWriteActionReport: result := 'faWriteActionReport';
+    faWriteActionTable: result := 'faWriteActionTable';
+    faWriteActionConst: result := 'faWriteActionConst';
+    faWriteActionNames: result := 'faWriteActionNames';
+    faWriteVersion1: result := 'faWriteVersion1';
+    faWriteVersion2: result := 'faWriteVersion2';
+    faWriteCode: result := 'faWriteCode';
+    faWriteDiff1: result := 'faWriteDiff1';
+    faWriteDiffCode: result := 'faWriteDiffCode';
+    faWriteDiffBin: result := 'faWriteDiffBin';
+    faWriteBandInfo3: result := 'faWriteBandInfo3';
+    faWriteBandInfo5: result := 'faWriteBandInfo5';
+    faWriteEquationInfo: result := 'faWriteEquationInfo';
+    faWriteVirtual: result := 'faWriteVirtual';
+    faBlockTest: result := 'faBlockTest';
+
+    { ReportOptions }
+    faSourcePascal: result := 'faSourcePascal';
+    faSourceMaxima: result := 'faSourceMaxima';
+    faSourceMaple: result := 'faSourceMaple';
+    faSourceMathematica: result := 'faSourceMathematica';
+
+    { CopyImage }
+    faCopyScreenshot: result := 'faCopyScreenshot';
+    faCopyBitmap3D: result := 'faCopyBitmap3D';
+    faCopyTextureBitmap: result := 'faCopyTextureBitmap';
+    faCopyImprintedBitmap: result := 'faCopyImprintedBitmap';
+    faCopyImprintedBitmapTest: result := 'faCopyImprintedBitmapTest';
+
+    { CopyOptions }
+    faToggleHardCopy: result := 'faToggleHardCopy';
+    faHardCopyOn: result := 'faHardCopyOn';
+    faHardCopyOff: result := 'faHardCopyOff';
+    faTogglePngCopy: result := 'faTogglePngCopy';
+    faPngCopyOn: result := 'faPngCopyOn';
+    faPngCopyOff: result := 'faPngCopyOff';
+    faToggleNoCopy: result := 'faToggleNoCopy';
+    faNoCopyOn: result := 'faNoCopyOn';
+    faNoCopyOff: result := 'faNoCopyOff';
+
+    { GraphOptions }
+    faToggleDiameter: result := 'faToggleDiameter';
+    faToggleProbe: result := 'faToggleProbe';
+
     { Bahn }
     faNorthCap: result := 'faNorthCap';
     faSouthCap: result := 'faSouthCap';
+    faEastCap: result := 'faEastCap';
+    faWestCap: result := 'faWestCap';
     faParamCapValue: result := 'faParamCapValue';
+    faParamBahnRadius: result := 'faParamBahnRadius';
+    faParamBahnPositionX: result := 'faParamBahnPositionX';
+    faParamBahnPositionY: result := 'faParamBahnPositionY';
+    faParamBahnAngle: result := 'faParamBahnAngle';
+    faParamBahnCylinderD: result := 'faParamBahnCylinderD';
+    faParamBahnCylinderZ: result := 'faParamBahnCylinderZ';
+
+    { ExampleData }
+    faExample01: result := 'faExample01';
+    faExample02: result := 'faExample02';
+    faExample03: result := 'faExample03';
+    faExample04: result := 'faExample04';
+    faExample05: result := 'faExample05';
+    faExample06: result := 'faExample06';
+    faExample07: result := 'faExample07';
+    faExample08: result := 'faExample08';
+    faExample09: result := 'faExample09';
 
     { SampleNavigation }
+    faSampleM: result := 'faSampleM';
+    faSampleP: result := 'faSampleP';
     faGotoSample1: result := 'faGotoSample1';
+
+    { Help }
+    faToggleHelp: result := 'faToggleHelp';
+    faToggleReport: result := 'faToggleReport';
+    faToggleButtonReport: result := 'faToggleButtonReport';
+    faCycleHelpM: result := 'faCycleHelpM';
+    faCycleHelpP: result := 'faCycleHelpP';
+    faHelpCycle: result := 'faHelpCycle';
+    faHelpList: result := 'faHelpList';
+    faHelpHome: result := 'faHelpHome';
 
     { BtnLegendTablet }
     faTL01: result := 'faTL01';
@@ -344,12 +621,30 @@ begin
     faResetRotation: result := 'faResetRotation';
     faResetZoom: result := 'faResetZoom';
 
+    { Language }
+    faToggleLanguage: result := 'faToggleLanguage';
+
+    { CopyPaste }
+    faSave: result := 'faSave';
+    faLoad: result := 'faLoad';
+    faOpen: result := 'faOpen';
+    faCopy: result := 'faCopy';
+    faPaste: result := 'faPaste';
+
+    { ViewOptions }
+    faToggleMoveMode: result := 'faToggleMoveMode';
+    faLinearMove: result := 'faLinearMove';
+    faExpoMove: result := 'faExpoMove';
+    faToggleOrbitMode: result := 'faToggleOrbitMode';
+
     { BitmapCycle }
     faCycleBitmapM: result := 'faCycleBitmapM';
     faCycleBitmapP: result := 'faCycleBitmapP';
     faRandom: result := 'faRandom';
     faRandomWhite: result := 'faRandomWhite';
     faRandomBlack: result := 'faRandomBlack';
+    faRandomBambu1: result := 'faRandomBambu1';
+    faRandomBambu2: result := 'faRandomBambu2';
     faBitmapEscape: result := 'faBitmapEscape';
     faBitmapOne: result := 'faBitmapOne';
     faToggleContour: result := 'faToggleContour';
@@ -366,8 +661,42 @@ begin
     faLayout8: result := 'faLayout8';
     faLayout9: result := 'faLayout9';
 
+    { FigureSize }
+    faFigureSizeXS: result := 'faFigureSizeXS';
+    faFigureSizeS: result := 'faFigureSizeS';
+    faFigureSizeM: result := 'faFigureSizeM';
+    faFigureSizeL: result := 'faFigureSizeL';
+    faFigureSizeXL: result := 'faFigureSizeXL';
+
+    { EyeSize }
+    faEyeSizeS: result := 'faEyeSizeS';
+    faEyeSizeM: result := 'faEyeSizeM';
+    faEyeSizeL: result := 'faEyeSizeL';
+
+    { LayerSelection }
+    faSelectLayer1: result := 'faSelectLayer1';
+    faSelectLayer2: result := 'faSelectLayer2';
+    faSelectLayer3: result := 'faSelectLayer3';
+    faSelectLayer4: result := 'faSelectLayer4';
+    faSelectLayer5: result := 'faSelectLayer5';
+    faSelectLayer6: result := 'faSelectLayer6';
+    faSelectLayer7: result := 'faSelectLayer7';
+
+    { ColorSelection }
+    faSelectColor1: result := 'faSelectColor1';
+    faSelectColor2: result := 'faSelectColor2';
+    faSelectColor3: result := 'faSelectColor3';
+    faSelectColor4: result := 'faSelectColor4';
+
     { ColorMapping }
     faCLA: result := 'faCLA';
+    faMapColorToLayer: result := 'faMapColorToLayer';
+    faSelectColorMapping1: result := 'faSelectColorMapping1';
+    faSelectColorMapping2: result := 'faSelectColorMapping2';
+    faSelectColorMapping3: result := 'faSelectColorMapping3';
+    faSelectColorMapping4: result := 'faSelectColorMapping4';
+    faSelectColorMapping5: result := 'faSelectColorMapping5';
+    faSelectColorMapping6: result := 'faSelectColorMapping6';
   end;
 end;
 

@@ -78,7 +78,7 @@ type
 
     function GetEquationVisible: Boolean; override;
 
-//    function GetPaletteBtn: TCornerBtn; override;
+    function GetPaletteBtn: TCornerBtn; override;
 
     procedure SetAllVisible(const Value: Boolean); override;
     procedure SetMenuVisible(const Value: Boolean); override;
@@ -117,7 +117,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
 
-//    function FindPaletteBtn: TCornerBtn;
+    function FindPaletteBtn: TCornerBtn;
 
     procedure Reset;
 
@@ -131,7 +131,7 @@ type
     procedure InitMenuBarActions(ALayout: Integer); override;
     procedure InitTransitBarActions(ALayout: Integer); override;
     procedure CheckBtnOrder; override;
-//    procedure UpdateTextQuick; override;
+    procedure UpdateTextQuick; override;
     procedure UpdateLED(Host, Port, Counter, Msg: string; Status: TConnectionStatus); override;
     procedure CheckState; override;
     procedure CheckCircleState; override;
@@ -682,15 +682,15 @@ begin
   end;
 end;
 
-//procedure TFederTouch.UpdateTextQuick;
-//begin
-//  if InitOK then
-//  begin
-//    Main.UpdateFederTextDataQuick(FederTextDataQuick);
-//    TempoText.Text := FederTextDataQuick.TempoText;
+procedure TFederTouch.UpdateTextQuick;
+begin
+  if InitOK then
+  begin
+    Main.UpdateFederTextDataQuick(FederTextDataQuick);
+    TempoText.Text := FederTextDataQuick.TempoText;
 //    RecorderLine.Text := FederTextDataQuick.RecorderLine;
-//  end;
-//end;
+  end;
+end;
 
 procedure TFederTouch.InitBottomLayout;
 begin
@@ -959,10 +959,10 @@ begin
   end;
 end;
 
-//function TFederTouch.GetPaletteBtn: TCornerBtn;
-//begin
-//  result := FindPaletteBtn;
-//end;
+function TFederTouch.GetPaletteBtn: TCornerBtn;
+begin
+  result := FindPaletteBtn;
+end;
 
 procedure TFederTouch.SetActionMap(const Value: Integer);
 begin
@@ -975,18 +975,18 @@ begin
     Reset;
 end;
 
-//function TFederTouch.FindPaletteBtn: TCornerBtn;
-//var
-//  cb: TCornerBtn;
-//begin
-//  result := nil;
-//  for cb in CornerBtnList do
-//    if (cb.FederAction = faPaletteOn) or (cb.FederAction = faPaletteOff) then
-//    begin
-//      result := cb;
-//      break;
-//    end;
-//end;
+function TFederTouch.FindPaletteBtn: TCornerBtn;
+var
+  cb: TCornerBtn;
+begin
+  result := nil;
+  for cb in CornerBtnList do
+    if (cb.FederAction = faPaletteOn) or (cb.FederAction = faPaletteOff) then
+    begin
+      result := cb;
+      break;
+    end;
+end;
 
 procedure TFederTouch.CheckCircleState;
 var

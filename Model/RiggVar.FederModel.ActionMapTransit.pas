@@ -128,7 +128,7 @@ begin
       result.Caption := 'Band Params and Options';
       InitA(0, faParamCZ);
       InitA(1, faBandWidthRelative);
-      InitA(2, faNoop);
+      InitA(2, faParamBandSelected);
       InitA(3, faNoop);
       InitA(4, faToggleContour);
       InitA(5, faShowCurrentBandT);
@@ -136,24 +136,24 @@ begin
 
     3:
     begin
-      result.Caption := 'Light';
-      InitA(0, faToggleLux);
-      InitA(1, faNoop);
-      InitA(2, faNoop);
-      InitA(3, faNoop);
-      InitA(4, faNoop);
-      InitA(5, faNoop);
+      result.Caption := 'More Band Options';
+      InitA(0, faShirtColorOff);
+      InitA(1, faShirtColorOn);
+      InitA(2, faShirtFarbeOff);
+      InitA(3, faShirtFarbeOn);
+      InitA(4, faBlindRingM);
+      InitA(5, faBlindRingP);
     end;
 
     4:
     begin
       result.Caption := 'Mesh Options';
       InitA(0, faWantBottom);
-      InitA(1, faWantBottomMirrored);
+      InitA(1, faWantSideCaps);
       InitA(2, faToggleSolidFlip);
-      InitA(3, faNoop);
-      InitA(4, faNoop);
-      InitA(5, faToggleShowEdges);
+      InitA(3, faReducedMesh);
+      InitA(4, faTogglePCap);
+      InitA(5, faWantBottomMirrored);
     end;
 
     5:
@@ -202,9 +202,9 @@ begin
 
     9:
     begin
-      result.Caption := 'Forms';
-      InitA(0, faShowActions);
-      InitA(1, faShowMemo);
+      result.Caption := 'Color Panel';
+      InitA(0, faNoop);
+      InitA(1, faNoop);
       InitA(2, faToggleColorPanel);
       InitA(3, faToggleColorSwat);
       InitA(4, faNoop);

@@ -61,6 +61,68 @@ begin
     fagTouchPhone: result := faTouchPhone;
     fagTouchDesk: result := faTouchDesk;
 
+    { ActionMapping }
+    fagProcessAll: result := faProcessAll;
+
+    { Scene }
+    fagScene1: result := faScene1;
+    fagScene2: result := faScene2;
+    fagScene3: result := faScene3;
+    fagScene4: result := faScene4;
+    fagScene5: result := faScene5;
+
+    { Plot }
+    fagPlot0: result := faPlot0;
+    fagPlot1: result := faPlot1;
+    fagPlot2: result := faPlot2;
+    fagPlot3: result := faPlot3;
+    fagPlot4: result := faPlot4;
+    fagPlot5: result := faPlot5;
+    fagPlot6: result := faPlot6;
+    fagPlot7: result := faPlot7;
+    fagPlot8: result := faPlot8;
+    fagPlot9: result := faPlot9;
+    fagPlot10: result := faPlot10;
+    fagPlot11: result := faPlot11;
+    fagPlot12: result := faPlot12;
+    fagPlot13: result := faPlot13;
+
+    { Figure }
+    fagFigure1: result := faFigure1;
+    fagFigure2: result := faFigure2;
+    fagFigure3: result := faFigure3;
+    fagFigure4: result := faFigure4;
+    fagFigure5: result := faFigure5;
+    fagFigure6: result := faFigure6;
+
+    { Graph }
+    fagGraph1: result := faGraph1;
+    fagGraph2: result := faGraph2;
+    fagGraph3: result := faGraph3;
+    fagGraph4: result := faGraph4;
+    fagGraph5: result := faGraph5;
+
+    { Color }
+    fagColor0: result := faColor0;
+    fagColor1: result := faColor1;
+    fagColor2: result := faColor2;
+    fagColor3: result := faColor3;
+    fagColor4: result := faColor4;
+    fagColor5: result := faColor5;
+    fagColor6: result := faColor6;
+
+    { Param }
+    fagParam0: result := faParam0;
+    fagParam1: result := faParam1;
+    fagParam2: result := faParam2;
+    fagParam3: result := faParam3;
+    fagParam4: result := faParam4;
+    fagParam5: result := faParam5;
+    fagParam6: result := faParam6;
+    fagParam7: result := faParam7;
+    fagParam8: result := faParam8;
+    fagParam9: result := faParam9;
+
     { SystemParam }
     fagParamX1: result := faParamX1;
     fagParamY1: result := faParamY1;
@@ -134,6 +196,37 @@ begin
     fagParamL3F: result := faParamL3F;
     fagParamLF: result := faParamLF;
 
+    { ModelOptions }
+    fagToggleSolutionMode: result := faToggleSolutionMode;
+    fagToggleVorzeichen: result := faToggleVorzeichen;
+    fagToggleLinearForce: result := faToggleLinearForce;
+    fagToggleGleich: result := faToggleGleich;
+    fagToggleMCap: result := faToggleMCap;
+    fagTogglePCap: result := faTogglePCap;
+    fagForceZ0: result := faForceZ0;
+    fagWantZ12: result := faWantZ12;
+    fagDiff0: result := faDiff0;
+    fagDiff1: result := faDiff1;
+    fagDiff10: result := faDiff10;
+
+    { OptionCycle }
+    fagCyclePlotM: result := faCyclePlotM;
+    fagCyclePlotP: result := faCyclePlotP;
+    fagCycleGraphM: result := faCycleGraphM;
+    fagCycleGraphP: result := faCycleGraphP;
+    fagCycleFigureM: result := faCycleFigureM;
+    fagCycleFigureP: result := faCycleFigureP;
+
+    { ForceMode }
+    fagForceMode0: result := faForceMode0;
+    fagForceMode1: result := faForceMode1;
+    fagForceMode2: result := faForceMode2;
+
+    { FederMode }
+    fagM1: result := faM1;
+    fagM2: result := faM2;
+    fagM3: result := faM3;
+
     { RingActions }
     fagBlindRingP: result := faBlindRingP;
     fagBlindRingM: result := faBlindRingM;
@@ -185,6 +278,13 @@ begin
     fagBandSelection20: result := faBandSelection20;
     fagBandSelection21: result := faBandSelection21;
 
+    { MeshMode }
+    fagReducedMesh: result := faReducedMesh;
+    fagReduceMode0: result := faReduceMode0;
+    fagReduceMode1: result := faReduceMode1;
+    fagReduceMode2: result := faReduceMode2;
+    fagReduceMode3: result := faReduceMode3;
+
     { MeshSize }
     fagMeshSize4: result := faMeshSize4;
     fagMeshSize8: result := faMeshSize8;
@@ -201,6 +301,7 @@ begin
     fagWantBottomMirrored: result := faWantBottomMirrored;
     fagWantSideCaps: result := faWantSideCaps;
     fagTestSingleSide: result := faTestSingleSide;
+    fagTakeCapValueSnapshot: result := faTakeCapValueSnapshot;
 
     { MeshExportCoords }
     fagExportCoordsNative: result := faExportCoordsNative;
@@ -222,6 +323,25 @@ begin
     fagObjDigits4: result := faObjDigits4;
     fagObjDigits5: result := faObjDigits5;
 
+    { MeshFigures }
+    fagToggleMarker: result := faToggleMarker;
+    fagToggleGrid: result := faToggleGrid;
+    fagToggleGridFrequency: result := faToggleGridFrequency;
+    fagToggleDiameter3: result := faToggleDiameter3;
+    fagDiameter3On: result := faDiameter3On;
+    fagDiameter3Off: result := faDiameter3Off;
+    fagToggleCylinder: result := faToggleCylinder;
+    fagToggleCube: result := faToggleCube;
+    fagToggleCorner: result := faToggleCorner;
+    fagToggleLimitPlane: result := faToggleLimitPlane;
+
+    { VertexPulling }
+    fagToggleZeroPulling: result := faToggleZeroPulling;
+    fagToggleLimitPulling: result := faToggleLimitPulling;
+    fagToggleSlicePulling: result := faToggleSlicePulling;
+    fagToggleTargetPulling: result := faToggleTargetPulling;
+    fagToggleRightPulling: result := faToggleRightPulling;
+
     { MeshBuilderOptions }
     fagToggleSolidFlip: result := faToggleSolidFlip;
     fagWantSpecialY: result := faWantSpecialY;
@@ -230,11 +350,55 @@ begin
     fagUniqueMode2: result := faUniqueMode2;
     fagToggleUniqueVertices: result := faToggleUniqueVertices;
 
+    { TextureExport }
+    fagCopyBinCode: result := faCopyBinCode;
+    fagCopyBinCodeTest: result := faCopyBinCodeTest;
+
+    { ColorMix }
+    fagColorMix0: result := faColorMix0;
+    fagColorMix1: result := faColorMix1;
+    fagColorMix2: result := faColorMix2;
+    fagColorMix3: result := faColorMix3;
+    fagColorMix4: result := faColorMix4;
+    fagColorMix5: result := faColorMix5;
+    fagColorMixP: result := faColorMixP;
+    fagColorMixM: result := faColorMixM;
+
     { ColorSwat }
     fagToggleColorSwat: result := faToggleColorSwat;
 
     { Lux }
+    fagLux1On: result := faLux1On;
+    fagLux1Off: result := faLux1Off;
+    fagToggleLux1: result := faToggleLux1;
+    fagLux2On: result := faLux2On;
+    fagLux2Off: result := faLux2Off;
+    fagToggleLux2: result := faToggleLux2;
+    fagLux3On: result := faLux3On;
+    fagLux3Off: result := faLux3Off;
+    fagToggleLux3: result := faToggleLux3;
+    fagLux4On: result := faLux4On;
+    fagLux4Off: result := faLux4Off;
+    fagToggleLux4: result := faToggleLux4;
+    fagLuxOn: result := faLuxOn;
+    fagLuxOff: result := faLuxOff;
     fagToggleLux: result := faToggleLux;
+
+    { LuxMarker }
+    fagLuxMarkerOn: result := faLuxMarkerOn;
+    fagLuxMarkerOff: result := faLuxMarkerOff;
+    fagToggleLuxMarker: result := faToggleLuxMarker;
+
+    { LightMode }
+    fagLightMode0: result := faLightMode0;
+    fagLightMode1: result := faLightMode1;
+    fagLightMode2: result := faLightMode2;
+    fagLightMode3: result := faLightMode3;
+    fagLightMode4: result := faLightMode4;
+
+    { ResetLight }
+    fagResetLightPosition: result := faResetLightPosition;
+    fagResetLightParams: result := faResetLightParams;
 
     { Wheel }
     fagParamValuePlus1: result := faParamValuePlus1;
@@ -248,17 +412,45 @@ begin
 
     { WheelFrequency }
     fagWheelFrequency1: result := faWheelFrequency1;
+    fagWheelFrequency05: result := faWheelFrequency05;
+    fagWheelFrequency02: result := faWheelFrequency02;
     fagWheelFrequency01: result := faWheelFrequency01;
     fagWheelFrequency001: result := faWheelFrequency001;
+    fagWheelFrequency0001: result := faWheelFrequency0001;
 
     { ColorScheme }
     fagCycleColorSchemeM: result := faCycleColorSchemeM;
     fagCycleColorSchemeP: result := faCycleColorSchemeP;
 
+    { Step }
+    fagStepRXM: result := faStepRXM;
+    fagStepRXP: result := faStepRXP;
+    fagStepRYM: result := faStepRYM;
+    fagStepRYP: result := faStepRYP;
+    fagStepRZM: result := faStepRZM;
+    fagStepRZP: result := faStepRZP;
+    fagStepCZM: result := faStepCZM;
+    fagStepCZP: result := faStepCZP;
+
     { UI }
     fagToggleColorPanel: result := faToggleColorPanel;
     fagColorPanelOn: result := faColorPanelOn;
     fagColorPanelOff: result := faColorPanelOff;
+    fagPaletteOn: result := faPaletteOn;
+    fagPaletteOff: result := faPaletteOff;
+
+    { Locks }
+    fagToggleLuxLock: result := faToggleLuxLock;
+    fagToggleParamLock: result := faToggleParamLock;
+    fagToggleTextureLock: result := faToggleTextureLock;
+    fagToggleBackgroundLock: result := faToggleBackgroundLock;
+    fagToggleForceLock: result := faToggleForceLock;
+    fagToggleReportLock: result := faToggleReportLock;
+
+    { Opacity }
+    fagToggleOpacity: result := faToggleOpacity;
+    fagOpacityOn: result := faOpacityOn;
+    fagOpacityOff: result := faOpacityOff;
 
     { FederText }
     fagToggleAllText: result := faToggleAllText;
@@ -271,6 +463,12 @@ begin
     fagParamRZ: result := faParamRZ;
     fagParamCZ: result := faParamCZ;
 
+    { ViewParamsFC }
+    fagParamTRS: result := faParamTRS;
+    fagParamTRT: result := faParamTRT;
+    fagParamTRX: result := faParamTRX;
+    fagParamTRY: result := faParamTRY;
+
     { ParamT }
     fagParamT1: result := faParamT1;
     fagParamT2: result := faParamT2;
@@ -278,6 +476,8 @@ begin
     fagParamT4: result := faParamT4;
 
     { ViewFlags }
+    fagToggleBMap: result := faToggleBMap;
+    fagToggleZoom: result := faToggleZoom;
     fagToggleTouchMenu: result := faToggleTouchMenu;
     fagToggleEquationText: result := faToggleEquationText;
     fagTogglePrimeText: result := faTogglePrimeText;
@@ -288,13 +488,90 @@ begin
     fagLabelTextP: result := faLabelTextP;
     fagLabelTextM: result := faLabelTextM;
 
+    { Report }
+    fagCopyShortCutReport: result := faCopyShortCutReport;
+    fagWriteActionReport: result := faWriteActionReport;
+    fagWriteActionTable: result := faWriteActionTable;
+    fagWriteActionConst: result := faWriteActionConst;
+    fagWriteActionNames: result := faWriteActionNames;
+    fagWriteVersion1: result := faWriteVersion1;
+    fagWriteVersion2: result := faWriteVersion2;
+    fagWriteCode: result := faWriteCode;
+    fagWriteDiff1: result := faWriteDiff1;
+    fagWriteDiffCode: result := faWriteDiffCode;
+    fagWriteDiffBin: result := faWriteDiffBin;
+    fagWriteBandInfo3: result := faWriteBandInfo3;
+    fagWriteBandInfo5: result := faWriteBandInfo5;
+    fagWriteEquationInfo: result := faWriteEquationInfo;
+    fagWriteVirtual: result := faWriteVirtual;
+    fagBlockTest: result := faBlockTest;
+
+    { ReportOptions }
+    fagSourcePascal: result := faSourcePascal;
+    fagSourceMaxima: result := faSourceMaxima;
+    fagSourceMaple: result := faSourceMaple;
+    fagSourceMathematica: result := faSourceMathematica;
+
+    { CopyImage }
+    fagCopyScreenshot: result := faCopyScreenshot;
+    fagCopyBitmap3D: result := faCopyBitmap3D;
+    fagCopyTextureBitmap: result := faCopyTextureBitmap;
+    fagCopyImprintedBitmap: result := faCopyImprintedBitmap;
+    fagCopyImprintedBitmapTest: result := faCopyImprintedBitmapTest;
+
+    { CopyOptions }
+    fagToggleHardCopy: result := faToggleHardCopy;
+    fagHardCopyOn: result := faHardCopyOn;
+    fagHardCopyOff: result := faHardCopyOff;
+    fagTogglePngCopy: result := faTogglePngCopy;
+    fagPngCopyOn: result := faPngCopyOn;
+    fagPngCopyOff: result := faPngCopyOff;
+    fagToggleNoCopy: result := faToggleNoCopy;
+    fagNoCopyOn: result := faNoCopyOn;
+    fagNoCopyOff: result := faNoCopyOff;
+
+    { GraphOptions }
+    fagToggleDiameter: result := faToggleDiameter;
+    fagToggleProbe: result := faToggleProbe;
+
     { Bahn }
     fagNorthCap: result := faNorthCap;
     fagSouthCap: result := faSouthCap;
+    fagEastCap: result := faEastCap;
+    fagWestCap: result := faWestCap;
     fagParamCapValue: result := faParamCapValue;
+    fagParamBahnRadius: result := faParamBahnRadius;
+    fagParamBahnPositionX: result := faParamBahnPositionX;
+    fagParamBahnPositionY: result := faParamBahnPositionY;
+    fagParamBahnAngle: result := faParamBahnAngle;
+    fagParamBahnCylinderD: result := faParamBahnCylinderD;
+    fagParamBahnCylinderZ: result := faParamBahnCylinderZ;
+
+    { ExampleData }
+    fagExample01: result := faExample01;
+    fagExample02: result := faExample02;
+    fagExample03: result := faExample03;
+    fagExample04: result := faExample04;
+    fagExample05: result := faExample05;
+    fagExample06: result := faExample06;
+    fagExample07: result := faExample07;
+    fagExample08: result := faExample08;
+    fagExample09: result := faExample09;
 
     { SampleNavigation }
+    fagSampleM: result := faSampleM;
+    fagSampleP: result := faSampleP;
     fagGotoSample1: result := faGotoSample1;
+
+    { Help }
+    fagToggleHelp: result := faToggleHelp;
+    fagToggleReport: result := faToggleReport;
+    fagToggleButtonReport: result := faToggleButtonReport;
+    fagCycleHelpM: result := faCycleHelpM;
+    fagCycleHelpP: result := faCycleHelpP;
+    fagHelpCycle: result := faHelpCycle;
+    fagHelpList: result := faHelpList;
+    fagHelpHome: result := faHelpHome;
 
     { BtnLegendTablet }
     fagTL01: result := faTL01;
@@ -348,12 +625,30 @@ begin
     fagResetRotation: result := faResetRotation;
     fagResetZoom: result := faResetZoom;
 
+    { Language }
+    fagToggleLanguage: result := faToggleLanguage;
+
+    { CopyPaste }
+    fagSave: result := faSave;
+    fagLoad: result := faLoad;
+    fagOpen: result := faOpen;
+    fagCopy: result := faCopy;
+    fagPaste: result := faPaste;
+
+    { ViewOptions }
+    fagToggleMoveMode: result := faToggleMoveMode;
+    fagLinearMove: result := faLinearMove;
+    fagExpoMove: result := faExpoMove;
+    fagToggleOrbitMode: result := faToggleOrbitMode;
+
     { BitmapCycle }
     fagCycleBitmapM: result := faCycleBitmapM;
     fagCycleBitmapP: result := faCycleBitmapP;
     fagRandom: result := faRandom;
     fagRandomWhite: result := faRandomWhite;
     fagRandomBlack: result := faRandomBlack;
+    fagRandomBambu1: result := faRandomBambu1;
+    fagRandomBambu2: result := faRandomBambu2;
     fagBitmapEscape: result := faBitmapEscape;
     fagBitmapOne: result := faBitmapOne;
     fagToggleContour: result := faToggleContour;
@@ -370,8 +665,42 @@ begin
     fagLayout8: result := faLayout8;
     fagLayout9: result := faLayout9;
 
+    { FigureSize }
+    fagFigureSizeXS: result := faFigureSizeXS;
+    fagFigureSizeS: result := faFigureSizeS;
+    fagFigureSizeM: result := faFigureSizeM;
+    fagFigureSizeL: result := faFigureSizeL;
+    fagFigureSizeXL: result := faFigureSizeXL;
+
+    { EyeSize }
+    fagEyeSizeS: result := faEyeSizeS;
+    fagEyeSizeM: result := faEyeSizeM;
+    fagEyeSizeL: result := faEyeSizeL;
+
+    { LayerSelection }
+    fagSelectLayer1: result := faSelectLayer1;
+    fagSelectLayer2: result := faSelectLayer2;
+    fagSelectLayer3: result := faSelectLayer3;
+    fagSelectLayer4: result := faSelectLayer4;
+    fagSelectLayer5: result := faSelectLayer5;
+    fagSelectLayer6: result := faSelectLayer6;
+    fagSelectLayer7: result := faSelectLayer7;
+
+    { ColorSelection }
+    fagSelectColor1: result := faSelectColor1;
+    fagSelectColor2: result := faSelectColor2;
+    fagSelectColor3: result := faSelectColor3;
+    fagSelectColor4: result := faSelectColor4;
+
     { ColorMapping }
     fagCLA: result := faCLA;
+    fagMapColorToLayer: result := faMapColorToLayer;
+    fagSelectColorMapping1: result := faSelectColorMapping1;
+    fagSelectColorMapping2: result := faSelectColorMapping2;
+    fagSelectColorMapping3: result := faSelectColorMapping3;
+    fagSelectColorMapping4: result := faSelectColorMapping4;
+    fagSelectColorMapping5: result := faSelectColorMapping5;
+    fagSelectColorMapping6: result := faSelectColorMapping6;
   end;
 end;
 

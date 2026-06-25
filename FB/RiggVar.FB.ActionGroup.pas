@@ -54,6 +54,68 @@ const
     faTouchPhone,
     faTouchDesk];
 
+  ActionGroupActionMapping: TActionGroup = [
+    faProcessAll];
+
+  ActionGroupScene: TActionGroup = [
+    faScene1,
+    faScene2,
+    faScene3,
+    faScene4,
+    faScene5];
+
+  ActionGroupPlot: TActionGroup = [
+    faPlot0,
+    faPlot1,
+    faPlot2,
+    faPlot3,
+    faPlot4,
+    faPlot5,
+    faPlot6,
+    faPlot7,
+    faPlot8,
+    faPlot9,
+    faPlot10,
+    faPlot11,
+    faPlot12,
+    faPlot13];
+
+  ActionGroupFigure: TActionGroup = [
+    faFigure1,
+    faFigure2,
+    faFigure3,
+    faFigure4,
+    faFigure5,
+    faFigure6];
+
+  ActionGroupGraph: TActionGroup = [
+    faGraph1,
+    faGraph2,
+    faGraph3,
+    faGraph4,
+    faGraph5];
+
+  ActionGroupColor: TActionGroup = [
+    faColor0,
+    faColor1,
+    faColor2,
+    faColor3,
+    faColor4,
+    faColor5,
+    faColor6];
+
+  ActionGroupParam: TActionGroup = [
+    faParam0,
+    faParam1,
+    faParam2,
+    faParam3,
+    faParam4,
+    faParam5,
+    faParam6,
+    faParam7,
+    faParam8,
+    faParam9];
+
   ActionGroupSystemParam: TActionGroup = [
     faParamX1,
     faParamY1,
@@ -127,6 +189,37 @@ const
     faParamL3F,
     faParamLF];
 
+  ActionGroupModelOptions: TActionGroup = [
+    faToggleSolutionMode,
+    faToggleVorzeichen,
+    faToggleLinearForce,
+    faToggleGleich,
+    faToggleMCap,
+    faTogglePCap,
+    faForceZ0,
+    faWantZ12,
+    faDiff0,
+    faDiff1,
+    faDiff10];
+
+  ActionGroupOptionCycle: TActionGroup = [
+    faCyclePlotM,
+    faCyclePlotP,
+    faCycleGraphM,
+    faCycleGraphP,
+    faCycleFigureM,
+    faCycleFigureP];
+
+  ActionGroupForceMode: TActionGroup = [
+    faForceMode0,
+    faForceMode1,
+    faForceMode2];
+
+  ActionGroupFederMode: TActionGroup = [
+    faM1,
+    faM2,
+    faM3];
+
   ActionGroupRingActions: TActionGroup = [
     faBlindRingP,
     faBlindRingM,
@@ -178,6 +271,13 @@ const
     faBandSelection20,
     faBandSelection21];
 
+  ActionGroupMeshMode: TActionGroup = [
+    faReducedMesh,
+    faReduceMode0,
+    faReduceMode1,
+    faReduceMode2,
+    faReduceMode3];
+
   ActionGroupMeshSize: TActionGroup = [
     faMeshSize4,
     faMeshSize8,
@@ -193,7 +293,8 @@ const
     faWantBottom,
     faWantBottomMirrored,
     faWantSideCaps,
-    faTestSingleSide];
+    faTestSingleSide,
+    faTakeCapValueSnapshot];
 
   ActionGroupMeshExportCoords: TActionGroup = [
     faExportCoordsNative,
@@ -215,6 +316,25 @@ const
     faObjDigits4,
     faObjDigits5];
 
+  ActionGroupMeshFigures: TActionGroup = [
+    faToggleMarker,
+    faToggleGrid,
+    faToggleGridFrequency,
+    faToggleDiameter3,
+    faDiameter3On,
+    faDiameter3Off,
+    faToggleCylinder,
+    faToggleCube,
+    faToggleCorner,
+    faToggleLimitPlane];
+
+  ActionGroupVertexPulling: TActionGroup = [
+    faToggleZeroPulling,
+    faToggleLimitPulling,
+    faToggleSlicePulling,
+    faToggleTargetPulling,
+    faToggleRightPulling];
+
   ActionGroupMeshBuilderOptions: TActionGroup = [
     faToggleSolidFlip,
     faWantSpecialY,
@@ -223,11 +343,55 @@ const
     faUniqueMode2,
     faToggleUniqueVertices];
 
+  ActionGroupTextureExport: TActionGroup = [
+    faCopyBinCode,
+    faCopyBinCodeTest];
+
+  ActionGroupColorMix: TActionGroup = [
+    faColorMix0,
+    faColorMix1,
+    faColorMix2,
+    faColorMix3,
+    faColorMix4,
+    faColorMix5,
+    faColorMixP,
+    faColorMixM];
+
   ActionGroupColorSwat: TActionGroup = [
     faToggleColorSwat];
 
   ActionGroupLux: TActionGroup = [
+    faLux1On,
+    faLux1Off,
+    faToggleLux1,
+    faLux2On,
+    faLux2Off,
+    faToggleLux2,
+    faLux3On,
+    faLux3Off,
+    faToggleLux3,
+    faLux4On,
+    faLux4Off,
+    faToggleLux4,
+    faLuxOn,
+    faLuxOff,
     faToggleLux];
+
+  ActionGroupLuxMarker: TActionGroup = [
+    faLuxMarkerOn,
+    faLuxMarkerOff,
+    faToggleLuxMarker];
+
+  ActionGroupLightMode: TActionGroup = [
+    faLightMode0,
+    faLightMode1,
+    faLightMode2,
+    faLightMode3,
+    faLightMode4];
+
+  ActionGroupResetLight: TActionGroup = [
+    faResetLightPosition,
+    faResetLightParams];
 
   ActionGroupWheel: TActionGroup = [
     faParamValuePlus1,
@@ -241,17 +405,45 @@ const
 
   ActionGroupWheelFrequency: TActionGroup = [
     faWheelFrequency1,
+    faWheelFrequency05,
+    faWheelFrequency02,
     faWheelFrequency01,
-    faWheelFrequency001];
+    faWheelFrequency001,
+    faWheelFrequency0001];
 
   ActionGroupColorScheme: TActionGroup = [
     faCycleColorSchemeM,
     faCycleColorSchemeP];
 
+  ActionGroupStep: TActionGroup = [
+    faStepRXM,
+    faStepRXP,
+    faStepRYM,
+    faStepRYP,
+    faStepRZM,
+    faStepRZP,
+    faStepCZM,
+    faStepCZP];
+
   ActionGroupUI: TActionGroup = [
     faToggleColorPanel,
     faColorPanelOn,
-    faColorPanelOff];
+    faColorPanelOff,
+    faPaletteOn,
+    faPaletteOff];
+
+  ActionGroupLocks: TActionGroup = [
+    faToggleLuxLock,
+    faToggleParamLock,
+    faToggleTextureLock,
+    faToggleBackgroundLock,
+    faToggleForceLock,
+    faToggleReportLock];
+
+  ActionGroupOpacity: TActionGroup = [
+    faToggleOpacity,
+    faOpacityOn,
+    faOpacityOff];
 
   ActionGroupFederText: TActionGroup = [
     faToggleAllText,
@@ -264,6 +456,12 @@ const
     faParamRZ,
     faParamCZ];
 
+  ActionGroupViewParamsFC: TActionGroup = [
+    faParamTRS,
+    faParamTRT,
+    faParamTRX,
+    faParamTRY];
+
   ActionGroupParamT: TActionGroup = [
     faParamT1,
     faParamT2,
@@ -271,6 +469,8 @@ const
     faParamT4];
 
   ActionGroupViewFlags: TActionGroup = [
+    faToggleBMap,
+    faToggleZoom,
     faToggleTouchMenu,
     faToggleEquationText,
     faTogglePrimeText,
@@ -281,13 +481,90 @@ const
     faLabelTextP,
     faLabelTextM];
 
+  ActionGroupReport: TActionGroup = [
+    faCopyShortCutReport,
+    faWriteActionReport,
+    faWriteActionTable,
+    faWriteActionConst,
+    faWriteActionNames,
+    faWriteVersion1,
+    faWriteVersion2,
+    faWriteCode,
+    faWriteDiff1,
+    faWriteDiffCode,
+    faWriteDiffBin,
+    faWriteBandInfo3,
+    faWriteBandInfo5,
+    faWriteEquationInfo,
+    faWriteVirtual,
+    faBlockTest];
+
+  ActionGroupReportOptions: TActionGroup = [
+    faSourcePascal,
+    faSourceMaxima,
+    faSourceMaple,
+    faSourceMathematica];
+
+  ActionGroupCopyImage: TActionGroup = [
+    faCopyScreenshot,
+    faCopyBitmap3D,
+    faCopyTextureBitmap,
+    faCopyImprintedBitmap,
+    faCopyImprintedBitmapTest];
+
+  ActionGroupCopyOptions: TActionGroup = [
+    faToggleHardCopy,
+    faHardCopyOn,
+    faHardCopyOff,
+    faTogglePngCopy,
+    faPngCopyOn,
+    faPngCopyOff,
+    faToggleNoCopy,
+    faNoCopyOn,
+    faNoCopyOff];
+
+  ActionGroupGraphOptions: TActionGroup = [
+    faToggleDiameter,
+    faToggleProbe];
+
   ActionGroupBahn: TActionGroup = [
     faNorthCap,
     faSouthCap,
-    faParamCapValue];
+    faEastCap,
+    faWestCap,
+    faParamCapValue,
+    faParamBahnRadius,
+    faParamBahnPositionX,
+    faParamBahnPositionY,
+    faParamBahnAngle,
+    faParamBahnCylinderD,
+    faParamBahnCylinderZ];
+
+  ActionGroupExampleData: TActionGroup = [
+    faExample01,
+    faExample02,
+    faExample03,
+    faExample04,
+    faExample05,
+    faExample06,
+    faExample07,
+    faExample08,
+    faExample09];
 
   ActionGroupSampleNavigation: TActionGroup = [
+    faSampleM,
+    faSampleP,
     faGotoSample1];
+
+  ActionGroupHelp: TActionGroup = [
+    faToggleHelp,
+    faToggleReport,
+    faToggleButtonReport,
+    faCycleHelpM,
+    faCycleHelpP,
+    faHelpCycle,
+    faHelpList,
+    faHelpHome];
 
   ActionGroupBtnLegendTablet: TActionGroup = [
     faTL01,
@@ -341,12 +618,30 @@ const
     faResetRotation,
     faResetZoom];
 
+  ActionGroupLanguage: TActionGroup = [
+    faToggleLanguage];
+
+  ActionGroupCopyPaste: TActionGroup = [
+    faSave,
+    faLoad,
+    faOpen,
+    faCopy,
+    faPaste];
+
+  ActionGroupViewOptions: TActionGroup = [
+    faToggleMoveMode,
+    faLinearMove,
+    faExpoMove,
+    faToggleOrbitMode];
+
   ActionGroupBitmapCycle: TActionGroup = [
     faCycleBitmapM,
     faCycleBitmapP,
     faRandom,
     faRandomWhite,
     faRandomBlack,
+    faRandomBambu1,
+    faRandomBambu2,
     faBitmapEscape,
     faBitmapOne,
     faToggleContour];
@@ -363,8 +658,42 @@ const
     faLayout8,
     faLayout9];
 
+  ActionGroupFigureSize: TActionGroup = [
+    faFigureSizeXS,
+    faFigureSizeS,
+    faFigureSizeM,
+    faFigureSizeL,
+    faFigureSizeXL];
+
+  ActionGroupEyeSize: TActionGroup = [
+    faEyeSizeS,
+    faEyeSizeM,
+    faEyeSizeL];
+
+  ActionGroupLayerSelection: TActionGroup = [
+    faSelectLayer1,
+    faSelectLayer2,
+    faSelectLayer3,
+    faSelectLayer4,
+    faSelectLayer5,
+    faSelectLayer6,
+    faSelectLayer7];
+
+  ActionGroupColorSelection: TActionGroup = [
+    faSelectColor1,
+    faSelectColor2,
+    faSelectColor3,
+    faSelectColor4];
+
   ActionGroupColorMapping: TActionGroup = [
-    faCLA];
+    faCLA,
+    faMapColorToLayer,
+    faSelectColorMapping1,
+    faSelectColorMapping2,
+    faSelectColorMapping3,
+    faSelectColorMapping4,
+    faSelectColorMapping5,
+    faSelectColorMapping6];
 
 implementation
 

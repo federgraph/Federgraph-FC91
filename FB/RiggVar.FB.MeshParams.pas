@@ -65,6 +65,17 @@ type
     ReducedMesh: Boolean;
     ReduceMode: Integer;
 
+    PolarMesh: Boolean;
+    FilterMesh: Boolean;
+    FuzzyMesh: Boolean;
+    LinearMesh: Boolean;
+    OpenMesh: Boolean;
+
+    TextureJack: Boolean;
+    TextureJitt: Boolean;
+    TextureMidd: Boolean;
+    TextureVert: Boolean;
+
     WantZeroPulling: Boolean;
     WantSlicePulling: Boolean;
 
@@ -76,12 +87,20 @@ type
 
     SlicePullingMode: Integer;
 
+    ParamBahnRadius: single;
+    ParamBahnPositionX: single;
+    ParamBahnPositionY: single;
+
     CapValue: single;
     SliceHeight: single;
 
     MinusCap: Boolean;
     PlusCap: Boolean;
 
+    Norm: Boolean;
+    Pin: Boolean;
+
+    TextureNorm: Integer;
     NormScale: Integer;
     GlobalScale: single;
     ModelGroupScale: single;
@@ -94,9 +113,20 @@ type
     ot1: single;
     ot2: single;
 
+    Bitmap: Integer;
+    TextureRepeat: Boolean;
+
+    VerbatimPoint: Boolean;
+    HullMesh: Boolean;
+    InvertedMesh: Boolean;
+    UprightMesh: Boolean;
+    FlippedTexture: Boolean;
+
     SpringCount: Integer;
     Figure: Integer;
     Attenuation: single;
+    FaktorEQ: single;
+    FaktorG3: single;
     CapFactor: single;
     CapOverride: Boolean;
 
@@ -147,6 +177,8 @@ begin
   SliceHeight := 25;
 
   ReduceMode := 0;
+
+  Bitmap := 17;
 
   T1 := 0;
   T2 := 180;
@@ -255,13 +287,31 @@ procedure TMeshParams.Reset;
 begin
   ReducedMesh := False;
 
+  PolarMesh := False;
+  FilterMesh := False;
+  FuzzyMesh := False;
+  LinearMesh := True;
+  OpenMesh := False;
+
   PlusCap := False;
   MinusCap := False;
+
+  VerbatimPoint := False;
+  HullMesh := False;
+  InvertedMesh := False;
+  UprightMesh := False;
+  FlippedTexture := False;
 
   WantZeroPulling := True;
   WantSlicePulling := False;
 
-  WantLux := True;
+  WantLux := False;
+
+  TextureRepeat := False;
+  TextureJack := False;
+  TextureJitt := False;
+  TextureMidd := False;
+  TextureVert := False;
 
   WantFlippedHands := False;
   WantMirroredBottom := False;

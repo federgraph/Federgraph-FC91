@@ -38,8 +38,8 @@ type
     function GetModelStatus: string; override;
     function GetViewStatus: string; override;
     function GetRotationInfo: string; override;
-//    function GetMatrixInfo: string; override;
-//    function GetLightInfo: string; override;
+    function GetMatrixInfo: string; override;
+    function GetLightInfo: string; override;
     function GetLockStatus: string; override;
     function GetColorInfo1: string; override;
     function GetColorInfo2: string; override;
@@ -49,7 +49,6 @@ type
 implementation
 
 uses
-  FrmMain,
   RiggVar.FB.Classes,
   RiggVar.App.Main;
 
@@ -57,7 +56,7 @@ function TFederReport1.GetRotationInfo: string;
 var
   ft: string;
   fs: string;
-//  p: TPoint3D;
+  p: TPoint3D;
 begin
   SL.Clear;
   GetAppStatus;
@@ -66,18 +65,18 @@ begin
 
   fs := Format('RA: %s', [ft]);
   SL.Add(Format(fs, [
-    FormMain.CameraDummy.RotationAngle.X,
-    FormMain.CameraDummy.RotationAngle.Y,
-    FormMain.CameraDummy.RotationAngle.Z
+    Main.Frame3D.CameraDummy.RotationAngle.X,
+    Main.Frame3D.CameraDummy.RotationAngle.Y,
+    Main.Frame3D.CameraDummy.RotationAngle.Z
     ]));
 
-//  p := Main.Frame3D.GetRotationInfo;
-//  fs := Format('RI: %s', [ft]);
-//  SL.Add(Format(fs, [
-//    -p.X,
-//    -p.Y,
-//    -p.Z
-//    ]));
+  p := Main.Frame3D.GetRotationInfo;
+  fs := Format('RI: %s', [ft]);
+  SL.Add(Format(fs, [
+    -p.X,
+    -p.Y,
+    -p.Z
+    ]));
 
   SL.Insert(HeaderIndex, '');
   SL.Insert(HeaderIndex, 'RI = Rotation Info (Euler Angles)');
@@ -90,7 +89,7 @@ function TFederReport1.GetViewStatus: string;
 var
   ft: string;
   fs: string;
-//  p: TPoint3D;
+  p: TPoint3D;
 begin
   SL.Clear;
   GetAppStatus;
@@ -98,73 +97,58 @@ begin
   ft := '%7.2f %7.2f %7.2f';
   fs := Format('CDRA: %s', [ft]);
   SL.Add(Format(fs, [
-    FormMain.CameraDummy.RotationAngle.X,
-    FormMain.CameraDummy.RotationAngle.Y,
-    FormMain.CameraDummy.RotationAngle.Z
+    Main.Frame3D.CameraDummy.RotationAngle.X,
+    Main.Frame3D.CameraDummy.RotationAngle.Y,
+    Main.Frame3D.CameraDummy.RotationAngle.Z
     ]));
 
-//  p := Main.Frame3D.GetRotationInfo;
-//  fs := Format('F3RI: %s', [ft]);
-//  SL.Add(Format(fs, [
-//    -p.X,
-//    -p.Y,
-//    -p.Z
-//    ]));
+  p := Main.Frame3D.GetRotationInfo;
+  fs := Format('F3RI: %s', [ft]);
+  SL.Add(Format(fs, [
+    -p.X,
+    -p.Y,
+    -p.Z
+    ]));
 
-//  fs := Format('CARA: %s', [ft]);
-//  SL.Add(Format(fs, [
-//    Main.Frame3D.Camera00.RotationAngle.X,
-//    Main.Frame3D.Camera00.RotationAngle.Y,
-//    Main.Frame3D.Camera00.RotationAngle.Z
-//    ]));
+  fs := Format('CARA: %s', [ft]);
+  SL.Add(Format(fs, [
+    Main.Frame3D.Camera00.RotationAngle.X,
+    Main.Frame3D.Camera00.RotationAngle.Y,
+    Main.Frame3D.Camera00.RotationAngle.Z
+    ]));
 
   fs := Format('CAPO: %s', [ft]);
   SL.Add(Format(fs, [
-    FormMain.Camera.Position.X,
-    FormMain.Camera.Position.Y,
-    FormMain.Camera.Position.Z
+    Main.Frame3D.Camera00.Position.X,
+    Main.Frame3D.Camera00.Position.Y,
+    Main.Frame3D.Camera00.Position.Z
     ]));
 
-//  if Main.Want2D then
-//  begin
-//    fs := Format('PBNP: %s', [ft]);
-//    SL.Add(Format(fs, [
-//      MainVar.Transform2D.NullPunktX,
-//      MainVar.Transform2D.NullPunktY,
-//      MainVar.Transform2D.PaintboxRotation
-//      ]));
-//  end;
+  if Main.Want2D then
+  begin
+    fs := Format('PBNP: %s', [ft]);
+    SL.Add(Format(fs, [
+      MainVar.Transform2D.NullPunktX,
+      MainVar.Transform2D.NullPunktY,
+      MainVar.Transform2D.PaintboxRotation
+      ]));
+  end;
 
-//  p := Main.FederScene.OrthoEul;
-//  fs := Format('OREU: %s', [ft]);
-//  SL.Add(Format(fs, [
-//    -p.X,
-//    -p.Y,
-//    -p.Z
-//    ]));
+  p := Main.FederScene.ModelGroupRot;
+  fs := Format('MGRA: %s', [ft]);
+  SL.Add(Format(fs, [
+    p.X,
+    p.Y,
+    p.Z
+    ]));
 
-//  fs := Format('ORPO: %s', [ft]);
-//  SL.Add(Format(fs, [
-//    Main.FederScene.OrthoPos.X,
-//    Main.FederScene.OrthoPos.Y,
-//    Main.FederScene.OrthoPos.Z
-//    ]));
-
-//  p := Main.FederScene.ModelGroupRot;
-//  fs := Format('MGRA: %s', [ft]);
-//  SL.Add(Format(fs, [
-//    p.X,
-//    p.Y,
-//    p.Z
-//    ]));
-
-//  p := Main.FederScene.ModelGroupPos;
-//  fs := Format('MGPO: %s', [ft]);
-//  SL.Add(Format(fs, [
-//    p.X,
-//    p.Y,
-//    p.Z
-//    ]));
+  p := Main.FederScene.ModelGroupPos;
+  fs := Format('MGPO: %s', [ft]);
+  SL.Add(Format(fs, [
+    p.X,
+    p.Y,
+    p.Z
+    ]));
 
   SL.Insert(HeaderIndex, 'View Status');
   result := SL.Text;
@@ -203,8 +187,8 @@ begin
         fs := Format('k: %s', [ft4]);
         SL.Add(Format(fs, [k1, k2, k3, k4]));
         end;
-//        fs := Format('m: %s', ['%7d %7d %7d %7d']);
-//        SL.Add(Format(fs, [m1, m2, m3, m4]));
+        fs := Format('m: %s', ['%7d %7d %7d %7d']);
+        SL.Add(Format(fs, [m1, m2, m3, m4]));
       end;
       2:
       begin
@@ -221,8 +205,8 @@ begin
         fs := Format('k: %s', [ft2]);
         SL.Add(Format(fs, [k1, k2]));
         end;
-//        fs := Format('m: %s', ['%7d %7d']);
-//        SL.Add(Format(fs, [m1, m2]));
+        fs := Format('m: %s', ['%7d %7d']);
+        SL.Add(Format(fs, [m1, m2]));
       end;
       3:
       begin
@@ -239,8 +223,8 @@ begin
         fs := Format('k: %s', [ft3]);
         SL.Add(Format(fs, [k1, k2, k3]));
         end;
-//        fs := Format('m: %s', ['%7d %7d %7d']);
-//        SL.Add(Format(fs, [m1, m2, m3]));
+        fs := Format('m: %s', ['%7d %7d %7d']);
+        SL.Add(Format(fs, [m1, m2, m3]));
       end;
       else
       begin
@@ -257,8 +241,8 @@ begin
         fs := Format('k: %s', [ft1]);
         SL.Add(Format(fs, [k1]));
         end;
-//        fs := Format('m: %s', ['%7d']);
-//        SL.Add(Format(fs, [m1]));
+        fs := Format('m: %s', ['%7d']);
+        SL.Add(Format(fs, [m1]));
       end;
     end
     else
@@ -276,8 +260,8 @@ begin
       fs := Format('k: %s', [ft4]);
       SL.Add(Format(fs, [k1, k2, k3, k4]));
       end;
-//      fs := Format('m: %s', ['%7d %7d %7d %7d']);
-//      SL.Add(Format(fs, [m1, m2, m3, m4]));
+      fs := Format('m: %s', ['%7d %7d %7d %7d']);
+      SL.Add(Format(fs, [m1, m2, m3, m4]));
     end;
 
   end;
@@ -285,29 +269,30 @@ begin
   result := SL.Text;
 end;
 
-//function TFederReport1.GetMatrixInfo: string;
-//begin
-//  SL.Clear;
-//  GetAppStatus;
-//  Main.FederScene.GetMatrixInfo(SL);
-//  SL.Insert(HeaderIndex, 'CameraDummy (or ModelGroup when Ortho)');
-//  SL.Insert(HeaderIndex, 'Matrix Info');
-//  result := SL.Text;
-//end;
+
+function TFederReport1.GetMatrixInfo: string;
+begin
+  SL.Clear;
+  GetAppStatus;
+  Main.FederScene.GetMatrixInfo(SL);
+  SL.Insert(HeaderIndex, 'CameraDummy');
+  SL.Insert(HeaderIndex, 'Matrix Info');
+  result := SL.Text;
+end;
 
 function TFederReport1.GetMeshDataInfo: string;
 begin
   result := Main.MeshBuilder.GetMeshDataReport(0);
 end;
 
-//function TFederReport1.GetLightInfo: string;
-//begin
-//  SL.Clear;
-//  GetAppStatus;
-//  Main.FederScene.GetLightInfo(SL);
-//  SL.Insert(HeaderIndex, 'Light Info');
-//  result := SL.Text;
-//end;
+function TFederReport1.GetLightInfo: string;
+begin
+  SL.Clear;
+  GetAppStatus;
+  Main.FederScene.GetLightInfo(SL);
+  SL.Insert(HeaderIndex, 'Light Info');
+  result := SL.Text;
+end;
 
 function TFederReport1.GetLockStatus: string;
 begin
@@ -349,13 +334,29 @@ function TFederReport1.GetAppStatus2: string;
 var
   s1: string;
   s2: string;
+  s3: string;
   s: string;
 begin
-  s := Format('MeshSize %d;', [Main.FederModel.MeshSize]);
+  s1 := 'Bundle ' + IntToStr(Main.SampleManager.BundleID);
+  s2 := 'Sample ' +  Format('%d-%d-%d', [Main.Level, Main.Hub, Main.Sample]);
+  s3 := Format('SGF %d', [100 * Main.FederModel.Scene + 10 * Main.FederModel.Graph + Main.FederModel.Figure]);
+  s := s1 + '; ' + s2 + '; ' +  s3 + ';';
   SL.Add(s);
 
-  s1 := 'Bitmap ' + IntToStr(Main.Bitmap);
-  s2 := 'Param ' + Main.ParamCaption;
+  s1 := 'MeshSize ' + IntToStr(Main.FederModel.MeshSize);
+  s2 := 'Plot ' + IntToStr(Main.FederModel.Plot);
+  s3 := 'PlotFigure ' + IntToStr(Main.FederModel.PlotFigure);
+  s := s1 + '; ' + s2 + '; ' +  s3 + ';';
+  SL.Add(s);
+
+  s1 := 'Pin ' + IntToStr(BoolInt[Main.FederModel.Pin]);
+  s2 := 'Norm ' + IntToStr(BoolInt[Main.FederModel.Norm]);
+  s3 := 'TextureNorm ' + IntToStr(Main.FederModel.TextureNorm);
+  s := s1 + '; ' + s2 + '; ' +  s3 + ';';
+  SL.Add(s);
+
+  s1 := 'Bitmap ' + IntToStr(Main.FederScene.Bitmap);
+  s2 := 'Param ' + IntToStr(Main.FederModel.Param);
   s := s1 + '; ' + s2 + ';';
   SL.Add(s);
 
@@ -365,11 +366,12 @@ end;
 
 function TFederReport1.GetAppStatus1: string;
 begin
+  SL.Add(Format('%d-%d-%d', [Main.Level, Main.Hub, Main.Sample]));
   SL.Add(TFederUtils.GetMessageKindLabel(fmkScene) + ' ' + IntToStr(Main.FederModel.Scene));
   SL.Add(TFederUtils.GetMessageKindLabel(fmkGraph) + ' ' + IntToStr(Main.FederModel.Graph) + '-' + IntToStr(BoolInt[Main.FederModel.Norm]));
   SL.Add(TFederUtils.GetMessageKindLabel(fmkPlot) + ' ' + IntToStr(Main.FederModel.Plot) + '-' + IntToStr(BoolInt[Main.FederModel.Pin]));
   SL.Add(TFederUtils.GetMessageKindLabel(fmkFigure) + ' ' + IntToStr(Main.FederModel.Figure));
-  SL.Add(TFederUtils.GetMessageKindLabel(fmkBitmap) + ' ' + IntToStr(Main.Bitmap) + '-' + IntToStr(Main.FederModel.TextureNorm));
+  SL.Add(TFederUtils.GetMessageKindLabel(fmkBitmap) + ' ' + IntToStr(Main.FederScene.Bitmap) + '-' + IntToStr(Main.FederModel.TextureNorm));
   SL.Add(TFederUtils.GetMessageKindLabel(fmkMeshSize) + ' ' + IntToStr(Main.FederModel.MeshSize));
   SL.Add('');
   HeaderIndex := SL.Count;

@@ -144,6 +144,10 @@ type
     LinearForce: Boolean;
     SliceMode: Integer;
 
+    OpenMesh: Boolean;
+    PolarMesh: Boolean;
+    LinearMesh: Boolean;
+    FuzzyMesh: Boolean;
     ReducedMesh: Boolean;
 
     IV: single;
@@ -546,6 +550,10 @@ begin
   Linearforce := fd.LinearForce;
   SliceMode := fd.SliceMode;
 
+  OpenMesh := fd.OpenMesh;
+  PolarMesh := fd.PolarMesh;
+  LinearMesh := fd.LinearMesh;
+  FuzzyMesh := fd.FuzzyMesh;
   ReducedMesh := fd.ReducedMesh;
 
   IV := fd.IV;
@@ -1123,6 +1131,11 @@ begin
   LinearForce := True;
   SliceMode := 0;
 
+  OpenMesh := False;
+  PolarMesh := True;
+  LinearMesh := True;
+  FuzzyMesh := False;
+
   ShowGrid := False;
   ShowKugel := False;
   ShowCylinder := False;
@@ -1240,6 +1253,10 @@ begin
   LinearForce := True;
   SliceMode := 0;
 
+  OpenMesh := False;
+  PolarMesh := True;
+  LinearMesh := True;
+  FuzzyMesh := False;
   ReducedMesh := False;
 
   IV := 30;

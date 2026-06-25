@@ -83,14 +83,29 @@ begin
   AddSpecial(ActionGroupPages, 'Pages');
   AddSpecial(ActionGroupForms, 'Forms');
   AddSpecial(ActionGroupTouchLayout, 'TouchLayout');
+  AddSpecial(ActionGroupActionMapping, 'ActionMapping');
+
+  { Combo }
+  AddSpecial(ActionGroupScene, 'Scene');
+  AddSpecial(ActionGroupPlot, 'Plot');
+  AddSpecial(ActionGroupFigure, 'Figure');
+  AddSpecial(ActionGroupGraph, 'Graph');
+  AddSpecial(ActionGroupColor, 'Color');
 
   { Params }
+  AddSpecial(ActionGroupParam, 'Param');
   AddSpecial(ActionGroupSystemParam, 'SystemParam');
   AddSpecial(ActionGroupOffsetParam, 'OffsetParam');
   AddSpecial(ActionGroupCoordParam, 'CoordParam');
   AddSpecial(ActionGroupLuxParam, 'LuxParam');
   AddSpecial(ActionGroupParamCycle, 'ParamCycle');
   AddSpecial(ActionGroupModelParams, 'ModelParams');
+
+  { Model }
+  AddSpecial(ActionGroupModelOptions, 'ModelOptions');
+  AddSpecial(ActionGroupOptionCycle, 'OptionCycle');
+  AddSpecial(ActionGroupForceMode, 'ForceMode');
+  AddSpecial(ActionGroupFederMode, 'FederMode');
 
   { Ring }
   AddSpecial(ActionGroupRingActions, 'RingActions');
@@ -100,35 +115,60 @@ begin
   AddSpecial(ActionGroupBandSelection, 'BandSelection');
 
   { Mesh }
+  AddSpecial(ActionGroupMeshMode, 'MeshMode');
   AddSpecial(ActionGroupMeshSize, 'MeshSize');
   AddSpecial(ActionGroupMeshExport, 'MeshExport');
   AddSpecial(ActionGroupMeshExportCoords, 'MeshExportCoords');
   AddSpecial(ActionGroupExporterOBJ, 'ExporterOBJ');
+  AddSpecial(ActionGroupMeshFigures, 'MeshFigures');
+  AddSpecial(ActionGroupVertexPulling, 'VertexPulling');
   AddSpecial(ActionGroupMeshBuilderOptions, 'MeshBuilderOptions');
 
   { Texture }
+  AddSpecial(ActionGroupTextureExport, 'TextureExport');
+  AddSpecial(ActionGroupColorMix, 'ColorMix');
   AddSpecial(ActionGroupColorSwat, 'ColorSwat');
 
   { Light }
   AddSpecial(ActionGroupLux, 'Lux');
+  AddSpecial(ActionGroupLuxMarker, 'LuxMarker');
+  AddSpecial(ActionGroupLightMode, 'LightMode');
+  AddSpecial(ActionGroupResetLight, 'ResetLight');
 
-  { UI }
+   { UI }
   AddSpecial(ActionGroupWheel, 'Wheel');
   AddSpecial(ActionGroupWheelFrequency, 'WheelFrequency');
   AddSpecial(ActionGroupColorScheme, 'ColorScheme');
+  AddSpecial(ActionGroupStep, 'Step');
   AddSpecial(ActionGroupUI, 'UI');
+  AddSpecial(ActionGroupLocks, 'Locks');
+  AddSpecial(ActionGroupOpacity, 'Opacity');
 
   { View }
   AddSpecial(ActionGroupFederText, 'FederText');
   AddSpecial(ActionGroupViewParams, 'ViewParams');
+  AddSpecial(ActionGroupViewParamsFC, 'ViewParamsFC');
   AddSpecial(ActionGroupParamT, 'ParamT');
   AddSpecial(ActionGroupViewFlags, 'ViewFlags');
 
+  { Report }
+  AddSpecial(ActionGroupReport, 'Report');
+  AddSpecial(ActionGroupReportOptions, 'ReportOptions');
+
+  { Copy }
+  AddSpecial(ActionGroupCopyImage, 'CopyImage');
+  AddSpecial(ActionGroupCopyOptions, 'CopyOptions');
+
   { 2D }
+  AddSpecial(ActionGroupGraphOptions, 'GraphOptions');
   AddSpecial(ActionGroupBahn, 'Bahn');
 
   { DB }
+  AddSpecial(ActionGroupExampleData, 'ExampleData');
   AddSpecial(ActionGroupSampleNavigation, 'SampleNavigation');
+
+  { App }
+  AddSpecial(ActionGroupHelp, 'Help');
 
   { TouchFrame Buttons }
   AddSpecial(ActionGroupBtnLegendTablet, 'BtnLegendTablet');
@@ -136,12 +176,20 @@ begin
   AddSpecial(ActionGroupTouchBarLegend, 'TouchBarLegend');
 
   AddSpecial(ActionGroupReset, 'Reset');
+  AddSpecial(ActionGroupLanguage, 'Language');
+  AddSpecial(ActionGroupCopyPaste, 'CopyPaste');
+
+  AddSpecial(ActionGroupViewOptions, 'ViewOptions');
   AddSpecial(ActionGroupBitmapCycle, 'BitmapCycle');
 
   { Layout }
   AddSpecial(ActionGroupLayout0, 'Layout0');
 
   { Bambu }
+  AddSpecial(ActionGroupFigureSize, 'FigureSize');
+  AddSpecial(ActionGroupEyeSize, 'EyeSize');
+  AddSpecial(ActionGroupLayerSelection, 'LayerSelection');
+  AddSpecial(ActionGroupColorSelection, 'ColorSelection');
   AddSpecial(ActionGroupColorMapping, 'ColorMapping');
 end;
 

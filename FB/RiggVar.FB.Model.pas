@@ -368,13 +368,13 @@ end;
 
 procedure TFederModel.SetScene(const Value: Integer);
 begin
-//  InitData98 := False;
-//  FScene := Value;
-//  if Main.IsUp then
-//    Main.FederScene.Scene := Value;
-//  InitScene;
-//  if Active then
-//    InitData;
+  InitData98 := False;
+  FScene := Value;
+  if Main.IsUp then
+    Main.FederScene.Scene := Value;
+  InitScene;
+  if Active then
+    InitData;
 end;
 
 procedure TFederModel.SetVorzeichen(const Value: Boolean);
@@ -458,8 +458,8 @@ procedure TFederModel.SetPlot(const Value: Integer);
 begin
   InitData98 := False;
   FPlot := Value;
-//  if Main.IsUp then
-//    Main.FederScene.Plot := Value;
+  if Main.IsUp then
+    Main.FederScene.Plot := Value;
   if Active then
     InitData;
 end;
@@ -593,13 +593,13 @@ begin
         fpBandSelected: Exit;
       end;
 
-//      if Active then
-//      begin
-//        if MainVar.GPUScale then
-//          UpdateVP
-//        else
-//          InitData;
-//      end;
+      if Active then
+      begin
+        if MainVar.GPUScale then
+          UpdateVP
+        else
+          InitData;
+      end;
     end;
   end;
 end;
@@ -623,8 +623,8 @@ begin
   begin
     if not MainVar.AppIsClosing then
     begin
-//      Main.ViewParamValue[fp] := Value;
-//      result := true; // done
+      Main.ViewParamValue[fp] := Value;
+      result := true; // done
     end;
   end;
 end;
@@ -677,13 +677,13 @@ end;
 procedure TFederModel.SetCapValue(const Value: single);
 begin
   FLimit := Value - 100;
-//  if Active then
-//    Main.FederScene.UpdateLimitPlane;
+  if Active then
+    Main.FederScene.UpdateLimitPlane;
 end;
 
 procedure TFederModel.SetCurrentParam(const Value: TFederParam);
 begin
-//  Main.ParamManager.CurrentParam := Value;
+  Main.ParamManager.CurrentParam := Value;
 end;
 
 procedure TFederModel.SetDim(const Value: Integer);
@@ -906,7 +906,7 @@ begin
     PrepCalc;
     EQ.PrepareCalc;
 
-    if Active and Assigned(OnInitData) then
+    if Assigned(OnInitData) then
     begin
       OnInitData(self);
     end;
@@ -1137,7 +1137,7 @@ begin
     fpGrenze:
     begin
       FLimit := FParamValue;
-//      Main.FederScene.UpdateLimitPlane;
+      Main.FederScene.UpdateLimitPlane;
     end;
     fpRange:
     begin
@@ -1202,65 +1202,65 @@ begin
     fpl1x:
     begin
       Lux1X := FParamValue;
-//      Main.FederScene.UpdateLight;
+      Main.FederScene.UpdateLight;
     end;
     fpl1y:
     begin
       Lux1Y := FParamValue;
-//      Main.FederScene.UpdateLight;
+      Main.FederScene.UpdateLight;
     end;
     fpl1z:
     begin
       Lux1Z := FParamValue;
-//      Main.FederScene.UpdateLight;
+      Main.FederScene.UpdateLight;
     end;
 
     fpl2x:
     begin
       Lux2X := FParamValue;
-//      Main.FederScene.UpdateLight;
+      Main.FederScene.UpdateLight;
     end;
     fpl2y:
     begin
       Lux2Y := FParamValue;
-//      Main.FederScene.UpdateLight;
+      Main.FederScene.UpdateLight;
     end;
     fpl2z:
     begin
       Lux2Z := FParamValue;
-//      Main.FederScene.UpdateLight;
+      Main.FederScene.UpdateLight;
     end;
 
     fpl3x:
     begin
       Lux3X := FParamValue;
-//      Main.FederScene.UpdateLight;
+      Main.FederScene.UpdateLight;
     end;
     fpl3y:
     begin
       Lux3Y := FParamValue;
-//      Main.FederScene.UpdateLight;
+      Main.FederScene.UpdateLight;
     end;
     fpl3z:
     begin
       Lux3Z := FParamValue;
-//      Main.FederScene.UpdateLight;
+      Main.FederScene.UpdateLight;
     end;
 
     fpl4x:
     begin
       Lux4X := FParamValue;
-//      Main.FederScene.UpdateLight;
+      Main.FederScene.UpdateLight;
     end;
     fpl4y:
     begin
       Lux4Y := FParamValue;
-//      Main.FederScene.UpdateLight;
+      Main.FederScene.UpdateLight;
     end;
     fpl4z:
     begin
       Lux4Z := FParamValue;
-//      Main.FederScene.UpdateLight;
+      Main.FederScene.UpdateLight;
     end;
 
     fpBandCount:
@@ -1279,12 +1279,12 @@ begin
       Main.MarkForUpdate(TUpdateReason.cuParamBandDistributionY);
     end;
 
-//    fpBandSelected:
-//    begin
-//      ParamBandSelected := Round(Main.Trackbar_Value);
-//      Main.RingIndexChanged;
-//      ParamBandWidth := Main.RingWidth;
-//    end;
+    fpBandSelected:
+    begin
+      ParamBandSelected := Round(Main.Trackbar_Value);
+      Main.RingIndexChanged;
+      ParamBandWidth := Main.RingWidth;
+     end;
 
     fpBandWidth:
     begin
@@ -1295,17 +1295,17 @@ begin
     fpLabelTextX:
     begin
       ParamLabelTextX := FParamValue;
-//      Main.FederScene.SetParamValue(fp, FParamValue);
+      Main.FederScene.SetParamValue(fp, FParamValue);
     end;
     fpLabelTextY:
     begin
       ParamLabelTextY := FParamValue;
-//      Main.FederScene.SetParamValue(fp, FParamValue);
+      Main.FederScene.SetParamValue(fp, FParamValue);
     end;
     fpLabelTextZ:
     begin
       ParamLabelTextZ := FParamValue;
-//      Main.FederScene.SetParamValue(fp, FParamValue);
+      Main.FederScene.SetParamValue(fp, FParamValue);
     end;
 
     fp0: _fp0 := FParamValue;
@@ -1324,22 +1324,22 @@ begin
     fpbpr:
     begin
       ParamBahnRadius := FParamValue;
-//      Main.FederScene.UpdateProbe;
+      Main.FederScene.UpdateProbe;
     end;
     fpbpx:
     begin
       ParamBahnPositionX := FParamValue;
-//      Main.FederScene.UpdateProbe;
+      Main.FederScene.UpdateProbe;
     end;
     fpbpy:
     begin
       ParamBahnPositionY := FParamValue;
-//      Main.FederScene.UpdateProbe;
+      Main.FederScene.UpdateProbe;
     end;
     fpbpa:
     begin
       ParamBahnAngle := FParamValue;
-//      Main.FederScene.UpdateProbe;
+      Main.FederScene.UpdateProbe;
     end;
     fpbs1: ParamBahnStrokeWidth1 := FParamValue;
     fpbs2: ParamBahnStrokeWidth2 := FParamValue;
@@ -1347,12 +1347,12 @@ begin
     fpbcd:
     begin
       ParamBahnCylinderD := FParamValue / 10;
-//      Main.FederScene.UpdateProbe;
+      Main.FederScene.UpdateProbe;
     end;
     fpbcz:
     begin
       ParamBahnCylinderZ := FParamValue / 10;
-//      Main.FederScene.UpdateProbe;
+      Main.FederScene.UpdateProbe;
     end;
 
     fpParamY3f: EQ.y3f := FParamValue;
@@ -1368,7 +1368,7 @@ end;
 
 function TFederModel.GetCurrentParam: TFederParam;
 begin
-  result := fpPan; // Main.ParamManager.CurrentParam;
+  result := Main.ParamManager.CurrentParam;
 end;
 
 function TFederModel.GetEQ: TFederEquation;
@@ -1515,6 +1515,9 @@ begin
     fpt3: result := FT3;
     fpt4: result := FT4;
 
+    fppx,
+    fppy: result := Main.ViewParamValue[fp];
+
     fp0: result := _fp0;
     fp1: result := _fp1;
     fp2: result := _fp2;
@@ -1540,6 +1543,10 @@ begin
       else
       result := Main.RingWidth;
     end;
+
+    fpLabelTextX: result := Main.FederScene.GetParamValue(fp);
+    fpLabelTextY: result := Main.FederScene.GetParamValue(fp);
+    fpLabelTextZ: result := Main.FederScene.GetParamValue(fp);
 
     fpParamCapValue: result := CapValue;
 
@@ -1581,32 +1588,32 @@ begin
       result := 1;
   end;
 
-//  if Main.FederFrame.InitOK then
-//  case fp of
-//    fprx,
-//    fpry,
-//    fprz,
-//
-//    fptx,
-//    fpty,
-//    fpcz: result := Main.ViewParamValue[fp];
-//
-//    fpl1x,
-//    fpl1y,
-//    fpl1z,
-//
-//    fpl2x,
-//    fpl2y,
-//    fpl2z,
-//
-//    fpl3x,
-//    fpl3y,
-//    fpl3z,
-//
-//    fpl4x,
-//    fpl4y,
-//    fpl4z: result := Main.FederScene.GetLuxParamValue(fp);
-//  end;
+  if Main.FederFrame.InitOK then
+  case fp of
+    fprx,
+    fpry,
+    fprz,
+
+    fptx,
+    fpty,
+    fpcz: result := Main.ViewParamValue[fp];
+
+    fpl1x,
+    fpl1y,
+    fpl1z,
+
+    fpl2x,
+    fpl2y,
+    fpl2z,
+
+    fpl3x,
+    fpl3y,
+    fpl3z,
+
+    fpl4x,
+    fpl4y,
+    fpl4z: result := Main.FederScene.GetLuxParamValue(fp);
+  end;
 end;
 
 function TFederModel.GetModelStatus: string;
@@ -1786,7 +1793,7 @@ begin
   InitData98 := False;
   FederModelEQ.SwapEQ(fd.Scene);
 
-   if fd.Bitmap <> 0 then
+  if fd.Bitmap <> 0 then
     Main.InitDefaultRingWidth(StripConst.DefaultBandWidth);
 
   ParamBandSelected := 21;
@@ -1899,23 +1906,23 @@ begin
   ParamBahnCylinderD := fd.ParamBahnCylinderD / 10;
   ParamBahnCylinderZ := fd.ParamBahnCylinderZ / 10;
 
-//  Main.FederScene.BlockInitDataOnce := True;
-//  Main.FederScene.ReducedMesh := False;
-//  Main.FederScene.ReduceMode := 0;
+  Main.FederScene.BlockInitDataOnce := True;
+  Main.FederScene.ReducedMesh := False;
+  Main.FederScene.ReduceMode := 0;
 
-//  Main.FederScene.ShowGrid := fd.ShowGrid;
-//  Main.FederScene.ShowKugel := fd.ShowKugel;
+  Main.FederScene.ShowGrid := fd.ShowGrid;
+  Main.FederScene.ShowKugel := fd.ShowKugel;
 
-//  if IsCombi then
-//  begin
-//    Main.FederScene.ShowCylinder := fd.ShowCylinder;
-//    Main.FederScene.ShowDiameter := fd.ShowDiameter;
-//  end
-//  else
-//  begin
-//    Main.FederScene.ShowCylinder := False;
-//    Main.FederScene.ShowDiameter := False;
-//  end;
+  if IsCombi then
+  begin
+    Main.FederScene.ShowCylinder := fd.ShowCylinder;
+    Main.FederScene.ShowDiameter := fd.ShowDiameter;
+  end
+  else
+  begin
+    Main.FederScene.ShowCylinder := False;
+    Main.FederScene.ShowDiameter := False;
+  end;
 
   Main.vp.Reset;
 
@@ -2028,11 +2035,11 @@ begin
   fd.ParamBahnCylinderD := Round(ParamBahnCylinderD) * 10;
   fd.ParamBahnCylinderZ := Round(ParamBahnCylinderZ) * 10;
 
-//  fd.ShowGrid := Main.FederScene.ShowGrid;
-//  fd.ShowKugel := Main.FederScene.ShowKugel;
-//  fd.ShowCylinder := Main.FederScene.ShowCylinder;
-//  fd.ShowDiameter := Main.FederScene.ShowDiameter;
-//  fd.ReducedMesh := Main.FederScene.ReducedMesh;
+  fd.ShowGrid := Main.FederScene.ShowGrid;
+  fd.ShowKugel := Main.FederScene.ShowKugel;
+  fd.ShowCylinder := Main.FederScene.ShowCylinder;
+  fd.ShowDiameter := Main.FederScene.ShowDiameter;
+  fd.ReducedMesh := Main.FederScene.ReducedMesh;
 
   fd.NullpunktX := MainVar.Transform2D.NullpunktX;
   fd.NullpunktY := MainVar.Transform2D.NullpunktY;

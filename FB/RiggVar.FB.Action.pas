@@ -158,6 +158,8 @@ var
   rp: TReportPage;
 begin
   case fa of
+    faSampleM,
+    faSampleP,
     faGotoSample1,
     faParamX12,
     faParamY12,
@@ -178,6 +180,31 @@ begin
 
     faParamCZ: rp := rpViewStatus;
 
+    faToggleBackgroundLock,
+    faToggleTextureLock,
+    faToggleForceLock,
+    faToggleLuxLock,
+    faToggleParamLock: rp := rpLockStatus;
+
+    faLux1On,
+    faLux1Off,
+    faLux2On,
+    faLux2Off,
+    faLux3On,
+    faLux3Off,
+    faLux4On,
+    faLux4Off,
+    faLightMode0,
+    faLightMode1,
+    faLightMode2,
+    faLightMode3,
+    faLightMode4,
+    faToggleLux,
+    faToggleLux1,
+    faToggleLux2,
+    faToggleLux3,
+    faToggleLux4: rp := rpLightInfo;
+
     faBandSelection16,
     faBandSelection17: rp := rpColorInfo1;
 
@@ -190,6 +217,10 @@ begin
 
     faShowInfo: rp := rpAppInfo;
 
+    faToggleZeroPulling,
+    faToggleLimitPulling: rp := rpMeshDataInfo;
+
+    faTakeCapValueSnapshot: rp := rpRingInfo;
     else
       rp := rpAny;
   end;

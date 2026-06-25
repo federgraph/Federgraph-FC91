@@ -18,6 +18,8 @@
 
 interface
 
+{$I App\RiggVar.App.Defs.inc}
+
 uses
   RiggVar.FB.ActionConst,
   RiggVar.FB.Def,
@@ -25,23 +27,22 @@ uses
   System.SysUtils,
   System.Classes,
   System.Math,
-  System.Math.Vectors,
   System.Messaging,
-  System.Types,
   System.UITypes,
   System.UIConsts,
-  System.RTLConsts,
-  FMX.Controls,
-  FMX.Controls3D,
+  System.Types,
   FMX.Graphics,
+  FMX.Viewport3D,
   FMX.StdCtrls,
   FMX.Platform,
   FMX.Types,
   FMX.Types3D,
   FMX.Forms,
-  FMX.Viewport3D,
-  FMX.Objects3D,
+  FMX.Controls,
+  FMX.ExtCtrls,
+  FMX.Layouts,
   FMX.Colors,
+  FMX.Layers3D,
   FMX.Objects;
 
 type
@@ -51,28 +52,17 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
     procedure FormResize(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure HandleMouseDown(Shift: TShiftState; X, Y: Single);
-    procedure HandleMouseMove(Shift: TShiftState; X, Y: Single);
-    procedure ViewportMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-    procedure ViewportMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
-    procedure ViewportMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+    procedure InitTimerTimer(Sender: TObject);
   private
     AllowResizing: Boolean;
-    Down: TPointF;
     DrawingNeeded: Boolean;
     ExitSizeMoveCounter: Integer;
     FBandColor: TAlphaColor;
-    FormShown: Boolean;
     FShowColorPanel: Boolean;
-    FrontLight: TLight;
-    BackLight: TLight;
-    WestLight: TLight;
-    EastLight: TLight;
-    NorthLight: TLight;
-    SouthLight: TLight;
-    MouseDown: Boolean;
+    FViewportState: Integer;
+    NewControlSize: TControlSize;
     ResizeCounter: Integer;
+    SmallViewportSize: Integer;
     ZInfoCounter: Integer;
     procedure ActionsBtnClick(Sender: TObject);
     procedure ApplicationEventsException(Sender: TObject; E: Exception);
@@ -80,9 +70,11 @@ type
     procedure ColorPanelChange(Sender: TObject);
     procedure CreateColorPanel;
     procedure CreateHintText;
+    procedure CreateLayouts;
     procedure DestroyForms;
     procedure DoOnResize;
     procedure DoOrientationChanged(const Sender: TObject; const M: TMessage);
+    procedure FixZOrderForBackground;
     function GetContentHeight: single;
     function GetContentParent: TFmxObject;
     function GetContentWidth: single;
@@ -91,11 +83,11 @@ type
     procedure HandleColorPanelChanged;
     procedure HandleRingWidthChanged;
     procedure Init;
-    procedure InitCamera;
+    procedure InitChecker;
     procedure InitColorPanel;
-    procedure InitLight;
-    procedure InitMesh;
+    procedure InitFormat;
     procedure InitViewport;
+    procedure InitViewportX(ModelID: Integer; l: TLayout; v: TViewport3D);
     procedure LayoutHintText;
     procedure Log(s: string);
     procedure MemoBtnClick(Sender: TObject);
@@ -104,26 +96,25 @@ type
     procedure RingPicked(Sender: TObject);
     procedure SetBandColor(const Value: TAlphaColor);
     procedure SetIsUp(const Value: Boolean);
-    procedure SetMeshText(const Value: string);
-    procedure SetParamText(const Value: string);
-    procedure SetRingText(const Value: string);
     procedure SetShowColorPanel(const Value: Boolean);
-    procedure SetValueText(const Value: string);
-    procedure SetZoomText(const Value: string);
+    procedure SetViewportState(const Value: Integer);
     procedure UpdateHintTextPosition;
-    procedure UpdateRotation;
   public
+    CheckerBitmap: TBitmap;
+    CheckerImage: TImage;
     claBackground: TAlphaColor;
-    Camera: TCamera;
-    CameraDummy: TDummy;
-    CameraDummyRotationAngle: TPoint3D;
     ColorPanel: TColorPanel;
     ColorPanelChanged: Boolean;
     HintText: TText;
+    InitTimer: TTimer;
+    KeyCharReceived: Boolean;
+    Layout3D: TLayout;
     Viewport: TViewport3D;
     WantColorPanel: Boolean;
-    procedure DoMM(fmk: TFederMessageKind; X, Y: Single);
-    procedure DoZoom(Delta: single);
+    WantPhone: Boolean;
+    WantPortrait: Boolean;
+    procedure CreateCheckerBitmap;
+    procedure Draw(ModelID: Integer = 1);
     procedure FormResizeEnd(Sender: TObject);
     procedure HandleAction(fa: TFederAction);
     procedure HandleKey(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
@@ -132,23 +123,17 @@ type
     procedure InvalidateGraph(Sender: TObject);
     function MakeScreenshot: TBitmap;
     procedure UpdateBackground;
-    procedure ResetCamera;
-    procedure ResetRotation;
-    procedure ResetPosition;
-    procedure ResetZoom;
-    procedure ToggleLux;
+    procedure UpdateChecker(a: Integer = 0);
+    procedure UpdateDisplay;
     procedure UpdateHintText(fa: Integer);
+    procedure UpdateLayout(l: TLayout);
     property BandColor: TAlphaColor read FBandColor write SetBandColor;
     property ContentHeight: single read GetContentHeight;
     property ContentParent: TFmxObject read GetContentParent;
     property ContentWidth: single read GetContentWidth;
     property IsUp: Boolean read GetIsUp write SetIsUp;
-    property MeshText: string write SetMeshText;
-    property ParamText: string write SetParamText;
-    property RingText: string write SetRingText;
     property ShowColorPanel: Boolean read FShowColorPanel write SetShowColorPanel;
-    property ValueText: string write SetValueText;
-    property ZoomText: string write SetZoomText;
+    property ViewportState: Integer read FViewportState write SetViewportState;
   end;
 
 var
@@ -163,8 +148,10 @@ uses
   FrmMemo,
   RiggVar.App.Main,
   RiggVar.FederModel.TouchBase,
+  RiggVar.FederModel.Frame3D,
   RiggVar.FB.Action,
   RiggVar.FB.Bitmap,
+  RiggVar.FB.Data,
   RiggVar.FB.Classes;
 
 { TFormMain }
@@ -199,6 +186,14 @@ begin
         else if ColorPanelChanged then
         begin
           HandleColorPanelChanged;
+        end
+        else if Main.FederFrame.IsClean then
+        begin
+          Main.ModelUpdate.DoOnIdle;
+        end
+        else
+        begin
+          Main.FederFrame.DoOnIdle;
         end;
 
         if DrawingNeeded then
@@ -208,13 +203,48 @@ begin
         end;
       end;
     end;
-  end;
+      end;
   Done := True;
 end;
 
 procedure TFormMain.ColorPanelChange(Sender: TObject);
 begin
   ColorPanelChanged := True;
+end;
+
+procedure TFormMain.CreateCheckerBitmap;
+var
+  cb: TBitmap;
+  sr, dr: TRectF;
+  d: Integer;
+begin
+  d := 30;
+  sr := RectF(0, 0, d, d);
+
+  cb := TBitmap.Create(d, d);
+  cb.Canvas.BeginScene;
+  cb.Canvas.Clear(claDarkGray);
+  cb.Canvas.EndScene;
+
+  CheckerBitmap := TBitmap.Create(2 * d, 2 * d);
+  CheckerBitmap.Canvas.BeginScene;
+  CheckerBitmap.Canvas.Clear(claGray);
+
+  dr.Left := 0;
+  dr.Top := 0;
+  dr.Right := dr.Left + d;
+  dr.Bottom := dr.Top + d;
+
+  CheckerBitmap.Canvas.DrawBitmap(cb, sr, dr, 1.0);
+  dr.Left := dr.Left + d;
+  dr.Top := dr.Top + d;
+  dr.Left := dr.Right + d;
+  dr.Top := dr.Bottom + d;
+  CheckerBitmap.Canvas.DrawBitmap(cb, sr, dr, 1.0);
+
+  CheckerBitmap.Canvas.EndScene;
+
+  cb.Free;
 end;
 
 procedure TFormMain.CreateColorPanel;
@@ -242,6 +272,13 @@ begin
   HintText.TextSettings.FontColor := claYellow;
 end;
 
+procedure TFormMain.CreateLayouts;
+begin
+  Layout3D := TLayout.Create(self);
+  Layout3D.Name := 'Layout3D';
+  Self.AddObject(Layout3D);
+end;
+
 procedure TFormMain.DestroyForms;
 begin
   if FormAction <> nil then
@@ -256,51 +293,23 @@ begin
   end;
 end;
 
-procedure TFormMain.DoMM(fmk: TFederMessageKind; X, Y: Single);
-begin
-  if FormShown then
-  begin
-    case fmk of
-      fmkTX, fmkTY:
-      begin
-        Camera.Position.X := Camera.Position.X - X * 0.1;
-        Camera.Position.Y := Camera.Position.Y + Y * 0.1;
-        Down := PointF(X, Y);
-      end;
-
-      fmkRX, fmkRY:
-      begin
-        CameraDummyRotationAngle.X := CameraDummyRotationAngle.X - Y * 0.2;
-        CameraDummyRotationAngle.Y := CameraDummyRotationAngle.Y - X * 0.2;
-        UpdateRotation;
-        Down := PointF(X, Y);
-      end;
-
-      fmkRZ:
-      begin
-        CameraDummyRotationAngle.Z := CameraDummyRotationAngle.Z + X * 0.3;
-        UpdateRotation;
-        Down := PointF(X, Y);
-      end;
-    end;
-  end;
-end;
-
 procedure TFormMain.DoOnResize;
 begin
-  MainVar.ClientWidth := ClientWidth;
-  MainVar.ClientHeight := ClientHeight;
-
   if IsUp and AllowResizing then
   begin
     Inc(ResizeCounter);
     ResizeColorPanel;
-
+    UpdateLayout(Layout3D);
     Main.UpdateTouch;
     Main.UpdateText;
     UpdateHintTextPosition;
 
-//    HandleAction(faNoop);
+    if CheckerImage <> nil then
+      CheckerImage.SendToBack;
+
+    SetViewportState(ViewportState);
+
+    HandleAction(faNoop);
   end;
 end;
 
@@ -314,25 +323,13 @@ begin
   end;
 end;
 
-procedure TFormMain.DoZoom(Delta: single);
-var
-  l: single;
-  CameraZ: single;
+procedure TFormMain.Draw(ModelID: Integer);
 begin
-  if FormShown then
-  begin
-    CameraZ := Camera.Position.Z;
+end;
 
-    l := CameraZ - Delta;
-
-    if l < 5 then
-      l := 5;
-    if l > 30 then
-      l := 30;
-
-    Camera.Position.Z := l;
-    ZoomText := IntToStr(Round(l));
-  end;
+procedure TFormMain.FixZOrderForBackground;
+begin
+  CheckerImage.SendToBack;
 end;
 
 procedure TFormMain.FormActivate(Sender: TObject);
@@ -340,6 +337,7 @@ begin
 {$ifdef MSWINDOWS}
   if IsUp then
   begin
+    ViewportState := 0;
     Viewport.SetFocus;
   end;
 {$endif}
@@ -347,40 +345,54 @@ end;
 
 procedure TFormMain.FormCreate(Sender: TObject);
 begin
-  Init;
+{$ifdef IOS}
+  InitTimer := TTimer.Create(Self);
+  InitTimer.Interval := 1000;
+  InitTimer.OnTimer := InitTimerTimer;
+  InitTimer.Enabled := True;
+{$endif}
+
+{$ifdef MSWINDOWS}
+  InitTimer := TTimer.Create(Self);
+  InitTimer.Interval := 10;
+  InitTimer.OnTimer := InitTimerTimer;
+  InitTimer.Enabled := True;
+{$endif}
+
+{$ifdef ANDROID}
+  InitTimer := TTimer.Create(Self);
+  InitTimer.Interval := 1000;
+  InitTimer.OnTimer := InitTimerTimer;
+  InitTimer.Enabled := True;
+{$endif}
+
+{$ifdef OSX}
+  InitTimer := TTimer.Create(Self);
+  InitTimer.Interval := 10;
+  InitTimer.OnTimer := InitTimerTimer;
+  InitTimer.Enabled := True;
+{$endif}
 end;
 
 procedure TFormMain.FormDestroy(Sender: TObject);
 begin
   TMessageManager.DefaultManager.Unsubscribe(TOrientationChangedMessage, DoOrientationChanged);
 
+  MainVar.AppIsClosing := True;
+
   DestroyForms;
+
+  CheckerBitmap.Free;
+  NewControlSize.Free;
+
   Main.Free;
   Main := nil;
 end;
 
 procedure TFormMain.FormMouseWheel(Sender: TObject; Shift: TShiftState; WheelDelta: Integer; var Handled: Boolean);
-var
-  i: single;
 begin
-  if WheelDelta > 0 then
-    i := 1
-  else if WheelDelta < 0 then
-    i := -1
-  else
-    i := 0;
-
-  if ssCtrl in Shift then
-  begin
-    DoZoom(i);
-  end
-  else
-  begin
-    if ssShift in Shift then
-      Main.DoBigWheel(i)
-    else
-      Main.DoSmallWheel(i);
-  end;
+  if IsUp then
+    Main.FederFrame.HandleMouseWheel(Sender, Shift, WheelDelta, Handled);
 end;
 
 procedure TFormMain.FormResize(Sender: TObject);
@@ -393,21 +405,6 @@ begin
   Inc(ExitSizeMoveCounter);
 end;
 
-procedure TFormMain.FormShow(Sender: TObject);
-begin
-  if not FormShown then
-  begin
-    FormShown := True;
-    Main.IsUp := True;
-
-    UpdateBackground;
-    Viewport.SetFocus;
-
-    Main.TextUpdateNeeded;
-    Main.BubbleUpAction(faNoop);
-  end;
-end;
-
 function TFormMain.GetContentHeight: single;
 begin
   if Assigned(Viewport) then
@@ -418,7 +415,7 @@ end;
 
 function TFormMain.GetContentParent: TFmxObject;
 begin
-  result := Viewport;
+  result := self;
 end;
 
 function TFormMain.GetContentWidth: single;
@@ -469,6 +466,9 @@ begin
   end;
 
   UpdateHintText(fa);
+
+  if (FormMemo <> nil) and (FormMemo.Visible) then
+    FormMemo.AutoUpdate;
 end;
 
 function TFormMain.HandleAppEvent(AAppEvent: TApplicationEvent; AContext: TObject): Boolean;
@@ -486,12 +486,12 @@ begin
     end;
     TApplicationEvent.WillBecomeInactive:
     begin
-//      MainVar.ShouldRecycleSocket := True;
+      MainVar.ShouldRecycleSocket := True;
       Log('Will Become Inactive');
     end;
     TApplicationEvent.EnteredBackground:
     begin
-//      MainVar.ShouldRecycleSocket := True;
+      MainVar.ShouldRecycleSocket := True;
       Log('Entered Background');
     end;
     TApplicationEvent.WillBecomeForeground:
@@ -519,178 +519,28 @@ begin
 end;
 
 procedure TFormMain.HandleColorPanelChanged;
-var
-  ring: Integer;
 begin
   if IsUp then
   begin
-    ring := Round(Main.CurrentRing);
-    if ring = 0 then
-      ring := Round(Main.FederModel._fp6);
-    if ring < 1 then
-      ring := 1;
-    if ring > StripConst.StripCount then
-      ring := StripConst.StripCount;
-
-    Main.BitmapBuilder.UpdatingRings := True;
-    Main.RingColor[ring] := ColorPanel.Color;
-    Main.Bitmap := Main.Bitmap;
-    Main.BitmapBuilder.UpdatingRings := False;
-    InvalidateGraph(nil);
+    if Main.LightMode then
+    begin
+      if ColorPanel <> nil then
+        Main.FederScene.MoveColor(ColorPanel.Color);
+      InvalidateGraph(nil);
+    end
+    else
+    begin
+      Main.UpdateRingColor3(ColorPanel.Color);
+    end;
   end;
   ColorPanelChanged := False;
 end;
 
 procedure TFormMain.HandleKey(Sender: TObject; var Key: Word; var KeyChar: Char; Shift: TShiftState);
 begin
-  if KeyChar = '{' then
-    Main.MeshSize := 32
-  else if KeyChar = '}' then
-    Main.MeshSize := 64
-  else if KeyChar = '(' then
-    Main.MeshSize := 128
-  else if KeyChar = ')' then
-    Main.MeshSize := 256
-
-  else if Key = vkEscape then
-    Main.DoReset
-
-  else if KeyChar = 'E' then
-    Main.ExportObj
-
-  else if KeyChar = '+' then
-  begin
-    Main.ActionHandler.Execute(faActionPageP);
-    Exit;
-  end
-
-  else if KeyChar = '*' then
-  begin
-    Main.ActionHandler.Execute(faActionPageM);
-    Exit;
-  end
-
-  else if KeyChar = 'h' then
-  begin
-    Main.ActionHandler.Execute(faToggleSolidFlip);
-    Exit;
-  end
-
-  else if KeyChar = ' ' then
-  begin
-    Main.ActionHandler.Execute(faToggleShowEdges);
-    Exit;
-  end
-
-  else if KeyChar = 'l' then
-  begin
-    Main.ActionHandler.Execute(faToggleLux);
-    Exit;
-  end
-
-  else if KeyChar = 'b' then
-  begin
-    Main.ActionHandler.Execute(faWantBottom);
-    Exit;
-  end
-
-  else if KeyChar = 'y' then
-  begin
-    Main.ActionHandler.Execute(faWantSpecialY);
-    Exit;
-  end
-
-  else if KeyChar = 'C' then
-  begin
-    Main.ActionHandler.Execute(faToggleColorPanel);
-    Exit;
-  end
-
-  else if Key = vkLeft then
-  begin
-    Main.ActionHandler.Execute(faWheelLeft);
-    Exit;
-  end
-
-  else if Key = vkRight then
-  begin
-    Main.ActionHandler.Execute(faWheelRight);
-    Exit;
-  end
-
-  else if Key = vkUp then
-  begin
-    Main.ActionHandler.Execute(faWheelUp);
-    Exit;
-  end
-
-  else if Key = vkDown then
-  begin
-    Main.ActionHandler.Execute(faWheelDown);
-    Exit;
-  end
-
-  else if KeyChar = 'c' then
-    Main.FederParam := fpParamCapValue
-  else if KeyChar = 'n' then
-    Main.FederParam := fpNorthCapValue
-  else if KeyChar = 's' then
-    Main.FederParam := fpSouthCapValue
-  else if KeyChar = 't' then
-    Main.FederParam := fpT1
-  else if KeyChar = 'T' then
-    Main.FederParam := fpT2
-  else if KeyChar = 'L' then
-    Main.FederParam := fpL
-  else if KeyChar = 'R' then
-    Main.FederParam := fpAbsoluteRange
-
-  ;
-
-  Main.CheckStateNeeded;
-  Main.TextUpdateNeeded;
-  Main.GraphUpdateNeeded;
-
-  Main.BubbleUpAction(faNoop);
-end;
-
-procedure TFormMain.HandleMouseDown(Shift: TShiftState; X, Y: Single);
-begin
-  Down := PointF(X, Y);
-  if Main.FederMesh.Parent <> nil then
-    Main.FederMesh.PickRing(X, Y);
-end;
-
-procedure TFormMain.HandleMouseMove(Shift: TShiftState; X, Y: Single);
-begin
-  if FormShown then
-  begin
-    if (ssCtrl in Shift) and (ssLeft in Shift) then
-    begin
-      Camera.Position.X := Camera.Position.X - ((X - Down.X) * 0.04);
-      Camera.Position.Y := Camera.Position.Y + ((Y - Down.Y) * 0.04);
-      Down := PointF(X, Y);
-    end
-    else if ssLeft in Shift then
-    begin
-      CameraDummyRotationAngle.X := CameraDummyRotationAngle.X - ((Y - Down.Y) * 0.2);
-      CameraDummyRotationAngle.Y := CameraDummyRotationAngle.Y - ((X - Down.X) * 0.2);
-      UpdateRotation;
-      Down := PointF(X, Y);
-    end
-    else if ssRight in Shift then
-    begin
-      CameraDummyRotationAngle.Z := CameraDummyRotationAngle.Z + ((X - Down.X) * 0.3);
-      UpdateRotation;
-      Down := PointF(X, Y);
-    end;
-
-    if Main.CurrentReportPage = rpViewStatus then
-    begin
-      Main.TextUpdateNeeded;
-      Main.BubbleUpAction(faNoop);
-    end;
-  end;
+  MainVar.BatchStopRequested := True;
+  if IsUp then
+    Main.ActionHandler.FormKeyUp(Sender, Key, KeyChar, Shift);
 end;
 
 procedure TFormMain.HandleRingWidthChanged;
@@ -715,6 +565,8 @@ procedure TFormMain.Init;
 begin
   FormMain := self;
 
+  NewControlSize := TControlSize.Create(TSizeF.Create(0, 0));
+
   Application.OnException := ApplicationEventsException;
   Application.OnIdle := ApplicationEventsIdle;
 
@@ -722,27 +574,29 @@ begin
   ReportMemoryLeaksOnShutdown := True;
 {$endif}
 
-{$ifdef MSWindows}
-  Width := 1200;
-  Height := 800;
-{$endif}
+  InitFormat;
 
   FormatSettings.DecimalSeparator := '.';
-  Caption := 'Federgraph ' + Application.Title.ToUpper;
+  Caption := UpperCase(Application.Title);
 
   claBackground := StringToAlphaColor('#FF333333');
+
+  CreateLayouts;
 
   WantColorPanel := True;
   CreateColorPanel;
 
   Main := TMain.Create;
+  Main.WantPosZ12 := False;
 
   RegisterForAppEvents;
 
   InitViewport;
-  InitCamera;
-  InitLight;
-  InitMesh;
+{$ifdef WantLED}
+  Main.FederText.WantLED := True;
+{$else}
+  Main.FederText.WantLED := False;
+{$endif}
 
   Main.Init;
 
@@ -750,6 +604,10 @@ begin
   LayoutHintText;
 
   Main.IsReady := True;
+  Main.ModelUpdate.Delay := 80;
+
+  Main.KeyBinding := 1;
+  Main.FederKeyboard1.KeyMapping := 1;
 
   Main.FederText1.AllVisible := True;
   Main.FederText1.TextVisible := True;
@@ -757,12 +615,39 @@ begin
   Main.FederText1.EquationVisible := True;
   Main.FederText1.MenuVisible := True;
 
+  TFederData.Want2D := False;
+  Main.FederData.TextureLock := False;
+  Main.FederData.BackgroundLock := True;
+  Main.FederReport.WantShortTable := True;
+
+  Main.Want2D := False;
+  Main.Want3D := True;
+  Main.WantAnimation := False;
+
+  Main.MeshSize := MainConst.DefaultMeshSize;
+
+  Main.WantTimedParams := True;
+  Main.Frame3D.WantIdleMove := True;
+
+  Main.Trackbar_Value := Main.FederModel.ParamValue;
   IsUp := True;
   AllowResizing := True;
   Main.FederModel.Refresh;
 
   if WantColorPanel then
     InitColorPanel;
+
+  InitChecker;
+
+  Main.DoReset;
+
+  Main.FederMesh.OnRingPicked := RingPicked;
+
+  Main.GotoSample(1);
+  Main.Example01;
+
+  SmallViewportSize := 5 * MainVar.Raster;
+  ViewportState := 0;
 
   HintText.BringToFront;
   Application.OnHint := HandleShowHint;
@@ -775,28 +660,32 @@ begin
 
 //  Main.ActionHandler.ReportPage := rpColorInfo2;
 //  Main.ActionHandler.Execute(faToggleReportLock);
-  Main.FederText1.ActionPage := 1;
+//  Main.FederText1.ActionPage := 1;
 
+  Main.BubbleUpAction(faNoop);
   TMessageManager.DefaultManager.SubscribeToMessage(TOrientationChangedMessage, DoOrientationChanged);
 
 {$ifdef MSWINDOWS}
+  ViewportState := 0;
   Viewport.SetFocus;
 {$endif}
 end;
 
-procedure TFormMain.InitCamera;
+procedure TFormMain.InitChecker;
 begin
-  CameraDummy := TDummy.Create(Self);
-  CameraDummy.Parent := Viewport;
-  Viewport.AddObject(CameraDummy);
+  CreateCheckerBitmap;
 
-  Camera := TCamera.Create(Self);
-  Camera.Parent := Viewport;
-  CameraDummy.AddObject(Camera);
+  CheckerImage := TImage.Create(Self);
+  CheckerImage.Parent := Self;
+  CheckerImage.Name := 'CheckerImage';
 
-  Viewport.Camera := Camera;
+  CheckerImage.Bitmap := CheckerBitmap;
+  CheckerImage.WrapMode := TImageWrapMode.Tile;
+  CheckerImage.CanFocus := False;
 
-  ResetCamera;
+  UpdateChecker;
+
+  CheckerImage.SendToBack;
 end;
 
 procedure TFormMain.InitColorPanel;
@@ -813,57 +702,95 @@ begin
   end;
 end;
 
-procedure TFormMain.InitLight;
+procedure TFormMain.InitFormat;
+var
+  a: Integer;
 begin
-  FrontLight := TLight.Create(Self);
-  FrontLight.LightType := TLightType.Directional;
-  Viewport.AddObject(FrontLight);
+  WantPhone := False;
+  WantPortrait := False;
+  if WantPhone then
+  begin
+    if WantPortrait then
+    begin
+      a := 2;
+      case a of
+        1:
+        begin
+          ClientWidth := 320;
+          ClientHeight := 548;
+        end;
 
-  BackLight := TLight.Create(Self);
-  BackLight.LightType := TLightType.Point;
-  BackLight.Position.Z := 80;
-  BackLight.Color := claWhite;
-  Viewport.AddObject(BackLight);
+        2:
+        begin
+          { iPhone 3 (3.5 Inch): 640 x 920 }
+          ClientWidth := 320;
+          ClientHeight := 460;
+        end;
 
-  WestLight := TLight.Create(Self);
-  WestLight.LightType := TLightType.Point;
-  WestLight.Position.X := -100;
-  WestLight.Color := claLime;
-  Viewport.AddObject(WestLight);
+        3:
+        begin
+          { iPhone 4+5 (4 Inch): 640 x 1136 }
+          ClientWidth := 320;
+          ClientHeight := 667;
+        end;
 
-  EastLight := TLight.Create(Self);
-  EastLight.LightType := TLightType.Point;
-  EastLight.Position.X := 100;
-  EastLight.Color := claFuchsia;
-  Viewport.AddObject(EastLight);
+        4:
+        begin
+          { iPhone 6 (4.7 Inch): 750 x 1334 }
+          ClientWidth := 375;
+          ClientHeight := 548;
+        end;
 
-  NorthLight := TLight.Create(Self);
-  NorthLight.LightType := TLightType.Point;
-  NorthLight.Position.Y := 150;
-  NorthLight.Color := claWhite;
-  Viewport.AddObject(NorthLight);
+        5:
+        begin
+          { iPhone 6 Plus (5.5 Inch): 1242 x 2208 }
+          //(you need the screenshot in this resolution,
+          //the phone scales them down to 1080 x 1920)
+          ClientWidth := 375;
+          ClientHeight := 548;
+        end;
 
-  SouthLight := TLight.Create(Self);
-  SouthLight.LightType := TLightType.Point;
-  SouthLight.Position.Y := -150;
-  SouthLight.Color := claWhite;
-  Viewport.AddObject(SouthLight);
+        6:
+        begin
+          { iPad: 1536 x 2048 }
+
+        end;
+      end;
+
+    end
+    else
+    begin
+    ClientWidth := 420;
+    ClientHeight := 580;
+    end;
+  end
+  else
+  begin
+    if Screen.WorkAreaWidth < 1200 then
+    begin
+      ClientWidth := 1036; // 1000 will wrap main menu
+      ClientHeight := 800;
+    end
+    else
+    begin
+      ClientWidth := 1200;
+      ClientHeight := 800;
+  end;
+  end;
 end;
 
-procedure TFormMain.InitMesh;
+procedure TFormMain.InitTimerTimer(Sender: TObject);
 begin
-  Main.AddMeshesToScene(Viewport);
-  Main.FederMesh.OnRingPicked := RingPicked;
+  InitTimer.Enabled := False;
+  if not IsUp then
+    Init;
 end;
 
 procedure TFormMain.InitViewport;
 var
   t: single;
 begin
-  Viewport := TViewport3D.Create(self);
-  Viewport.Parent := self;
-  Viewport.UsingDesignCamera := False;
-  Viewport.Align := TAlignLayout.Client; // set Alignment after setting Parent
+  Viewport := TViewport3D.Create(Layout3D);
 
 {$ifdef MSWindows}
   Viewport.OnKeyUp := HandleKey;
@@ -872,16 +799,30 @@ begin
   Viewport.OnKeyDown := HandleKey;
 {$endif}
 
-  Viewport.OnMouseDown := ViewportMouseDown;
-  Viewport.OnMouseMove := ViewportMouseMove;
-  Viewport.OnMouseUp := ViewportMouseUp;
-
-  Viewport.Color := claBackground;
-  Viewport.CanFocus := true;
+  InitViewportX(1, Layout3D, Viewport);
 
   t := Viewport.Scene.GetSceneScale;
   if t > 1 then
     Main.IsRetina := True;
+end;
+
+procedure TFormMain.InitViewportX(ModelID: Integer; l: TLayout; v: TViewport3D);
+var
+  fm: TFederFrame3D;
+begin
+  fm := Main.FederFrame3D;
+  UpdateLayout(l);
+
+  v.Parent := l;
+  v.UsingDesignCamera := False;
+  v.Align := TAlignLayout.Client;
+
+  v.OnKeyDown := fm.ViewportKeyDown;
+  v.OnKeyUp := fm.ViewportKeyUp;
+  v.OnMouseDown := fm.ViewportMouseDown;
+  v.OnMouseMove := fm.ViewportMouseMove;
+  v.OnMouseUp := fm.ViewportMouseUp;
+  v.OnClick := fm.ViewportClick;
 end;
 
 procedure TFormMain.InitZOrderInfo(ML: TStrings);
@@ -913,20 +854,24 @@ begin
   if IsUp and (Viewport <> nil) then
   begin
     Viewport.InvalidateRect(Viewport.ClipRect);
-    Viewport.Repaint;
+    Draw;
     Inc(Main.CounterDrawing3D);
   end;
 end;
 
 procedure TFormMain.LayoutHintText;
 begin
+//  HintText.Position.X := 7 * MainVar.Raster + 30;
   HintText.Position.Y := 1 * MainVar.Raster + 10;
   UpdateHintTextPosition;
 end;
 
 procedure TFormMain.Log(s: string);
 begin
-
+  if IsUp then
+  begin
+    Main.Logger.Info(s);
+  end;
 end;
 
 function TFormMain.MakeScreenshot: TBitmap;
@@ -947,8 +892,11 @@ begin
   begin
     FormMemo := TFormMemo.Create(nil);
     FormMemo.Memo.Lines.Clear;
+//    Main.WriteCode(FormMemo.Memo.Lines);
+    FormMemo.GotoHelpHome;
   end;
   FormMemo.Visible := True;
+  FormMemo.Activate;
 end;
 
 procedure TFormMain.RegisterForAppEvents;
@@ -958,45 +906,6 @@ begin
     aFMXApplicationEventService.SetApplicationEventHandler(HandleAppEvent)
   else
     Log('Application Event Service is not supported.');
-end;
-
-procedure TFormMain.ResetCamera;
-begin
-  { CameraDummy }
-
-  CameraDummy.Position.Point := TPoint3D.Zero;
-  CameraDummyRotationAngle := TPoint3D.Create(180, 0, 0);
-  UpdateRotation;
-
-  { Camera }
-
-  Camera.Position.X := 0.0;
-  Camera.Position.Y := 0.0;
-  Camera.Position.Z := 20.0;
-
-  Camera.ResetRotationAngle;
-  Camera.RotationAngle.X := 180;
-  Camera.RotationAngle.Y := 0;
-  Camera.RotationAngle.Z := 0;
-end;
-
-procedure TFormMain.ResetRotation;
-begin
-  CameraDummyRotationAngle.X := 180;
-  CameraDummyRotationAngle.Y := 0;
-  CameraDummyRotationAngle.Z := 0;
-  UpdateRotation;
-end;
-
-procedure TFormMain.ResetPosition;
-begin
-  Camera.Position.X := 0.0;
-  Camera.Position.Y := 0.0;
-end;
-
-procedure TFormMain.ResetZoom;
-begin
-  Camera.Position.Z := 20.0;
 end;
 
 procedure TFormMain.ResizeColorPanel;
@@ -1030,9 +939,13 @@ begin
   begin
     Main.FederText2.SwatColor := Main.BitmapBuilder.RingColor[r];
   end;
+  if ColorPanel.Visible then
+  begin
+    ColorPanel.Color := Main.BitmapBuilder.RingColor[r];
+    Main.RingIndexUpdated;
+  end;
 
-  ColorPanel.Color := Main.BitmapBuilder.RingColor[r];
-  Main.RingIndexUpdated;
+//  Caption := Application.Title +  ' -  CurrentRing = ' + IntToStr(r);
 end;
 
 procedure TFormMain.SetBandColor(const Value: TAlphaColor);
@@ -1050,21 +963,6 @@ begin
   Main.IsUp := Value;
 end;
 
-procedure TFormMain.SetMeshText(const Value: string);
-begin
-//  Main.FederText.SR00.Caption := Value;
-end;
-
-procedure TFormMain.SetParamText(const Value: string);
-begin
-//  Main.FederText.ST00.Caption := Value;
-end;
-
-procedure TFormMain.SetRingText(const Value: string);
-begin
-//  Main.FederText.SL00.Caption := Value;
-end;
-
 procedure TFormMain.SetShowColorPanel(const Value: Boolean);
 begin
   FShowColorPanel := Value;
@@ -1079,13 +977,67 @@ begin
   end;
 end;
 
-procedure TFormMain.SetValueText(const Value: string);
+procedure TFormMain.SetViewportState(const Value: Integer);
+//var
+//  TargetSize: Integer;
 begin
-  Main.FederText.SB00.Caption := Value;
+  FViewportState := Value;
+  Viewport.Align := TAlignLayout.None;
+  case Value of
+    0:
+    begin
+      Viewport.Position.X := 0;
+      Viewport.Position.Y := 0;
+      Viewport.Size := Layout3D.Size;
+      UpdateChecker(2);
+      CheckerImage.Visible := True;
+    end;
+    1:
+    begin
+      Viewport.Position.X := 3 * MainVar.Raster;
+      Viewport.Position.Y := 3 * MainVar.Raster;
+      NewControlSize.Width := SmallViewportSize;
+      NewControlSize.Height := SmallViewportSize;
+      Viewport.Size := NewControlSize;
+      UpdateChecker;
+      CheckerImage.Visible := False;
+    end;
+    2:
+    begin
+      Viewport.Position.X := MainVar.Raster;
+      Viewport.Position.Y := MainVar.Raster;
+      NewControlSize.Width := ClientHeight - 2 * MainVar.Raster;
+      NewControlSize.Height := Viewport.Height * 2/3;
+      Viewport.Size := NewControlSize;
+      UpdateChecker;
+      CheckerImage.Visible := False;
+    end;
+//    3:
+//    begin
+//      TargetSize := 3200;
+//      Viewport.Position.X := -TargetSize + MainVar.Raster + SmallViewportSize;
+//      Viewport.Position.Y := -TargetSize + MainVar.Raster + SmallViewportSize;
+//      NewControlSize.Width := TargetSize;
+//      NewControlSize.Height := TargetSize;
+//      Viewport.Size := NewControlSize;
+//      CheckerImage.Visible := False;
+//    end;
+  end;
+
+  FixZOrderForBackground;
+
+  Viewport.Repaint;
+  Main.UpdateTouch;
 end;
 
 procedure TFormMain.UpdateBackground;
 begin
+  if ViewportState = 1 then
+    Main.BlackText;
+
+  if MainVar.ColorScheme.claBackground = claNull then
+    Main.BlackText;
+
   Self.Fill.Color := MainVar.ColorScheme.claBackground;
   Viewport.Color := MainVar.ColorScheme.claBackground;
 
@@ -1093,33 +1045,46 @@ begin
     HintText.TextSettings.FontColor := MainVar.ColorScheme.claHint;
 end;
 
-procedure TFormMain.SetZoomText(const Value: string);
+procedure TFormMain.UpdateChecker(a: Integer = 0);
 begin
-  Main.FederText.SB00.Caption := Value;
+  case a of
+    0:
+    begin
+      CheckerImage.Position.X := 0;
+      CheckerImage.Position.Y := 0;
+      CheckerImage.Width := ClientWidth;
+      CheckerImage.Height := ClientHeight;
+    end;
+
+    1:
+    begin
+      CheckerImage.Position.X := Viewport.Position.X;
+      CheckerImage.Position.Y := Viewport.Position.Y;
+      CheckerImage.Width := Viewport.Width;
+      CheckerImage.Height := Viewport.Height;
+    end;
+
+    2:
+    begin
+      CheckerImage.Position.X := 0;
+      CheckerImage.Position.Y := 0;
+      CheckerImage.Width := ClientWidth;
+      CheckerImage.Height := ClientHeight;
+    end;
+
+    3:
+    begin
+      CheckerImage.Position.X := MainVar.Raster;
+      CheckerImage.Position.Y := MainVar.Raster;
+      CheckerImage.Width := ClientWidth - 2 * MainVar.Raster;
+      CheckerImage.Height := ClientHeight - 2 * MainVar.Raster;
+    end;
+  end;
 end;
 
-procedure TFormMain.ToggleLux;
+procedure TFormMain.UpdateDisplay;
 begin
-  FrontLight.Enabled := Main.vp.WantLux;
-
-  if FrontLight.Enabled then
-    Main.MaterialSource.Ambient := claNull
-  else
-    Main.MaterialSource.Ambient := claWhite;
-
-  BackLight.Enabled := FrontLight.Enabled;
-  WestLight.Enabled := FrontLight.Enabled;
-  EastLight.Enabled := FrontLight.Enabled;
-  NorthLight.Enabled := FrontLight.Enabled;
-  SouthLight.Enabled := FrontLight.Enabled;
-
-  Main.Refresh;
-end;
-
-procedure TFormMain.UpdateRotation;
-begin
-  CameraDummy.ResetRotationAngle;
-  CameraDummy.RotationAngle.Point := CameraDummyRotationAngle;
+  Resize;
 end;
 
 procedure TFormMain.UpdateHintText(fa: Integer);
@@ -1156,21 +1121,148 @@ begin
   end;
 end;
 
-procedure TFormMain.ViewportMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+procedure TFormMain.UpdateLayout(l: TLayout);
+var
+  d: Integer;
+  cw, cw2: Integer;
+  ch, ch2: Integer;
 begin
-  MouseDown := True;
-  HandleMouseDown(Shift, X, Y);
-end;
+  d := -1;
 
-procedure TFormMain.ViewportMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
-begin
-  if MouseDown then
-    HandleMouseMove(Shift, X, Y);
-end;
+  if (l = Layout3D) then
+    d := DisloF;
 
-procedure TFormMain.ViewportMouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-begin
-  MouseDown := False;
+  Assert(l <> nil);
+
+  cw := ClientWidth;
+  cw2 := cw div 2;
+  ch := ClientHeight;
+  ch2 := ch div 2;
+
+  case d of
+    DisloF: // full screen
+    begin
+      l.Position.X := 0;
+      l.Position.Y := 0;
+      l.Width := cw;
+      l.Height := ch;
+    end;
+
+    DisloL: // left half
+    begin
+      l.Position.X := 0;
+      l.Position.Y := 0;
+      l.Width := cw2;
+      l.Height := ch;
+    end;
+
+    DisloR: // right half
+    begin
+      l.Position.X := cw2;
+      l.Position.Y := 0;
+      l.Width := cw2;
+      l.Height := ch;
+    end;
+
+    DisloHideL: // hidden left
+    begin
+      l.Position.X := 0;
+      l.Position.Y := 0;
+      l.Width := 0;
+      l.Height := ch;
+      l.SendToBack;
+    end;
+
+    DisloHideR: // hidden right
+    begin
+      l.Position.X := cw;
+      l.Position.Y := 0;
+      l.Width := 0;
+      l.Height := ch;
+      l.SendToBack;
+    end;
+
+    DisloHideTL:
+    begin
+      l.Position.X := 0;
+      l.Position.Y := 0;
+      l.Width := 0;
+      l.Height := ch2;
+      l.SendToBack;
+    end;
+
+    DisloHideTR:
+    begin
+      l.Position.X := cw2;
+      l.Position.Y := 0;
+      l.Width := 0;
+      l.Height := ch2;
+      l.SendToBack;
+    end;
+
+    DisloHideBL:
+    begin
+      l.Position.X := 0;
+      l.Position.Y := ch2;
+      l.Width := 0;
+      l.Height := ch2;
+      l.SendToBack;
+    end;
+
+    DisloHideBR:
+    begin
+      l.Position.X := cw2;
+      l.Position.Y := ch2;
+      l.Width := 0;
+      l.Height := ch2;
+      l.SendToBack;
+    end;
+
+    DisloHideM: // zero width in the middle
+    begin
+      l.Position.X := cw2;
+      l.Position.Y := 0;
+      l.Width := 0;
+      l.Height := ch;
+      l.SendToBack;
+    end;
+
+    DisloTL:
+    begin
+      l.Position.X := 0;
+      l.Position.Y := 0;
+      l.Width := cw2;
+      l.Height := ch2;
+      l.SendToBack;
+    end;
+
+    DisloTR:
+    begin
+      l.Position.X := cw2;
+      l.Position.Y := 0;
+      l.Width := cw2;
+      l.Height := ch2;
+      l.SendToBack;
+  end;
+
+    DisloBL:
+    begin
+      l.Position.X := 0;
+      l.Position.Y := ch2;
+      l.Width := cw2;
+      l.Height := ch2;
+      l.SendToBack;
+    end;
+
+    DisloBR:
+    begin
+      l.Position.X := cw2;
+      l.Position.Y := ch2;
+      l.Width := cw2;
+      l.Height := ch2;
+      l.SendToBack;
+    end;
+  end;
 end;
 
 end.
