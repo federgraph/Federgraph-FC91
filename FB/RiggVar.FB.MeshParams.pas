@@ -199,10 +199,27 @@ end;
 
 procedure TMeshParams.InitTE;
 begin
-  te1 := T1 / 10;
-  te2 := Abs(T2 * BigMapFactorT2);
-
-  te2 := te2 * 2;
+  case TextureNorm of
+    1:
+    begin
+      te1 := NormScale div 2;
+      te2 := NormScale;
+    end;
+    2:
+    begin
+      te1 := 0;
+      te2 := NormScale div 2;
+    end;
+    else
+    begin
+      te1 := T1 / 10;
+      te2 := Abs(T2 * BigMapFactorT2);
+    end;
+  end;
+  if TextureRepeat and (Bitmap = 1) then
+    te2 := te2 / 5
+  else
+    te2 := te2 * 2;
   te1 := te1 + (te2 / 2);
   if te2 < 0.1 then
     te2 := 0.1;

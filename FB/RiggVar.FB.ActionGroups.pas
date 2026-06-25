@@ -119,12 +119,18 @@ begin
   AddSpecial(ActionGroupMeshSize, 'MeshSize');
   AddSpecial(ActionGroupMeshExport, 'MeshExport');
   AddSpecial(ActionGroupMeshExportCoords, 'MeshExportCoords');
+  AddSpecial(ActionGroupMeshOptions, 'MeshOptions');
   AddSpecial(ActionGroupExporterOBJ, 'ExporterOBJ');
   AddSpecial(ActionGroupMeshFigures, 'MeshFigures');
   AddSpecial(ActionGroupVertexPulling, 'VertexPulling');
   AddSpecial(ActionGroupMeshBuilderOptions, 'MeshBuilderOptions');
+  AddSpecial(ActionGroupPin, 'Pin');
 
   { Texture }
+  AddSpecial(ActionGroupNorm, 'Norm');
+  AddSpecial(ActionGroupTextureNorm, 'TextureNorm');
+  AddSpecial(ActionGroupTextureExport, 'TextureExport');
+  AddSpecial(ActionGroupTextureImport, 'TextureImport');
   AddSpecial(ActionGroupColorMix, 'ColorMix');
   AddSpecial(ActionGroupColorSwat, 'ColorSwat');
 

@@ -268,6 +268,8 @@ const
   fagBandSelection21 = 244;
 
   { MeshMode }
+  fagOpenMesh = 264;
+  fagPolarMesh = 265;
   fagReducedMesh = 267;
   fagReduceMode0 = 268;
   fagReduceMode1 = 269;
@@ -284,6 +286,7 @@ const
   fagMeshSize256 = 278;
   fagMeshSize316 = 279;
   fagMeshSize512 = 280;
+  fagMeshSize1024 = 281;
 
   { MeshExport }
   fagWantBottom = 1667;
@@ -297,6 +300,10 @@ const
   fagExportCoordsBlender = 1548;
   fagExportCoords3DV = 1549;
   fagExportCoords3DP = 1550;
+
+  { MeshOptions }
+  fagTextureJitt = 301;
+  fagTextureJack = 302;
 
   { ExporterOBJ }
   fagWantAutoFolder = 1589;
@@ -330,6 +337,7 @@ const
   fagToggleSlicePulling = 316;
   fagToggleTargetPulling = 317;
   fagToggleRightPulling = 318;
+  fagToggleCrackFixing = 1668;
 
   { MeshBuilderOptions }
   fagToggleSolidFlip = 1624;
@@ -339,9 +347,29 @@ const
   fagUniqueMode2 = 1696;
   fagToggleUniqueVertices = 1620;
 
+  { Pin }
+  fagTogglePin = 352;
+  fagPinOn = 353;
+  fagPinOff = 354;
+
+  { Norm }
+  fagToggleNorm = 355;
+  fagNormOn = 356;
+  fagNormOff = 357;
+
+  { TextureNorm }
+  fagTextureNormP = 358;
+  fagTextureNormM = 359;
+  fagTextureNorm0 = 360;
+  fagTextureNorm1 = 361;
+  fagTextureNorm2 = 362;
+
   { TextureExport }
   fagCopyBinCode = 363;
   fagCopyBinCodeTest = 364;
+
+  { TextureImport }
+  fagTextureClear = 367;
 
   { ColorMix }
   fagColorMix0 = 368;

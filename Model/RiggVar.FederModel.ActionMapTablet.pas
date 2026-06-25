@@ -467,7 +467,7 @@ begin
 
       cl := BottomRight;
       InitAC(cl, 1, faGotoSample1, claSample);
-      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 2, faActionPageE, claPage);
       InitAC(cl, 3, faSampleM, claSample);
       InitAC(cl, 4, faSampleP, claSample);
       InitAC(cl, 5, faActionPage1, claPage);
@@ -502,8 +502,8 @@ begin
       InitAC(cl, 4, faNoop, claNoop);
       InitAC(cl, 5, faNoop, claNoop);
       InitAC(cl, 6, faShowMemo, claForm);
-      InitAC(cl, 7, faNoop, claNoop);
-      InitAC(cl, 8, faNoop, claNoop);
+      InitAC(cl, 7, faShowColor, claForm);
+      InitAC(cl, 8, faShowBambu, claForm);
 
       cl := BottomRight;
       InitAC(cl, 1, faNoop, claNoop);
@@ -550,7 +550,7 @@ begin
       InitAC(cl, 2, faSelectColorMapping2, claColorMapping);
       InitAC(cl, 3, faSelectColorMapping3, claColorMapping);
       InitAC(cl, 4, faSelectColorMapping4, claColorMapping);
-      InitAC(cl, 5, faActionPageE, claPage);
+      InitAC(cl, 5, faActionPage1, claPage);
       InitAC(cl, 6, faSelectColorMapping6, claColorMapping);
     end;
 
@@ -725,13 +725,13 @@ begin
       //InitAC(cl, 1, faActionPageM, claPage);
       InitAC(cl, 2, faNoop, claNoop);
       InitAC(cl, 3, faTakeCapValueSnapshot, claBeige);
-      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 4, faToggleCrackFixing, claOption);
       InitAC(cl, 5, faWantBottom, claOption);
       InitAC(cl, 6, faToggleShowEdges, cla);
 
       cl := TopRight;
       InitAC(cl, 1, faReducedMesh, claOption);
-      InitAC(cl, 2, faNoop, claNoop);
+      InitAC(cl, 2, faPolarMesh, claOption);
       InitAC(cl, 3, faTogglePCap, claOption);
       InitAC(cl, 4, faToggleZeroPulling, claOption);
       //InitAC(cl, 5, faActionPageP, claPage);
@@ -832,10 +832,10 @@ begin
       InitAC(cl, 8, faParamBahnRadius, claParam);
 
       cl := BottomRight;
-      InitAC(cl, 1, faNoop, claNoop);
-      InitAC(cl, 2, faNoop, claNoop);
-      InitAC(cl, 3, faNoop, claNoop);
-      InitAC(cl, 4, faNoop, claNoop);
+      InitAC(cl, 1, faMenu30, cla);
+      InitAC(cl, 2, faMenu20, cla);
+      InitAC(cl, 3, faMenu10, cla);
+      InitAC(cl, 4, faMenu00, cla);
       InitAC(cl, 5, faActionPage1, claPage);
       InitAC(cl, 6, faNoop, claNoop);
     end;
@@ -869,7 +869,7 @@ begin
       InitAC(cl, 3, faColorMixM, claBeige);
       InitAC(cl, 4, faColorMixP, claBeige);
       InitAC(cl, 5, faToggleBMap, cla);
-      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 6, faTextureJitt, cla);
       InitAC(cl, 7, faPixelCount1, cla);
       InitAC(cl, 8, faPixelCount2, cla);
 
@@ -879,7 +879,7 @@ begin
       InitAC(cl, 3, faParamT3, claParam);
       InitAC(cl, 4, faParamT4, claParam);
       InitAC(cl, 5, faActionPage1, claPage);
-      InitAC(cl, 6, faNoop, claNoop);
+      InitAC(cl, 6, faTextureJack, cla);
     end;
 
     13:
@@ -1140,7 +1140,7 @@ begin
       cl := TopRight;
       InitAC(cl, 1, faWantMaterial, claExporter);
       InitAC(cl, 2, faWantSimpleName, claExporter);
-      InitAC(cl, 3, faNoop, claNoop);
+      InitAC(cl, 3, faWantAutoFolder, claExporter);
       InitAC(cl, 4, faNoop, claNoop);
       //InitAC(cl, 5, faActionPageP, claYellow);
       InitAC(cl, 6, faWantNormals, claExporter);

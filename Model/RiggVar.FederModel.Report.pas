@@ -18,10 +18,13 @@
 
 interface
 
+{$I App\RiggVar.App.Defs.inc}
+
 uses
   System.SysUtils,
   System.Classes,
   System.Types,
+  FMX.Controls3D,
   System.Math.Vectors,
   RiggVar.FB.Def,
   RiggVar.FB.Report;
@@ -35,6 +38,7 @@ type
     function GetAppStatus1: string;
     function GetAppStatus2: string;
   public
+    function GetZoomInfo: string; override;
     function GetModelStatus: string; override;
     function GetViewStatus: string; override;
     function GetRotationInfo: string; override;
@@ -51,6 +55,36 @@ implementation
 uses
   RiggVar.FB.Classes,
   RiggVar.App.Main;
+
+function TFederReport1.GetZoomInfo: string;
+var
+  ft: string;
+  fs: string;
+  f: single;
+{$ifdef PatchedFMX}
+  p: TPoint3D;
+  cr: TControl3D;
+{$endif}
+begin
+  SL.Clear;
+
+  ft := '%5.2f %5.2f %5.2f %5.2f';
+
+  fs := 'Camera.Position.Z = %5.2f';
+  f := Main.Frame3D.Camera00.Position.Z;
+  SL.Add(Format(fs, [f]));
+
+{$ifdef PatchedFMX}
+  cr := Main.Frame3D.Camera00;
+  p := cr.Quaternion.ImagPart;
+  f := cr.Quaternion.RealPart;
+  fs := Format('Camera = (%s)', [ft]);
+  SL.Add(Format(fs, [p.X, p.Y, p.Z, f]));
+{$endif}
+
+  SL.Insert(0, 'Zoom Info');
+  result := SL.Text;
+end;
 
 function TFederReport1.GetRotationInfo: string;
 var

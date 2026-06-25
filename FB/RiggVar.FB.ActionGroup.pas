@@ -275,6 +275,8 @@ const
     faBandSelection21];
 
   ActionGroupMeshMode: TActionGroup = [
+    faOpenMesh,
+    faPolarMesh,
     faReducedMesh,
     faReduceMode0,
     faReduceMode1,
@@ -290,7 +292,8 @@ const
     faMeshSize128,
     faMeshSize256,
     faMeshSize316,
-    faMeshSize512];
+    faMeshSize512,
+    faMeshSize1024];
 
   ActionGroupMeshExport: TActionGroup = [
     faWantBottom,
@@ -304,6 +307,10 @@ const
     faExportCoordsBlender,
     faExportCoords3DV,
     faExportCoords3DP];
+
+  ActionGroupMeshOptions: TActionGroup = [
+    faTextureJitt,
+    faTextureJack];
 
   ActionGroupExporterOBJ: TActionGroup = [
     faWantAutoFolder,
@@ -336,7 +343,8 @@ const
     faToggleLimitPulling,
     faToggleSlicePulling,
     faToggleTargetPulling,
-    faToggleRightPulling];
+    faToggleRightPulling,
+    faToggleCrackFixing];
 
   ActionGroupMeshBuilderOptions: TActionGroup = [
     faToggleSolidFlip,
@@ -346,9 +354,29 @@ const
     faUniqueMode2,
     faToggleUniqueVertices];
 
+  ActionGroupPin: TActionGroup = [
+    faTogglePin,
+    faPinOn,
+    faPinOff];
+
+  ActionGroupNorm: TActionGroup = [
+    faToggleNorm,
+    faNormOn,
+    faNormOff];
+
+  ActionGroupTextureNorm: TActionGroup = [
+    faTextureNormP,
+    faTextureNormM,
+    faTextureNorm0,
+    faTextureNorm1,
+    faTextureNorm2];
+
   ActionGroupTextureExport: TActionGroup = [
     faCopyBinCode,
     faCopyBinCodeTest];
+
+  ActionGroupTextureImport: TActionGroup = [
+    faTextureClear];
 
   ActionGroupColorMix: TActionGroup = [
     faColorMix0,

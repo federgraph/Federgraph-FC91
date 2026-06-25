@@ -88,34 +88,48 @@ type
 
   TMeshBuilderBase = class
   private
+    FTextureOption: Integer;
     function GetCenter: TPoint3D;
     function GetDepth: single;
     function GetHeight: single;
     function GetWidth: single;
+    procedure SetTextureOption(const Value: Integer);
   protected
+    FN: TList<TPoint3D>; // vertex normals
     FT: TList<TPointF>; // texture coordinates
     FV: TList<TPoint3D>; // stores vertices (P) used for triangles
+    JackMode: Boolean;
     T1: TList<Integer>; // stores Index 1 of (all) triangles
     T2: TList<Integer>;
     T3: TList<Integer>;
     xmax, ymax, zmax: single;
     xmin, ymin, zmin: single;
     procedure BingoLog(s: string);
+    procedure InitJack(VB: TVertexBuffer);
     procedure InitTE; virtual;
     function IsInHandFlippedArea(i: Integer): Boolean; virtual;
     procedure MakeUniqueVertices; virtual;
     procedure UpdateIB(IB: TIndexBuffer); virtual;
+    procedure UpdateNormals(VB: TVertexBuffer);
     procedure UpdateTE(VB: TVertexBuffer); virtual;
     procedure UpdateTexCoord(VB: TVertexBuffer);
     procedure UpdateVB(VB: TVertexBuffer); virtual;
   public
     ExportOffsetZ: single;
+    FlippedTexture: Boolean;
+    InvertedMesh: Boolean;
     MaterialName: string;
     ObjectName: string;
+    OpenMesh: Boolean;
     pc1: TPointF;
     pc2: TPointF;
     te1: single;
     te2: single;
+    TextureJack: Boolean;
+    TextureJitt: Boolean;
+    TextureMidd: Boolean;
+    TextureVert: Boolean;
+    UprightMesh: Boolean;
     WantNormals: Boolean;
     WantTexCoord: Boolean;
     WantUniqueVertices: Boolean;
@@ -134,6 +148,7 @@ type
     property Center: TPoint3D read GetCenter;
     property Depth: single read GetDepth;
     property Height: single read GetHeight;
+    property TextureOption: Integer read FTextureOption write SetTextureOption;
     property Width: single read GetWidth;
   end;
 
@@ -144,6 +159,7 @@ type
     BingoCounter: Integer; // for debugging
     BongoCounter: Integer; // for debugging
     BungoCounter: Integer; // for debugging
+    CrackCounter: Integer;
     H1: TList<Integer>; // Index 1 of triangles to be kept after reduce op
     H2: TList<Integer>;
     H3: TList<Integer>;
@@ -177,6 +193,7 @@ type
     ReduceMode: Integer;
     SliceHeight: single;
     UniqueMode: Integer;
+    WantBottomWhenReduced: Boolean;
     WantDetailPulling: Boolean;
     WantMirroredBottom: Boolean;
     WantFlippedHands: Boolean;
@@ -210,6 +227,11 @@ type
     CurrentLineTag: Integer;
     CurrentPullDirection: Integer;
     FederLimits: TFederLimits;
+    FGrid0: array of single; // temp for building RasterGrid
+    FGrid1: array of single;
+    FGrid2: array of single;
+    FGridX: array of single; // RasterGrid, axis 1
+    FGridY: array of single; // RasterGrid, axis 2
     FLoopFaktor: single;
     GD: TList<TVertexState>; // additional info about vertices
     GN: TList<TPoint3D>; // temp vertices, computed w/o capping
@@ -244,32 +266,57 @@ type
     procedure AssignPoint;
     procedure AssignPoints;
     function CheckCrossing(P1, P2: TPoint3D; Soll: single = 0): Boolean;
+    procedure CloseLimitPullingCracksWhenUsingPolarMesh;
     function ComputeZN(P: TPoint3D): single;
+    function CountCrossingsForEdge(ep: TPoint): Integer;
     procedure DoLimitPullingQA(CapValue: single; Tag: Integer);
     procedure DoLoopPolyTest(PA, PE: TPoint3D; Soll: single = 0);
     procedure DoSpecialOp(Edge: TPoint; Soll: single; DirTag: Integer);
     function FindNew(P1, P2: TPoint3D; Soll: single = 0): TPoint3D;
+    function GetMeshType: Integer;
     function GetPullIndex: Integer; inline;
     function GetSpecialY: Integer;
     procedure Init2;
+    procedure Init3;
+    procedure Init4;
+    procedure Init41;
+    procedure Init42;
+    procedure Init5;
+    procedure InitTexCoordBottom(VB: TVertexBuffer);
+    function InitEdgeData(Edge: TPoint): TEdgeData;
     procedure InitG(x, y: Integer);
     procedure InitLimits;
     procedure InitQuads;
+    procedure InitRaster;
     procedure InitTriangles;
+    procedure PinAP;
     procedure ResetGD;
     procedure SavePulling(VI: Integer);
     procedure SetLoopFaktor(const Value: single);
     function SkipFlippedHands: Boolean;
+    function TestQuad(vq: TVertexQuad): Integer;
+    function TestQuads: Boolean;
     procedure UpdateFedergraphSize;
     procedure UpdateFromMeshParams(vp: TMeshParams);
     procedure UpdateHandArea;
     function UpdateTrianglesQA(NI: Integer; vq: TVertexQuad): Integer;
+    function UpdateTrianglesQAForJack(NI: Integer; vq: TVertexQuad): Integer;
   protected
     procedure InitTE; override;
     function IsInHandFlippedArea(i: Integer): Boolean; override;
+    procedure Reduce; override;
+    procedure UpdateIB(IB: TIndexBuffer); override;
+    procedure UpdateTE(VB: TVertexBuffer); override;
     procedure UpdateVB(VB: TVertexBuffer); override;
     function VertexIndex(x, y: Integer): Integer;
   public
+  class var
+    WantCrackFixingWhenPolar: Boolean;
+  var
+    AP: single; // ArbeitsPunkt for AP-Pinning
+    DetailPullingEnabled: Boolean;
+    MoreDetailEnabled: Boolean;
+    MoreDetailNeeded: Boolean;
     SlicePullingMode: Integer;
     TriangleCount: Integer;
     VertexCount: Integer;
@@ -277,6 +324,7 @@ type
     OuterOptionZ: TVertexOptionZ;
     constructor Create;
     destructor Destroy; override;
+    function AddData(MV: TMeshVisitor; AVertexOffset: Integer = 0): Integer; override;
     function CheckForData(fn: string): Boolean;
     procedure GetMeshDataInfo;
     procedure GetMeshDataMatrixReport(ML: TStrings; ReportID: Integer = 0); override;
@@ -366,6 +414,7 @@ end;
 constructor TMeshBuilderBase.Create;
 begin
   FV := TList<TPoint3D>.Create;
+  FN := TList<TPoint3D>.Create;
   FT := TList<TPointF>.Create;
 
   T1 := TList<Integer>.Create;
@@ -379,6 +428,7 @@ end;
 destructor TMeshBuilderBase.Destroy;
 begin
   FV.Free;
+  FN.Free;
   FT.Free;
 
   T1.Free;
@@ -489,6 +539,22 @@ begin
 
 end;
 
+procedure TMeshBuilderBase.InitJack(VB: TVertexBuffer);
+var
+  i: Integer;
+begin
+  if not TextureVert then
+    for i := 0 to FV.Count - 1 do
+    begin
+      VB.TexCoord0[i] := pc1;
+    end;
+
+  for i := FV.Count to 2 * FV.Count - 1 do
+  begin
+    VB.TexCoord0[i] := pc2;
+  end;
+end;
+
 procedure TMeshBuilderBase.InitTE;
 begin
   { virtual }
@@ -511,10 +577,36 @@ begin
 
 end;
 
+procedure TMeshBuilderBase.SetTextureOption(const Value: Integer);
+begin
+  FTextureOption := Value;
+  case Value of
+    0:
+    begin
+      TextureVert := True;
+      TextureJitt := False;
+      TextureJack := False;
+    end;
+    1:
+    begin
+      TextureVert := False;
+      TextureJitt := True;
+      TextureJack := False;
+    end;
+    2:
+    begin
+      TextureVert := False;
+      TextureJitt := False;
+      TextureJack := True;
+    end;
+  end;
+end;
+
 procedure TMeshBuilderBase.Update3DBuffers(VB: TVertexBuffer; IB: TIndexBuffer);
 begin
   if WantUniqueVertices then
   begin
+    JackMode := False;
     MakeUniqueVertices;
   end;
 
@@ -525,6 +617,12 @@ begin
 
   if WantTexCoord then
     UpdateTexCoord(VB);
+
+  if JackMode then
+    InitJack(VB);
+
+  if WantNormals then
+    UpdateNormals(VB);
 
   UpdateIB(IB);
 end;
@@ -543,18 +641,83 @@ begin
     end;
 end;
 
+procedure TMeshBuilderBase.UpdateNormals(VB: TVertexBuffer);
+var
+  i: Integer;
+begin
+  if FV.Count <> FN.Count then
+    Exit;
+
+  for i := 0 to FV.Count - 1 do
+  begin
+    VB.Normals[i] := FN[i];
+  end;
+end;
+
 procedure TMeshBuilderBase.UpdateTE(VB: TVertexBuffer);
 var
   i: Integer;
+  a1, b1, a2, b2: single;
+  u1, v1, u2, v2: single;
   u, v: single;
+
+  pc: TPointF;
+  pf: TPointF;
 begin
+  if TextureJitt then
+    pc := TPointF.Create(0.99, 0.99)
+  else
+    pc := TPointF.Create(1.0, 1.0);
+
   InitTE; // virtual
 
   for i := 0 to FV.Count - 1 do
   begin
-    u := (FV[i].X + te1) / te2;
-    v := (FV[i].Z + te1) / te2;
-    VB.TexCoord0[i] := PointF(u, v);
+    a1 := (FV[i].X + te1) / te2;
+    b1 := (FV[i].Z + te1) / te2;
+
+    a2 := (-FV[i].X + te1) / te2;
+    b2 := (-FV[i].Z + te1) / te2;
+
+    if FlippedTexture then
+    begin
+      u1 := a2;
+      v1 := b2;
+      u2 := a1;
+      v2 := b1;
+    end
+    else
+    begin
+      u1 := a1;
+      v1 := b1;
+      u2 := a2;
+      v2 := b2;
+    end;
+
+    u := u1;
+    v := v1;
+    if InvertedMesh then
+    begin
+      u := u1;
+      v := v2;
+      if UprightMesh then
+      begin
+        u := u2;
+        v := v1;
+      end;
+    end;
+
+    if UprightMesh then
+      pf := PointF(v, u)
+    else
+      pf := PointF(u, v);
+
+    { Texture Jitter }
+    if TextureJitt then
+      if i mod 6 = 0 then
+        pf := pf * pc;
+
+    VB.TexCoord0[i] := pf;
   end;
 end;
 
@@ -572,12 +735,20 @@ procedure TMeshBuilderBase.UpdateVB(VB: TVertexBuffer);
 var
   i: Integer;
 begin
-  VB.Length := FV.Count;
+  if JackMode then
+    VB.Length := FV.Count * 2
+  else
+    VB.Length := FV.Count;
 
   { assign Vertices }
   for i := 0 to FV.Count - 1 do
   begin
     VB.Vertices[i] := FV[i];
+    if JackMode then
+    begin
+      { duplicate vertice }
+      VB.Vertices[FV.Count + i] := FV[i];
+    end;
   end;
 end;
 
@@ -625,10 +796,11 @@ begin
     SL_Add(Format('Bingo = %4d', [BingoCounter]));
     SL_Add(Format('Bongo = %4d', [BongoCounter]));
     SL_Add(Format('Bungo = %4d', [BungoCounter]));
+    SL_Add(Format('Crack = %4d', [CrackCounter]));
   end
   else
-    SL_Add(Format('Bingo = %d; %d; %d; %d; %d',
-      [BangoCounter, BengoCounter, BingoCounter, BongoCounter, BungoCounter]));
+    SL_Add(Format('Bingo = %d; %d; %d; %d; %d; %d',
+      [BangoCounter, BengoCounter, BingoCounter, BongoCounter, BungoCounter, CrackCounter]));
 end;
 
 function TMeshBuilder.AddData(MV: TMeshVisitor; AVertexOffset: Integer = 0): Integer;
@@ -896,6 +1068,7 @@ end;
 
 procedure TMeshBuilder.ResetBingoCounter;
 begin
+  CrackCounter := 0;
   BangoCounter := 0;
   BengoCounter := 0;
   BingoCounter := 0;
@@ -1005,6 +1178,7 @@ constructor TFederMeshBuilder.Create;
 begin
   inherited;
 
+  WantBottomWhenReduced := False;
   WantMirroredBottom := False;
   WantUpdateTE := True;
 
@@ -1020,6 +1194,7 @@ begin
 
   WantTargetPulling := True;
   WantRightPulling := False;
+  WantCrackFixingWhenPolar := True;
 
   PolyRack := TPolyRack.Create(1);
   R1 := PolyRack.Poly1;
@@ -1033,6 +1208,58 @@ begin
   GD.Free;
   QA.Free;
   inherited;
+end;
+
+function TFederMeshBuilder.AddData(MV: TMeshVisitor; AVertexOffset: Integer = 0): Integer;
+var
+  i: Integer;
+  o: Integer;
+  p: TPoint3D;
+  k: Integer;
+begin
+  if ObjectName <> '' then
+    MV.AddObjectName(ObjectName);
+
+  result := FV.Count;
+  if vp.ReducedMesh and WantBottomWhenReduced then
+    result := result * 2;
+
+  { add normal surface vertices }
+  for i := 0 to FV.Count - 1 do
+    MV.AddVertex(FV[i]);
+
+  { add bottom plane vertices }
+  if vp.ReducedMesh and WantBottomWhenReduced then
+  begin
+    for i := 0 to FV.Count - 1 do
+    begin
+      p := FV[i];
+      p.Z := vp.CapValue;
+      MV.AddVertex(p);
+    end;
+  end;
+
+  if MaterialName <> '' then
+    MV.AddMaterialName(MaterialName);
+
+  o := AVertexOffset;
+
+  if vp.ReducedMesh then
+  begin
+    for i := 0 to H1.Count - 1 do
+        MV.AddTriangle(H1[i] + o, H2[i] + o, H3[i] + o);
+    if WantBottomWhenReduced then
+    begin
+      k := FV.Count;
+      for i := 0 to H1.Count - 1 do
+        MV.AddTriangle(k + H1[i] + o, k + H3[i] + o, k + H2[i] + o);
+    end;
+  end
+  else
+  begin
+    for i := 0 to T1.Count - 1 do
+      MV.AddTriangle(T1[i] + o, T2[i] + o, T3[i] + o);
+  end;
 end;
 
 procedure TFederMeshBuilder.AddLoopCounterInfo(LongVersion: Boolean);
@@ -1178,6 +1405,7 @@ end;
 procedure TFederMeshBuilder.ApplyLimitPulling;
 begin
   InitLimits;
+  MoreDetailNeeded := TestQuads;
   ApplyLimitPullingQA;
   if WantSlicePulling then
     ApplySliceCapping;
@@ -1285,14 +1513,54 @@ begin
   if (vp.PlusCap or vp.MinusCap) and not WantSlicePulling then
     ApplyCapping;
 
+  if vp.Norm then
+    Normalize(vp.NormScale)
+  else if vp.Pin then
+    PinAP;
+
   AssignPoints;
 end;
 
 procedure TFederMeshBuilder.AssignPoint;
 begin
-  P.X := u;
-  P.Y := v;
-  P.Z := w;
+  if (vp = nil) or vp.VerbatimPoint then
+  begin
+    P.X := u;
+    P.Y := v;
+    P.Z := w;
+  end
+  else if vp.UprightMesh then
+  begin
+    if vp.HullMesh then
+    begin
+      P.Z := v;
+      P.Y := u;
+    end
+    else
+    begin
+      P.Z := u;
+      P.Y := v;
+    end;
+    P.X := w;
+    if vp.InvertedMesh then
+      P.X := -w;
+  end
+  else
+  begin
+    if vp.HullMesh then
+    begin
+      P.X := -v;
+      P.Y := u;
+    end
+    else
+    begin
+      P.X := u;
+      P.Y := v;
+    end;
+    P.Z := w;
+    if vp.InvertedMesh then
+      P.Z := -w;
+  end;
 end;
 
 procedure TFederMeshBuilder.AssignPoints;
@@ -1338,9 +1606,71 @@ begin
   result := false;
 end;
 
+procedure TFederMeshBuilder.CloseLimitPullingCracksWhenUsingPolarMesh;
+var
+  y: Integer;
+  x1, x2: Integer;
+  vq1, vq2: TVertexQuad;
+  cr: TVertexState;
+  QuadIndex1, QuadIndex2: Integer;
+  VertexIndex1, VertexIndex2: Integer;
+  b, b1, b2: Boolean;
+begin
+  CrackCounter := 0;
+  x1 := 0;
+  x2 := vp.mc;
+  for y := 0 to vp.mc - 1 do
+  begin
+    QuadIndex1 := y * (vp.mc);
+    vq1 := QA[QuadIndex1];
+
+    cr := GD[vq1.A0];
+    if cr.Pulled then
+    begin
+      QuadIndex2 := QuadIndex1 + (vp.mc - 1);
+      vq2 := QA[QuadIndex2];
+
+      VertexIndex1 := VertexIndex(x1, y);
+      VertexIndex2 := VertexIndex(x2, y);
+
+      b1 := VertexIndex1 = vq1.A0;
+      b2 := VertexIndex2 = vq2.A1;
+      b := b1 and b2;
+
+      if b then
+      begin
+        Inc(CrackCounter);
+        if WantCrackFixingWhenPolar then
+        begin
+          FV[vq2.A1] := FV[vq1.A0];
+        end;
+      end;
+    end
+  end;
+
+end;
+
 function TFederMeshBuilder.ComputeZN(P: TPoint3D): single;
 begin
   result := vp.EQ.GetValueN(P.X, P.Y);
+end;
+
+function TFederMeshBuilder.CountCrossingsForEdge(ep: TPoint): Integer;
+var
+  ed: TEdgeData;
+begin
+  ed := InitEdgeData(ep);
+  result := 0;
+  if (LimitCount >= 1) and ed.CheckCrossing(Limit1) then
+    Inc(result);
+  if (LimitCount >= 2) and ed.CheckCrossing(Limit2) then
+    Inc(result);
+  if (LimitCount >= 3) and ed.CheckCrossing(Limit3) then
+    Inc(result);
+  if (LimitCount >= 4) and ed.CheckCrossing(Limit4) then
+    Inc(result);
+  if (LimitCount >= 5) and ed.CheckCrossing(Limit5) then
+    Inc(result);
 end;
 
 procedure TFederMeshBuilder.DoLimitPullingQA(CapValue: single; Tag: Integer);
@@ -1352,6 +1682,9 @@ begin
   for vq in QA do
   begin
     qe := vq.GetEdges;
+
+    if vp.PolarMesh and (vq.Y = 0) then
+      continue;
 
     { top and left edge of every quad }
     DoSpecialOp(qe.H1, CapValue, TagTop); // same as TagHorizontal = 1
@@ -1367,6 +1700,9 @@ begin
       DoSpecialOp(qe.V2, CapValue, TagRight);
     end;
   end;
+
+  if vp.PolarMesh then
+    CloseLimitPullingCracksWhenUsingPolarMesh;
 end;
 
 procedure TFederMeshBuilder.DoLoopPolyTest(PA, PE: TPoint3D; Soll: single = 0);
@@ -1468,6 +1804,8 @@ begin
   SL_Add(Format('GD.Count = %d', [GD.Count]));
   SL_Add(Format('QO.Count = %d', [QA.Count]));
   SL_Add(Format('T1.Count = %d', [T1.Count]));
+  if vp.PolarMesh then
+    SL_Add(Format('P-Cracks = %d', [CrackCounter]));
 end;
 
 procedure TFederMeshBuilder.GetMeshDataMatrixReport(ML: TStrings; ReportID: Integer);
@@ -1544,6 +1882,37 @@ begin
   result := SL.Text;
 end;
 
+function TFederMeshBuilder.GetMeshType: Integer;
+begin
+  if vp.FilterMesh then
+  begin
+    result := 1;
+  end
+  else
+  if vp.PolarMesh = False then
+  begin
+    if vp.LinearMesh then
+    begin
+      result := 2;
+    end
+    else
+    begin
+      result := 3;
+    end;
+  end
+  else // if PolarMesh
+  begin
+    if vp.LinearMesh then
+    begin
+      result := 4;
+    end
+    else
+    begin
+      result := 5;
+    end;
+  end;
+end;
+
 function TFederMeshBuilder.GetPullIndex: Integer;
 begin
   if WantRightPulling then
@@ -1603,22 +1972,150 @@ begin
   end;
 end;
 
+procedure TFederMeshBuilder.Init3;
+var
+  x, y: Integer;
+begin
+  InitRaster;
+  AP := vp.EQ.GetValue(0, 0);
+
+  for y := 0 to vp.mc do
+  begin
+    v := FGridY[y];
+    for x := 0 to vp.mc do
+    begin
+      u := FGridX[x];
+      InitG(x, y);
+    end;
+  end;
+end;
+
+procedure TFederMeshBuilder.Init4;
+begin
+  case vp.MeshMode of
+    1: Init41;
+    2: Init42;
+    3: Init42;
+    else
+      Init41;
+  end;
+end;
+
+procedure TFederMeshBuilder.Init41;
+var
+  x, y: Integer;
+  ystep: single;
+  radius, phi: single;
+  pstep: single;
+  PhiStart: single;
+
+begin
+  ystep := vp.msy;
+  pstep := 2 * pi / vp.mc;
+
+  PhiStart := 0;
+
+  for y := 0 to vp.mc do
+  begin
+    radius := y * ystep / 2;
+    for x := 0 to vp.mc do
+    begin
+      phi := PhiStart + x * pstep;
+      u := vp.ox + radius * cos(phi);
+      v := vp.oy + radius * sin(phi);
+      InitG(x, y);
+    end;
+  end;
+end;
+
+procedure TFederMeshBuilder.Init42;
+var
+  x, y: Integer;
+  ystep: single;
+  radius, phi: single;
+  pstep: single;
+  PhiStart: single;
+begin
+  ystep := 2 * vp.ParamBahnRadius / vp.mc;
+  pstep := 2 * pi / vp.mc;
+
+  PhiStart := 0;
+  for y := 0 to vp.mc do
+  begin
+    radius := y * ystep / 2;
+    for x := 0 to vp.mc do
+    begin
+      phi := PhiStart + x * pstep;
+      u := radius * cos(phi) + vp.ParamBahnPositionX;
+      v := radius * sin(phi) + vp.ParamBahnPositionY;
+      InitG(x, y);
+    end;
+  end;
+end;
+
+procedure TFederMeshBuilder.Init5;
+var
+  x, y: Integer;
+  radius, phi: single;
+  pstep: single;
+begin
+  InitRaster;
+  pstep := 2 * pi / vp.mc;
+  for y := 0 to vp.mc do
+  begin
+    radius := FGridY[y] / 2;
+    for x := 0 to vp.mc do
+    begin
+      phi := x * pstep;
+      u := radius * cos(phi);
+      v := radius * sin(phi);
+      InitG(x, y);
+    end;
+  end;
+end;
+
+procedure TFederMeshBuilder.InitTexCoordBottom(VB: TVertexBuffer);
+var
+  i: Integer;
+begin
+  for i := FV.Count to 2 * FV.Count - 1 do
+  begin
+    if WantMirroredBottom then
+      VB.TexCoord0[i] := VB.TexCoord0[i- FV.Count]
+    else
+      VB.TexCoord0[i] := pc2;
+  end;
+end;
+
 procedure TFederMeshBuilder.InitData;
+var
+  MeshType: Integer;
 begin
   vp.Update;
 
   UpdateFromMeshParams(vp);
 
+  MeshType := GetMeshType;
   UpdateFedergraphSize;
 
   vp.EQ.PrepareCalc;
 
   UpdateHandArea;
 
-  Init2;
+  AP := vp.EQ.GetValue(0, 0);
+
+  case MeshType of
+    1: Init2;
+    2: Init2;
+    3: Init3;
+    4: Init4;
+    5: Init5;
+  end;
+
   ResetGD;
   ResetBingoCounter;
   ApplyLimitPulling;
+  JackMode := TextureJack and not vp.OpenMesh;
   ApplyVertexPostProcesssing;
   InitTriangles;
 
@@ -1626,6 +2123,14 @@ begin
     Reduce;
   if FlatMesh then
     FlattenToCapValue(vp.CapValue);
+end;
+
+function TFederMeshBuilder.InitEdgeData(Edge: TPoint): TEdgeData;
+begin
+  result.viA := Edge.X;
+  result.viB := Edge.Y;
+  result.PA := GN[result.viA];
+  result.PB := GN[result.viB];
 end;
 
 procedure TFederMeshBuilder.InitG(x, y: Integer);
@@ -1778,6 +2283,63 @@ begin
   NominalQuadCount := QA.Count;
 end;
 
+procedure TFederMeshBuilder.InitRaster;
+var
+  d, s, t: single;
+  i: Integer;
+  mt: Integer;
+begin
+  SetLength(FGrid0, vp.mc + 1);
+  SetLength(FGrid1, vp.mc + 1);
+  SetLength(FGrid2, vp.mc + 1);
+
+  SetLength(FGridY, vp.mc + 1);
+  SetLength(FGridX, vp.mc + 1);
+
+  if vp.PolarMesh then
+    mt := 0
+  else
+  begin
+    Assert(vp.mc mod 2 = 0);
+    mt := vp.mc div 2;
+  end;
+
+  { width will be individual for each segment }
+  for i := 0 to vp.mc do
+    FGrid0[i] := 1.0 * sqr(-mt + i) + 0;
+
+  { accumulate }
+  s := 0;
+  FGrid1[0] := 0;
+  for i := 1 to vp.mc do
+  begin
+    d := Abs(FGrid0[i] - FGrid0[i-1]);
+    s := s + d;
+    FGrid1[i] := s;
+  end;
+
+  { scale }
+  t := (vp.mc * vp.ms) / s;
+  for i := 0 to vp.mc do
+    FGrid2[i] := FGrid1[i] * t;
+
+  { store result }
+  for i := 0 to vp.mc do
+  begin
+    if vp.PolarMesh then
+    begin
+      FGridY[i] := FGrid2[i];
+      FGridX[i] := FGrid2[i];
+    end
+    else
+    begin
+      FGridY[i] := vp.sy + FGrid2[i];
+      FGridX[i] := vp.sx + FGrid2[i];
+    end;
+  end;
+
+end;
+
 procedure TFederMeshBuilder.InitTE;
 begin
   te1 := vp.te1;
@@ -1792,6 +2354,9 @@ begin
   ti := 0;
   for vq in QA do
   begin
+    if JackMode then
+      ti := UpdateTrianglesQAForJack(ti, vq)
+    else
       ti := UpdateTrianglesQA(ti, vq);
   end;
 end;
@@ -1879,6 +2444,65 @@ begin
   end;
 end;
 
+procedure TFederMeshBuilder.PinAP;
+var
+  i: Integer;
+  cr: TPoint3D;
+begin
+  if AP <> 0 then
+    for i := 0 to FV.Count - 1 do
+    begin
+      cr := FV[i];
+      cr.Z := cr.Z - AP;
+      FV[i] := cr;
+    end;
+end;
+
+procedure TFederMeshBuilder.Reduce;
+var
+  i: Integer;
+  P1, P2, P3: TPoint3D;
+  skip: Boolean;
+  L: single;
+  o: Integer;
+begin
+  H1.Clear;
+  H2.Clear;
+  H3.Clear;
+
+  L := vp.CapValue;
+  o := FV.Count;
+  for i := 0 to T1.Count - 1 do
+  begin
+    P1 := FV[T1[i] mod o];
+    P2 := FV[T2[i] mod o];
+    P3 := FV[T3[i] mod o];
+
+    skip := False;
+    case vp.ReduceMode of
+      0:
+      begin
+        skip := ((P1.Z >= +L) and (P2.Z >= +L) and (P3.Z >= +L)) or
+             ((P1.Z <= -L) and (P2.Z <= -L) and (P3.Z <= -L));
+      end;
+      1: skip := (P1.Z >= +L) and (P2.Z >= +L) and (P3.Z >= +L);
+      2: skip := (P1.Z <= -L) and (P2.Z <= -L) and (P3.Z <= -L);
+      3: skip := (Abs(P1.Z - P2.Z) < 0.001) and (Abs(P2.Z - P3.Z) < 0.001);
+    end;
+
+    { prevent holes in mesh near zero }
+    if Abs(P1.Z) < 0.001 then
+      skip := False;
+
+    if not skip then
+    begin
+      H1.Add(T1[i]);
+      H2.Add(T2[i]);
+      H3.Add(T3[i]);
+    end;
+  end;
+end;
+
 procedure TFederMeshBuilder.ResetGD;
 var
   i: Integer;
@@ -1946,6 +2570,39 @@ begin
   end;
 end;
 
+function TFederMeshBuilder.TestQuad(vq: TVertexQuad): Integer;
+var
+  qe: TQuadEdges;
+  cc: Integer;
+  cr: TVertexState;
+begin
+  qe := vq.GetEdges;
+
+  cc := CountCrossingsForEdge(qe.H1);
+  cc := cc + CountCrossingsForEdge(qe.V1);
+  cc := cc + CountCrossingsForEdge(qe.H2);
+  cc := cc + CountCrossingsForEdge(qe.V2);
+
+  result := cc;
+
+  cr := GD[vq.A0];
+  cr.QuadCrossings := cc;
+  GD[vq.A0] := cr;
+end;
+
+function TFederMeshBuilder.TestQuads: Boolean;
+var
+  vq: TVertexQuad;
+begin
+  result := False;
+
+  for vq in QA do
+  begin
+    if TestQuad(vq) > 1 then
+      result := True;
+  end;
+end;
+
 procedure TMeshBuilder.Update3DBuffers(VB: TVertexBuffer; IB: TIndexBuffer);
 begin
   UV.Clear;
@@ -1959,12 +2616,19 @@ begin
 
   if vp.WantLux and WantUniqueVertices then
   begin
+    JackMode := False;
     MakeUniqueVertices;
   end;
 
   UpdateVB(VB);
 
   UpdateTE(VB);
+
+  if JackMode then
+    InitJack(VB)
+
+  else if vp.ReducedMesh and WantBottomWhenReduced then
+    InitTexCoordBottom(VB);
 
   UpdateIB(IB);
 
@@ -1980,7 +2644,14 @@ begin
   CountI := sqr(vp.mc);
 
   vc := CountV;
-  ic := CountI * 2;
+
+  if vp.OpenMesh then
+    ic := CountI
+  else
+    ic := CountI * 2;
+
+  if vp.PolarMesh and not vp.OpenMesh then
+    ic := ic - vp.mc;
 
   UpdateSize(vc, ic);
 end;
@@ -1989,6 +2660,7 @@ procedure TFederMeshBuilder.UpdateFromMeshParams(vp: TMeshParams);
 begin
   WantUpdateTE := True;
   WantTexCoord := False;
+  WantNormals := False;
 
   WantFlippedHands := vp.WantFlippedHands;
   WantMirroredBottom := vp.WantMirroredBottom;
@@ -2014,6 +2686,57 @@ end;
 procedure TFederMeshBuilder.UpdateHandArea;
 begin
   PolyRack.Compute;
+end;
+
+procedure TFederMeshBuilder.UpdateIB(IB: TIndexBuffer);
+var
+  i, j, k: Integer;
+begin
+  if vp.ReducedMesh then
+  begin
+    if WantBottomWhenReduced then
+      IB.Length := H1.Count * 3 * 2
+    else
+      IB.Length := H1.Count * 3;
+    for i := 0 to H1.Count - 1 do
+    begin
+      j := i * 3;
+      if IsBottom then
+      begin
+        IB[j] := H1[i];
+        IB[j+1] := H3[i];
+        IB[j+2] := H2[i];
+      end
+      else
+      begin
+        IB[j] := H1[i];
+        IB[j+1] := H2[i];
+        IB[j+2] := H3[i];
+      end;
+    end;
+    if WantBottomWhenReduced then
+    begin
+      k := FV.Count;
+      for i := 0 to H1.Count - 1 do
+      begin
+        j := (H1.Count + i) * 3;
+        IB[j] := k + H1[i];
+        IB[j+2] := k + H2[i];
+        IB[j+1] := k + H3[i];
+      end;
+    end;
+  end
+  else
+  begin
+    IB.Length := T1.Count * 3;
+    for i := 0 to T1.Count - 1 do
+    begin
+      j := i * 3;
+      IB[j] := T1[i];
+      IB[j+1] := T2[i];
+      IB[j+2] := T3[i];
+    end;
+  end;
 end;
 
 procedure TFederMeshBuilder.UpdateSize(VBL, IBL: Integer);
@@ -2054,8 +2777,136 @@ begin
   TriangleCount := IBL;
 end;
 
+procedure TFederMeshBuilder.UpdateTE(VB: TVertexBuffer);
+var
+  i: Integer;
+  a1, b1, a2, b2: single;
+  u1, v1, u2, v2: single;
+  u, v: single;
+
+  pc: TPointF;
+  pf: TPointF;
+begin
+  if TextureJitt then
+    pc := TPointF.Create(0.99, 0.99)
+  else
+    pc := TPointF.Create(1.0, 1.0);
+
+  vp.InitTE;
+
+  for i := 0 to FV.Count - 1 do
+  begin
+    a1 := (FV[i].X + vp.te1) / vp.te2;
+    b1 := (FV[i].Z + vp.te1) / vp.te2;
+
+    a2 := (-FV[i].X + vp.te1) / vp.te2;
+    b2 := (-FV[i].Z + vp.te1) / vp.te2;
+
+    if vp.FlippedTexture then
+    begin
+      u1 := a2;
+      v1 := b2;
+      u2 := a1;
+      v2 := b1;
+    end
+    else
+    begin
+      u1 := a1;
+      v1 := b1;
+      u2 := a2;
+      v2 := b2;
+    end;
+
+    u := u1;
+    v := v1;
+    if vp.InvertedMesh then
+    begin
+      u := u1;
+      v := v2;
+      if vp.UprightMesh then
+      begin
+        u := u2;
+        v := v1;
+      end;
+    end;
+
+    if vp.UprightMesh then
+      pf := TPointF.Create(v, u)
+    else
+      pf := TPointF.Create(u, v);
+
+    { Texture Jitter }
+    if TextureJitt then
+      if i mod 6 = 0 then
+        pf := pf * pc;
+
+    VB.TexCoord0[i] := pf;
+  end;
+
+  vp.SaveTE;
+end;
+
 function TFederMeshBuilder.UpdateTrianglesQA(NI: Integer; vq: TVertexQuad): Integer;
 begin
+  { map triangles }
+  if vp.OpenMesh then
+  begin
+    if vp.PolarMesh then
+    begin
+      if vp.FuzzyMesh then
+      begin
+        T1[NI] := vq.A0;
+        T2[NI] := vq.A2;
+        T3[NI] := vq.A1;
+      end
+      else
+      begin
+        T1[NI] := vq.A1;
+        T2[NI] := vq.A3;
+        T3[NI] := vq.A2;
+      end;
+    end
+    else
+    begin
+      if vp.FuzzyMesh then
+      begin
+        T1[NI] := vq.A0;
+        T2[NI] := vq.A1;
+        T3[NI] := vq.A2;
+      end
+      else
+      begin
+        T1[NI] := vq.A1;
+        T2[NI] := vq.A2;
+        T3[NI] := vq.A3;
+      end;
+    end;
+    result := NI + 1;
+  end
+  else
+  begin
+    if vp.PolarMesh then
+    begin
+      if vq.Y = 0 then
+      begin
+        T1[NI] := vq.A1;
+        T2[NI] := vq.A3;
+        T3[NI] := vq.A2;
+        result := NI + 1;
+      end
+      else
+      begin
+        T1[NI] := vq.A1;
+        T2[NI] := vq.A3;
+        T3[NI] := vq.A2;
+        T1[NI+1] := vq.A3;
+        T2[NI+1] := vq.A1;
+        T3[NI+1] := vq.A0;
+        result := NI + 2;
+      end;
+    end
+    else
+    begin
       T1[NI] := vq.A1;
       T2[NI] := vq.A2;
       T3[NI] := vq.A3;
@@ -2063,6 +2914,46 @@ begin
       T2[NI+1] := vq.A0;
       T3[NI+1] := vq.A1;
       result := NI + 2;
+    end;
+  end;
+end;
+
+function TFederMeshBuilder.UpdateTrianglesQAForJack(NI: Integer; vq: TVertexQuad): Integer;
+var
+  o: Integer;
+begin
+  o := FV.Count;
+  { map triangles }
+  if vp.PolarMesh then
+  begin
+    if vq.Y = 0 then
+    begin
+      T1[NI] := vq.A1;
+      T2[NI] := vq.A3;
+      T3[NI] := vq.A2;
+      result := NI + 1;
+    end
+    else
+    begin
+      T1[NI] := vq.A1;
+      T2[NI] := vq.A3;
+      T3[NI] := vq.A2;
+      T1[NI+1] := vq.A3 + o;
+      T2[NI+1] := vq.A1 + o;
+      T3[NI+1] := vq.A0 + o;
+      result := NI + 2;
+    end;
+  end
+  else
+  begin
+    T1[NI] := vq.A1;
+    T2[NI] := vq.A2;
+    T3[NI] := vq.A3;
+    T1[NI+1] := vq.A3 + o;
+    T2[NI+1] := vq.A0 + o;
+    T3[NI+1] := vq.A1 + o;
+    result := NI + 2;
+  end;
 end;
 
 procedure TFederMeshBuilder.UpdateVB(VB: TVertexBuffer);
@@ -2070,7 +2961,12 @@ var
   i: Integer;
   p: TPoint3D;
 begin
-  VB.Length := FV.Count;
+  if vp.ReducedMesh and WantBottomWhenReduced then
+    VB.Length := FV.Count * 2
+  else if JackMode then
+    VB.Length := FV.Count * 2
+  else
+    VB.Length := FV.Count;
 
   { 1. Assign Vertices }
   for i := 0 to FV.Count - 1 do
@@ -2082,6 +2978,22 @@ begin
       TVertexOptionz.MirroredBottom: p.Z := vp.CapValue + (vp.CapValue - p.Z);
     end;
     VB.Vertices[i] := p;
+
+    if JackMode then
+    begin
+      { add duplicate vertice for Jack }
+      VB.Vertices[FV.Count + i] := FV[i];
+    end
+    else if vp.ReducedMesh and WantBottomWhenReduced then
+    begin
+      { add bottom vertices }
+      p := FV[i];
+      if WantMirroredBottom then
+        p.Z := vp.CapValue + (vp.CapValue - p.Z)
+      else
+        p.Z := vp.CapValue;
+      VB.Vertices[FV.Count + i] := p;
+    end;
   end;
 end;
 

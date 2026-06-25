@@ -278,6 +278,8 @@ begin
     faBandSelection21: result := 'faBandSelection21';
 
     { MeshMode }
+    faOpenMesh: result := 'faOpenMesh';
+    faPolarMesh: result := 'faPolarMesh';
     faReducedMesh: result := 'faReducedMesh';
     faReduceMode0: result := 'faReduceMode0';
     faReduceMode1: result := 'faReduceMode1';
@@ -294,6 +296,7 @@ begin
     faMeshSize256: result := 'faMeshSize256';
     faMeshSize316: result := 'faMeshSize316';
     faMeshSize512: result := 'faMeshSize512';
+    faMeshSize1024: result := 'faMeshSize1024';
 
     { MeshExport }
     faWantBottom: result := 'faWantBottom';
@@ -307,6 +310,10 @@ begin
     faExportCoordsBlender: result := 'faExportCoordsBlender';
     faExportCoords3DV: result := 'faExportCoords3DV';
     faExportCoords3DP: result := 'faExportCoords3DP';
+
+    { MeshOptions }
+    faTextureJitt: result := 'faTextureJitt';
+    faTextureJack: result := 'faTextureJack';
 
     { ExporterOBJ }
     faWantAutoFolder: result := 'faWantAutoFolder';
@@ -340,6 +347,7 @@ begin
     faToggleSlicePulling: result := 'faToggleSlicePulling';
     faToggleTargetPulling: result := 'faToggleTargetPulling';
     faToggleRightPulling: result := 'faToggleRightPulling';
+    faToggleCrackFixing: result := 'faToggleCrackFixing';
 
     { MeshBuilderOptions }
     faToggleSolidFlip: result := 'faToggleSolidFlip';
@@ -349,9 +357,29 @@ begin
     faUniqueMode2: result := 'faUniqueMode2';
     faToggleUniqueVertices: result := 'faToggleUniqueVertices';
 
+    { Pin }
+    faTogglePin: result := 'faTogglePin';
+    faPinOn: result := 'faPinOn';
+    faPinOff: result := 'faPinOff';
+
+    { Norm }
+    faToggleNorm: result := 'faToggleNorm';
+    faNormOn: result := 'faNormOn';
+    faNormOff: result := 'faNormOff';
+
+    { TextureNorm }
+    faTextureNormP: result := 'faTextureNormP';
+    faTextureNormM: result := 'faTextureNormM';
+    faTextureNorm0: result := 'faTextureNorm0';
+    faTextureNorm1: result := 'faTextureNorm1';
+    faTextureNorm2: result := 'faTextureNorm2';
+
     { TextureExport }
     faCopyBinCode: result := 'faCopyBinCode';
     faCopyBinCodeTest: result := 'faCopyBinCodeTest';
+
+    { TextureImport }
+    faTextureClear: result := 'faTextureClear';
 
     { ColorMix }
     faColorMix0: result := 'faColorMix0';

@@ -10,6 +10,7 @@ uses
   FrmImage in 'App\FrmImage.pas' {FormImage},
   RiggVar.App.Main in 'App\RiggVar.App.Main.pas',
   RiggVar.App.Main0 in 'App\RiggVar.App.Main0.pas',
+  RiggVar.App.OpenSave in 'App\RiggVar.App.OpenSave.pas',
   RiggVar.Bitmap.Bands in 'Bitmap\RiggVar.Bitmap.Bands.pas',
   RiggVar.Bitmap.Bands01 in 'Bitmap\RiggVar.Bitmap.Bands01.pas',
   RiggVar.Bitmap.Bitmap00 in 'Bitmap\RiggVar.Bitmap.Bitmap00.pas',
@@ -133,7 +134,7 @@ begin
   if Assigned(Application) then
   begin
     Application.Initialize;
-    Application.Title := 'FC91K';
+    Application.Title := 'FC91H';
     Application.CreateForm(TFormMain, FormMain);
     Application.Run;
   end;

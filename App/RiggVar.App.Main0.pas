@@ -3,7 +3,7 @@
 (*
 -
 -     F
--    * *  *
+-    * * *
 -   *   *   G
 -  *     * *   *
 - E - - - H - - - I
@@ -42,6 +42,7 @@ uses
   FMX.Viewport3D,
   FMX.Objects,
   FMX.MaterialSources,
+  RiggVar.App.OpenSave,
   RiggVar.Bitmap.Bitmap02,
   RiggVar.Bitmap.Texture,
   RiggVar.EQ.Model,
@@ -141,6 +142,7 @@ type
     function GetColorPanelColor: TAlphaColor;
     function GetColorScheme: Integer;
     function GetCoordMode: Boolean;
+    function GetCrackFixing: Boolean;
     function GetCurrentParam: TFederParam;
     function GetDetailPulling: Boolean;
     function GetDim: Integer;
@@ -204,6 +206,11 @@ type
     function GetSolutionMode: Boolean;
     function GetStripColor: TAlphaColor;
     function GetTargetPulling: Boolean;
+    function GetTextureJack: Boolean;
+    function GetTextureJitt: Boolean;
+    function GetTextureMidd: Boolean;
+    function GetTextureOption: Integer;
+    function GetTextureVert: Boolean;
     function GetTransitBarLayout: Integer;
     function GetUprightMesh: Boolean;
     function GetViewParamValue(fp: TFederParam): single;
@@ -226,6 +233,7 @@ type
     procedure SetColor(const Value: Integer);
     procedure SetColorPanelColor(const Value: TAlphaColor);
     procedure SetColorScheme(const Value: Integer);
+    procedure SetCrackFixing(const Value: Boolean);
     procedure SetCurrentCoord(const Value: Integer);
     procedure SetCurrentLight(const Value: Integer);
     procedure SetCurrentRing(const Value: Integer);
@@ -276,6 +284,11 @@ type
     procedure SetSolidPartVisible(const Value: Boolean);
     procedure SetSolutionMode(const Value: Boolean);
     procedure SetTargetPulling(const Value: Boolean);
+    procedure SetTextureJack(const Value: Boolean);
+    procedure SetTextureJitt(const Value: Boolean);
+    procedure SetTextureMidd(const Value: Boolean);
+    procedure SetTextureOption(const Value: Integer);
+    procedure SetTextureVert(const Value: Boolean);
     procedure SetTouch(const Value: Integer);
     procedure SetTransitBarLayout(const Value: Integer);
     procedure SetUpdateReason(const Value: TUpdateReason);
@@ -525,6 +538,7 @@ type
     procedure ModifyTrackbar(NewValue: single);
     procedure OnChangeParam(Sender: TObject);
     procedure OpacityChanged(NewValue: Boolean);
+    procedure OpenBundle;
     procedure OpenMeshChanged(NewValue: Boolean);
     procedure OptionChanged(fmk: TFederMessageKind; NewValue: Boolean);
     procedure ParamChanged(NewItemIndex: Integer);
@@ -568,6 +582,7 @@ type
     procedure ToggleColorPanel;
     procedure ToggleContourPixel;
     procedure ToggleCoordMode(Value: Integer);
+    procedure ToggleCrackFixing;
     procedure ToggleDiff(Value: Integer);
     procedure ToggleFlippedTexture;
     procedure ToggleLabelBatch(Value: Integer);
@@ -592,6 +607,10 @@ type
     procedure ToggleSpecialY;
     procedure ToggleSlicePulling(AMode: Integer);
     procedure ToggleTargetPulling;
+    procedure ToggleTextureJack;
+    procedure ToggleTextureJitt;
+    procedure ToggleTextureOption(Value: Integer);
+    procedure ToggleTextureVert;
     procedure ToggleUniqueMode(Value: Integer);
     procedure ToggleUniqueVertices;
     procedure ToggleZeroPulling;
@@ -654,6 +673,7 @@ type
     property ColorPanelColor: TAlphaColor read GetColorPanelColor write SetColorPanelColor;
     property ColorScheme: Integer read GetColorScheme write SetColorScheme;
     property CoordMode: Boolean read GetCoordMode;
+    property CrackFixing: Boolean read GetCrackFixing write SetCrackFixing;
     property CurrentCoord: Integer read FCurrentCoord write SetCurrentCoord;
     property CurrentLight: Integer read FCurrentLight write SetCurrentLight;
     property CurrentParam: TFederParam read GetCurrentParam;
@@ -736,6 +756,11 @@ type
     property SolutionMode: Boolean read GetSolutionMode write SetSolutionMode;
     property StripColor: TAlphaColor read GetStripColor;
     property TargetPulling: Boolean read GetTargetPulling write SetTargetPulling;
+    property TextureJack: Boolean read GetTextureJack write SetTextureJack;
+    property TextureJitt: Boolean read GetTextureJitt write SetTextureJitt;
+    property TextureMidd: Boolean read GetTextureMidd write SetTextureMidd;
+    property TextureOption: Integer read GetTextureOption write SetTextureOption;
+    property TextureVert: Boolean read GetTextureVert write SetTextureVert;
     property Touch: Integer read FTouch write SetTouch;
     property TransitBarLayout: Integer read GetTransitBarLayout write SetTransitBarLayout;
     property UpdateReason: TUpdateReason write SetUpdateReason;
@@ -997,7 +1022,7 @@ begin
   if IsRetina then
     r := Rect(0, 0, Round(Viewport.Width * rs), Round(Viewport.Height * rs))
   else
-  r := Rect(0, 0, Round(Viewport.Width), Round(Viewport.Height));
+    r := Rect(0, 0, Round(Viewport.Width), Round(Viewport.Height));
   bmp := TBitmap.Create(r.Width, r.Height);
   CopyToBitmap(bmp, r);
   BitmapCache.UpdateBitmap(bmp);
@@ -2022,7 +2047,7 @@ end;
 
 function TMain0.GetChecked(fa: TFederAction): Boolean;
 begin
-   result := False;
+  result := False;
   case fa of
     faNoop: ;
     faSwapBundle: result := SampleManager.BundleID = 1;
@@ -2047,6 +2072,11 @@ end;
 function TMain0.GetCoordMode: Boolean;
 begin
   result := CurrentCoord > 0;
+end;
+
+function TMain0.GetCrackFixing: Boolean;
+begin
+  result := TFederMeshBuilder.WantCrackFixingWhenPolar;
 end;
 
 function TMain0.GetCurrentParam: TFederParam;
@@ -2448,6 +2478,31 @@ begin
   result := MeshBuilder.WantTargetPulling;
 end;
 
+function TMain0.GetTextureJack: Boolean;
+begin
+  result := MeshBuilder.TextureJack;
+end;
+
+function TMain0.GetTextureJitt: Boolean;
+begin
+  result := MeshBuilder.TextureJitt;
+end;
+
+function TMain0.GetTextureMidd: Boolean;
+begin
+  result := MeshBuilder.TextureMidd;
+end;
+
+function TMain0.GetTextureOption: Integer;
+begin
+  result := MeshBuilder.TextureOption;
+end;
+
+function TMain0.GetTextureVert: Boolean;
+begin
+  result := MeshBuilder.TextureVert;
+end;
+
 function TMain0.GetTransitBarLayout: Integer;
 begin
   if Assigned(FederText) then
@@ -2741,6 +2796,7 @@ begin
   MappedReports := TList<TReportPage>.Create;
   cl := MappedReports;
   cl.AddRange([
+    rpZoomInfo,
     rpRingInfo,
     rpColorMapping,
     rpSelectedColors,
@@ -3211,6 +3267,25 @@ begin
   end;
 end;
 
+procedure TMain0.OpenBundle;
+var
+  os: TOpenSave;
+  fn: string;
+begin
+  os := TOpenSaveText.Create;
+  try
+    os.Open;
+    fn := os.FileName;
+    if fn <> '' then
+    begin
+      FL.LoadFromFile(fn);
+      SampleManager.ReadCSV(FL);
+    end;
+  finally
+    os.Free;
+  end;
+end;
+
 procedure TMain0.OpenMeshChanged(NewValue: Boolean);
 begin
   if not Resetting then
@@ -3257,7 +3332,7 @@ begin
   begin
     if FederModel <> nil then
     begin
-      FederModel.ParamValue := NewValue;
+        FederModel.ParamValue := NewValue;
 
       if not (Loading or FParamChanging or FKoordChanging) then
       begin
@@ -3623,6 +3698,12 @@ begin
   end;
 end;
 
+procedure TMain0.SetCrackFixing(const Value: Boolean);
+begin
+  TFederMeshBuilder.WantCrackFixingWhenPolar := Value;
+  UpdateMesh;
+end;
+
 procedure TMain0.SetCurrentCoord(const Value: Integer);
 begin
   FCurrentCoord := Value;
@@ -3942,6 +4023,36 @@ begin
   UpdateMesh;
 end;
 
+procedure TMain0.SetTextureJack(const Value: Boolean);
+begin
+  MeshBuilder.TextureJack := Value;
+  UpdateMesh;
+end;
+
+procedure TMain0.SetTextureJitt(const Value: Boolean);
+begin
+  MeshBuilder.TextureJitt := Value;
+  UpdateMesh;
+end;
+
+procedure TMain0.SetTextureMidd(const Value: Boolean);
+begin
+  MeshBuilder.TextureMidd := Value;
+  UpdateMesh;
+end;
+
+procedure TMain0.SetTextureOption(const Value: Integer);
+begin
+  MeshBuilder.TextureOption := Value;
+  UpdateMesh;
+end;
+
+procedure TMain0.SetTextureVert(const Value: Boolean);
+begin
+  MeshBuilder.TextureVert := Value;
+  UpdateMesh;
+end;
+
 procedure TMain0.SetTouch(const Value: Integer);
 begin
   FTouch := Value;
@@ -4102,6 +4213,11 @@ begin
   CurrentCoord := Value;
 end;
 
+procedure TMain0.ToggleCrackFixing;
+begin
+  CrackFixing := not CrackFixing;
+end;
+
 procedure TMain0.ToggleDiff(Value: Integer);
 begin
   case Value of
@@ -4246,6 +4362,26 @@ end;
 procedure TMain0.ToggleTargetPulling;
 begin
   TargetPulling := not TargetPulling;
+end;
+
+procedure TMain0.ToggleTextureJack;
+begin
+  TextureJack := not TextureJack;
+end;
+
+procedure TMain0.ToggleTextureJitt;
+begin
+  TextureJitt := not TextureJitt;
+end;
+
+procedure TMain0.ToggleTextureOption(Value: Integer);
+begin
+  TextureOption := Value;
+end;
+
+procedure TMain0.ToggleTextureVert;
+begin
+  TextureVert := not TextureVert;
 end;
 
 procedure TMain0.ToggleUniqueMode(Value: Integer);
@@ -4418,9 +4554,9 @@ begin
     TD.MilliesLine :=
     Format('%d Millies ~ ', [InitDataMillies]) +
     IntToStr(CounterInitData) + ' InitData ~ ' +
-      IntToStr(CounterDrawing3D) + ' Drawing ~ ' +
-      IntToStr(CounterTextUpdate) + ' Text ~ ' +
-      IntToStr(CounterCheckState) + ' Check';
+    IntToStr(CounterDrawing3D) + ' Drawing ~ ' +
+    IntToStr(CounterTextUpdate) + ' Text ~ ' +
+    IntToStr(CounterCheckState) + ' Check';
   end
   else
   begin

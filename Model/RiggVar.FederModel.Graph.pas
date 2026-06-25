@@ -51,6 +51,7 @@ type
   TFederSceneOne = class(TFederSceneBase)
   private
     FNewBitmap: Integer;
+    FWantExternalBitmap: Boolean;
 
     FStatusText: string;
     cP: char;
@@ -59,6 +60,7 @@ type
     cO: char;
     cR: char;
 
+    procedure SetWantExternalBitmap(const Value: Boolean);
     function CurrentLightMarker(Value: Integer): Char;
     function GetInitDataOK: Boolean;
     procedure SetInitDataOK(const Value: Boolean);
@@ -66,6 +68,7 @@ type
     procedure UpdateMeshStatus;
     procedure AssignBitmap;
     function GetFederMesh: TFederMesh;
+    property WantExternalBitmap: Boolean read FWantExternalBitmap write SetWantExternalBitmap;
   protected
     ModelParent: TControl3D;
     ModelOwner: TComponent;
@@ -224,6 +227,7 @@ type
     procedure GetLightInfo(SL: TStrings); override;
 
     procedure InitGraph(BitmapIndex: Integer); override;
+    procedure CloseTexture; override;
     procedure SaveToFederData(fd: TFederData); override;
     procedure LoadFromFederData(fd: TFederData); override;
 
@@ -1318,6 +1322,11 @@ begin
   ModulateColor;
 end;
 
+procedure TFederSceneOne.SetWantExternalBitmap(const Value: Boolean);
+begin
+  FWantExternalBitmap := Value;
+end;
+
 procedure TFederSceneOne.SetWantLux(const Value: Boolean);
 begin
   FWantLux := Value;
@@ -1340,6 +1349,11 @@ begin
     Main.InitData(nil);
   end;
   BlockInitDataOnce := False;
+end;
+
+procedure TFederSceneOne.CloseTexture;
+begin
+  WantExternalBitmap := False;
 end;
 
 procedure TFederSceneOne.InitGraph(BitmapIndex: Integer);

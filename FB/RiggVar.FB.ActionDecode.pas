@@ -282,6 +282,8 @@ begin
     fagBandSelection21: result := faBandSelection21;
 
     { MeshMode }
+    fagOpenMesh: result := faOpenMesh;
+    fagPolarMesh: result := faPolarMesh;
     fagReducedMesh: result := faReducedMesh;
     fagReduceMode0: result := faReduceMode0;
     fagReduceMode1: result := faReduceMode1;
@@ -298,6 +300,7 @@ begin
     fagMeshSize256: result := faMeshSize256;
     fagMeshSize316: result := faMeshSize316;
     fagMeshSize512: result := faMeshSize512;
+    fagMeshSize1024: result := faMeshSize1024;
 
     { MeshExport }
     fagWantBottom: result := faWantBottom;
@@ -311,6 +314,10 @@ begin
     fagExportCoordsBlender: result := faExportCoordsBlender;
     fagExportCoords3DV: result := faExportCoords3DV;
     fagExportCoords3DP: result := faExportCoords3DP;
+
+    { MeshOptions }
+    fagTextureJitt: result := faTextureJitt;
+    fagTextureJack: result := faTextureJack;
 
     { ExporterOBJ }
     fagWantAutoFolder: result := faWantAutoFolder;
@@ -344,6 +351,7 @@ begin
     fagToggleSlicePulling: result := faToggleSlicePulling;
     fagToggleTargetPulling: result := faToggleTargetPulling;
     fagToggleRightPulling: result := faToggleRightPulling;
+    fagToggleCrackFixing: result := faToggleCrackFixing;
 
     { MeshBuilderOptions }
     fagToggleSolidFlip: result := faToggleSolidFlip;
@@ -353,9 +361,29 @@ begin
     fagUniqueMode2: result := faUniqueMode2;
     fagToggleUniqueVertices: result := faToggleUniqueVertices;
 
+    { Pin }
+    fagTogglePin: result := faTogglePin;
+    fagPinOn: result := faPinOn;
+    fagPinOff: result := faPinOff;
+
+    { Norm }
+    fagToggleNorm: result := faToggleNorm;
+    fagNormOn: result := faNormOn;
+    fagNormOff: result := faNormOff;
+
+    { TextureNorm }
+    fagTextureNormP: result := faTextureNormP;
+    fagTextureNormM: result := faTextureNormM;
+    fagTextureNorm0: result := faTextureNorm0;
+    fagTextureNorm1: result := faTextureNorm1;
+    fagTextureNorm2: result := faTextureNorm2;
+
     { TextureExport }
     fagCopyBinCode: result := faCopyBinCode;
     fagCopyBinCodeTest: result := faCopyBinCodeTest;
+
+    { TextureImport }
+    fagTextureClear: result := faTextureClear;
 
     { ColorMix }
     fagColorMix0: result := faColorMix0;

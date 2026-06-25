@@ -126,12 +126,12 @@ begin
     2:
     begin
       result.Caption := 'Band Params and Options';
-      InitA(0, faParamCZ);
+      InitA(0, faBandWidthAbsolute);
       InitA(1, faBandWidthRelative);
-      InitA(2, faParamBandSelected);
+      InitA(2, faBandWidthContour);
       InitA(3, faNoop);
-      InitA(4, faToggleContour);
-      InitA(5, faShowCurrentBandT);
+      InitA(4, faNoop);
+      InitA(5, faParamBandSelected);
     end;
 
     3:
@@ -254,7 +254,7 @@ begin
       InitA(2, faReduceMode2);
       InitA(3, faReduceMode3);
       InitA(4, faReducedMesh);
-      InitA(5, faNoop);
+      InitA(5, faOpenMesh);
     end;
 
     14:
@@ -265,7 +265,7 @@ begin
       InitA(2, faToggleParamLock);
       InitA(3, faToggleLuxLock);
       InitA(4, faToggleForceLock);
-      InitA(5, faNoop);
+      InitA(5, faTextureClear);
     end;
 
     15:

@@ -18,7 +18,7 @@
 
 interface
 
-{.$define WantSpecialImage}
+{$define WantSpecialImage}
 
 uses
   System.UIConsts,

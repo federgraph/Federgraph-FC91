@@ -70,6 +70,7 @@ type
     procedure ApplicationEventsException(Sender: TObject; E: Exception);
     procedure ApplicationEventsIdle(Sender: TObject; var Done: Boolean);
     procedure BambuBtnClick(Sender: TObject);
+    procedure CheckFormBounds(AForm: TForm);
     procedure ColorBtnClick(Sender: TObject);
     procedure ColorPanelChange(Sender: TObject);
     procedure CreateColorPanel;
@@ -218,7 +219,7 @@ begin
         end;
       end;
     end;
-      end;
+  end;
   Done := True;
 end;
 
@@ -230,6 +231,18 @@ begin
   end;
   FormBambu.Visible := True;
   FormBambu.Activate;
+end;
+
+procedure TFormMain.CheckFormBounds(AForm: TForm);
+begin
+  if Screen.Height <= 768 then
+    AForm.Top := 0;
+  if Screen.Width <= 768 then
+    AForm.Left := 0;
+  if AForm.Left + AForm.Width > Screen.WorkAreaWidth then
+    AForm.Width := Round(Screen.WorkAreaWidth) - AForm.Left;
+  if AForm.Top + AForm.Height > Screen.WorkAreaHeight then
+    AForm.Height := Round(Screen.WorkAreaHeight) - AForm.Top;
 end;
 
 procedure TFormMain.ColorBtnClick(Sender: TObject);
@@ -651,6 +664,7 @@ begin
   MainMenu.AddObject(MenuItem);
 
   InitFormat;
+  CheckFormBounds(Self);
 
   FormatSettings.DecimalSeparator := '.';
   Caption := UpperCase(Application.Title);
@@ -731,11 +745,11 @@ begin
   Application.OnHint := HandleShowHint;
 
   UpdateMenu;
-//  InitFormat; // again, so that it works with wrapped MainMenu
+  InitFormat; // again, so that it works with wrapped MainMenu
 
 //  Main.ActionHandler.Execute(faReset);
 
-//  Main.ActionHandler.Execute(faToggleColorPanel);
+  Main.ActionHandler.Execute(faToggleColorPanel);
   Main.ActionHandler.Execute(faToggleColorSwat);
 //  Main.ActionHandler.Execute(faResetRotation);
 
@@ -811,7 +825,7 @@ begin
         3:
         begin
           { iPhone 4+5 (4 Inch): 640 x 1136 }
-          ClientWidth := 320;
+      ClientWidth := 320;
           ClientHeight := 667;
         end;
 
@@ -819,7 +833,7 @@ begin
         begin
           { iPhone 6 (4.7 Inch): 750 x 1334 }
           ClientWidth := 375;
-          ClientHeight := 548;
+      ClientHeight := 548;
         end;
 
         5:
@@ -856,7 +870,7 @@ begin
     begin
       ClientWidth := 1200;
       ClientHeight := 800;
-  end;
+    end;
   end;
 end;
 
@@ -1180,7 +1194,7 @@ begin
       CheckerImage.Position.Y := Viewport.Position.Y;
       CheckerImage.Width := Viewport.Width;
       CheckerImage.Height := Viewport.Height;
-    end;
+   end;
 
     2:
     begin
@@ -1361,7 +1375,7 @@ begin
       l.Width := cw2;
       l.Height := ch2;
       l.SendToBack;
-  end;
+    end;
 
     DisloBL:
     begin

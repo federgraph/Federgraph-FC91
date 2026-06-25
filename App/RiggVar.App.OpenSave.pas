@@ -105,8 +105,6 @@ type
   end;
 
   TOpenOBJ = class(TOpenSave)
-  protected
-    procedure DoOpen; override;
   public
     constructor Create;
   end;
@@ -122,9 +120,6 @@ var
   FederMeshFilterOpen: string = 'FederMesh|*.obj';
 
 implementation
-
-uses
-  FrmMain;
 
 { TOpenSave }
 
@@ -420,11 +415,6 @@ begin
   OpenFilterText := FederMeshFilterOpen;
 
   FilterBuilder.Free;
-end;
-
-procedure TOpenOBJ.DoOpen;
-begin
-  FormMain.UpdateMesh;
 end;
 
 end.

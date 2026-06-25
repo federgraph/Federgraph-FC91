@@ -271,562 +271,590 @@ const
   faBandSelection21 = 193;
 
   { MeshMode }
-  faReducedMesh = 194;
-  faReduceMode0 = 195;
-  faReduceMode1 = 196;
-  faReduceMode2 = 197;
-  faReduceMode3 = 198;
+  faOpenMesh = 194;
+  faPolarMesh = 195;
+  faReducedMesh = 196;
+  faReduceMode0 = 197;
+  faReduceMode1 = 198;
+  faReduceMode2 = 199;
+  faReduceMode3 = 200;
 
   { MeshSize }
-  faMeshSize4 = 199;
-  faMeshSize8 = 200;
-  faMeshSize16 = 201;
-  faMeshSize32 = 202;
-  faMeshSize64 = 203;
-  faMeshSize128 = 204;
-  faMeshSize256 = 205;
-  faMeshSize316 = 206;
-  faMeshSize512 = 207;
+  faMeshSize4 = 201;
+  faMeshSize8 = 202;
+  faMeshSize16 = 203;
+  faMeshSize32 = 204;
+  faMeshSize64 = 205;
+  faMeshSize128 = 206;
+  faMeshSize256 = 207;
+  faMeshSize316 = 208;
+  faMeshSize512 = 209;
+  faMeshSize1024 = 210;
 
   { MeshExport }
-  faWantBottom = 208;
-  faWantBottomMirrored = 209;
-  faWantSideCaps = 210;
-  faTestSingleSide = 211;
-  faTakeCapValueSnapshot = 212;
+  faWantBottom = 211;
+  faWantBottomMirrored = 212;
+  faWantSideCaps = 213;
+  faTestSingleSide = 214;
+  faTakeCapValueSnapshot = 215;
 
   { MeshExportCoords }
-  faExportCoordsNative = 213;
-  faExportCoordsBlender = 214;
-  faExportCoords3DV = 215;
-  faExportCoords3DP = 216;
+  faExportCoordsNative = 216;
+  faExportCoordsBlender = 217;
+  faExportCoords3DV = 218;
+  faExportCoords3DP = 219;
+
+  { MeshOptions }
+  faTextureJitt = 220;
+  faTextureJack = 221;
 
   { ExporterOBJ }
-  faWantAutoFolder = 217;
-  faExportMtl = 218;
-  faExportObj = 219;
-  faWantMaterial = 220;
-  faWantSimpleName = 221;
-  faWantAngularDir = 222;
-  faWantNormals = 223;
-  faWantUVs = 224;
-  faObjDigits2 = 225;
-  faObjDigits3 = 226;
-  faObjDigits4 = 227;
-  faObjDigits5 = 228;
+  faWantAutoFolder = 222;
+  faExportMtl = 223;
+  faExportObj = 224;
+  faWantMaterial = 225;
+  faWantSimpleName = 226;
+  faWantAngularDir = 227;
+  faWantNormals = 228;
+  faWantUVs = 229;
+  faObjDigits2 = 230;
+  faObjDigits3 = 231;
+  faObjDigits4 = 232;
+  faObjDigits5 = 233;
 
   { MeshFigures }
-  faToggleMarker = 229;
-  faToggleGrid = 230;
-  faToggleGridFrequency = 231;
-  faToggleDiameter3 = 232;
-  faDiameter3On = 233;
-  faDiameter3Off = 234;
-  faToggleCylinder = 235;
-  faToggleCube = 236;
-  faToggleCorner = 237;
-  faToggleLimitPlane = 238;
+  faToggleMarker = 234;
+  faToggleGrid = 235;
+  faToggleGridFrequency = 236;
+  faToggleDiameter3 = 237;
+  faDiameter3On = 238;
+  faDiameter3Off = 239;
+  faToggleCylinder = 240;
+  faToggleCube = 241;
+  faToggleCorner = 242;
+  faToggleLimitPlane = 243;
 
   { VertexPulling }
-  faToggleZeroPulling = 239;
-  faToggleLimitPulling = 240;
-  faToggleSlicePulling = 241;
-  faToggleTargetPulling = 242;
-  faToggleRightPulling = 243;
+  faToggleZeroPulling = 244;
+  faToggleLimitPulling = 245;
+  faToggleSlicePulling = 246;
+  faToggleTargetPulling = 247;
+  faToggleRightPulling = 248;
+  faToggleCrackFixing = 249;
 
   { MeshBuilderOptions }
-  faToggleSolidFlip = 244;
-  faWantSpecialY = 245;
-  faToggleShowEdges = 246;
-  faUniqueMode1 = 247;
-  faUniqueMode2 = 248;
-  faToggleUniqueVertices = 249;
+  faToggleSolidFlip = 250;
+  faWantSpecialY = 251;
+  faToggleShowEdges = 252;
+  faUniqueMode1 = 253;
+  faUniqueMode2 = 254;
+  faToggleUniqueVertices = 255;
+
+  { Pin }
+  faTogglePin = 256;
+  faPinOn = 257;
+  faPinOff = 258;
+
+  { Norm }
+  faToggleNorm = 259;
+  faNormOn = 260;
+  faNormOff = 261;
+
+  { TextureNorm }
+  faTextureNormP = 262;
+  faTextureNormM = 263;
+  faTextureNorm0 = 264;
+  faTextureNorm1 = 265;
+  faTextureNorm2 = 266;
 
   { TextureExport }
-  faCopyBinCode = 250;
-  faCopyBinCodeTest = 251;
+  faCopyBinCode = 267;
+  faCopyBinCodeTest = 268;
+
+  { TextureImport }
+  faTextureClear = 269;
 
   { ColorMix }
-  faColorMix0 = 252;
-  faColorMix1 = 253;
-  faColorMix2 = 254;
-  faColorMix3 = 255;
-  faColorMix4 = 256;
-  faColorMix5 = 257;
-  faColorMixP = 258;
-  faColorMixM = 259;
+  faColorMix0 = 270;
+  faColorMix1 = 271;
+  faColorMix2 = 272;
+  faColorMix3 = 273;
+  faColorMix4 = 274;
+  faColorMix5 = 275;
+  faColorMixP = 276;
+  faColorMixM = 277;
 
   { ColorSwat }
-  faToggleColorSwat = 260;
+  faToggleColorSwat = 278;
 
   { Lux }
-  faLux1On = 261;
-  faLux1Off = 262;
-  faToggleLux1 = 263;
-  faLux2On = 264;
-  faLux2Off = 265;
-  faToggleLux2 = 266;
-  faLux3On = 267;
-  faLux3Off = 268;
-  faToggleLux3 = 269;
-  faLux4On = 270;
-  faLux4Off = 271;
-  faToggleLux4 = 272;
-  faLuxOn = 273;
-  faLuxOff = 274;
-  faToggleLux = 275;
+  faLux1On = 279;
+  faLux1Off = 280;
+  faToggleLux1 = 281;
+  faLux2On = 282;
+  faLux2Off = 283;
+  faToggleLux2 = 284;
+  faLux3On = 285;
+  faLux3Off = 286;
+  faToggleLux3 = 287;
+  faLux4On = 288;
+  faLux4Off = 289;
+  faToggleLux4 = 290;
+  faLuxOn = 291;
+  faLuxOff = 292;
+  faToggleLux = 293;
 
   { LuxMarker }
-  faLuxMarkerOn = 276;
-  faLuxMarkerOff = 277;
-  faToggleLuxMarker = 278;
+  faLuxMarkerOn = 294;
+  faLuxMarkerOff = 295;
+  faToggleLuxMarker = 296;
 
   { LightMode }
-  faLightMode0 = 279;
-  faLightMode1 = 280;
-  faLightMode2 = 281;
-  faLightMode3 = 282;
-  faLightMode4 = 283;
+  faLightMode0 = 297;
+  faLightMode1 = 298;
+  faLightMode2 = 299;
+  faLightMode3 = 300;
+  faLightMode4 = 301;
 
   { ResetLight }
-  faResetLightPosition = 284;
-  faResetLightParams = 285;
+  faResetLightPosition = 302;
+  faResetLightParams = 303;
 
   { Wheel }
-  faParamValuePlus1 = 286;
-  faParamValueMinus1 = 287;
-  faParamValuePlus10 = 288;
-  faParamValueMinus10 = 289;
-  faWheelLeft = 290;
-  faWheelRight = 291;
-  faWheelDown = 292;
-  faWheelUp = 293;
+  faParamValuePlus1 = 304;
+  faParamValueMinus1 = 305;
+  faParamValuePlus10 = 306;
+  faParamValueMinus10 = 307;
+  faWheelLeft = 308;
+  faWheelRight = 309;
+  faWheelDown = 310;
+  faWheelUp = 311;
 
   { WheelFrequency }
-  faWheelFrequency1 = 294;
-  faWheelFrequency05 = 295;
-  faWheelFrequency02 = 296;
-  faWheelFrequency01 = 297;
-  faWheelFrequency001 = 298;
-  faWheelFrequency0001 = 299;
+  faWheelFrequency1 = 312;
+  faWheelFrequency05 = 313;
+  faWheelFrequency02 = 314;
+  faWheelFrequency01 = 315;
+  faWheelFrequency001 = 316;
+  faWheelFrequency0001 = 317;
 
   { ColorScheme }
-  faCycleColorSchemeM = 300;
-  faCycleColorSchemeP = 301;
+  faCycleColorSchemeM = 318;
+  faCycleColorSchemeP = 319;
 
   { Step }
-  faStepRXM = 302;
-  faStepRXP = 303;
-  faStepRYM = 304;
-  faStepRYP = 305;
-  faStepRZM = 306;
-  faStepRZP = 307;
-  faStepCZM = 308;
-  faStepCZP = 309;
+  faStepRXM = 320;
+  faStepRXP = 321;
+  faStepRYM = 322;
+  faStepRYP = 323;
+  faStepRZM = 324;
+  faStepRZP = 325;
+  faStepCZM = 326;
+  faStepCZP = 327;
 
   { UI }
-  faToggleColorPanel = 310;
-  faColorPanelOn = 311;
-  faColorPanelOff = 312;
-  faPaletteOn = 313;
-  faPaletteOff = 314;
+  faToggleColorPanel = 328;
+  faColorPanelOn = 329;
+  faColorPanelOff = 330;
+  faPaletteOn = 331;
+  faPaletteOff = 332;
 
   { Locks }
-  faToggleLuxLock = 315;
-  faToggleParamLock = 316;
-  faToggleTextureLock = 317;
-  faToggleBackgroundLock = 318;
-  faToggleForceLock = 319;
-  faToggleReportLock = 320;
+  faToggleLuxLock = 333;
+  faToggleParamLock = 334;
+  faToggleTextureLock = 335;
+  faToggleBackgroundLock = 336;
+  faToggleForceLock = 337;
+  faToggleReportLock = 338;
 
   { Opacity }
-  faToggleOpacity = 321;
-  faOpacityOn = 322;
-  faOpacityOff = 323;
+  faToggleOpacity = 339;
+  faOpacityOn = 340;
+  faOpacityOff = 341;
 
   { FederText }
-  faToggleAllText = 324;
-  faToggleTouchFrame = 325;
+  faToggleAllText = 342;
+  faToggleTouchFrame = 343;
 
   { ViewParams }
-  faPan = 326;
-  faParamRX = 327;
-  faParamRY = 328;
-  faParamRZ = 329;
-  faParamCZ = 330;
+  faPan = 344;
+  faParamRX = 345;
+  faParamRY = 346;
+  faParamRZ = 347;
+  faParamCZ = 348;
 
   { ViewParamsFC }
-  faParamTRS = 331;
-  faParamTRT = 332;
-  faParamTRX = 333;
-  faParamTRY = 334;
+  faParamTRS = 349;
+  faParamTRT = 350;
+  faParamTRX = 351;
+  faParamTRY = 352;
 
   { ParamT }
-  faParamT1 = 335;
-  faParamT2 = 336;
-  faParamT3 = 337;
-  faParamT4 = 338;
+  faParamT1 = 353;
+  faParamT2 = 354;
+  faParamT3 = 355;
+  faParamT4 = 356;
 
   { ViewFlags }
-  faToggleBMap = 339;
-  faToggleZoom = 340;
-  faToggleTouchMenu = 341;
-  faToggleEquationText = 342;
-  faTogglePrimeText = 343;
-  faToggleSecondText = 344;
-  faToggleLabelText = 345;
-  faLabelBatchM = 346;
-  faLabelBatchP = 347;
-  faLabelTextP = 348;
-  faLabelTextM = 349;
+  faToggleBMap = 357;
+  faToggleZoom = 358;
+  faToggleTouchMenu = 359;
+  faToggleEquationText = 360;
+  faTogglePrimeText = 361;
+  faToggleSecondText = 362;
+  faToggleLabelText = 363;
+  faLabelBatchM = 364;
+  faLabelBatchP = 365;
+  faLabelTextP = 366;
+  faLabelTextM = 367;
 
   { Report }
-  faCopyShortCutReport = 350;
-  faWriteActionReport = 351;
-  faWriteActionTable = 352;
-  faWriteActionConst = 353;
-  faWriteActionNames = 354;
-  faWriteVersion1 = 355;
-  faWriteVersion2 = 356;
-  faWriteCode = 357;
-  faWriteDiff1 = 358;
-  faWriteDiffCode = 359;
-  faWriteDiffBin = 360;
-  faWriteBandInfo3 = 361;
-  faWriteBandInfo5 = 362;
-  faWriteEquationInfo = 363;
-  faWriteVirtual = 364;
-  faBlockTest = 365;
+  faCopyShortCutReport = 368;
+  faWriteActionReport = 369;
+  faWriteActionTable = 370;
+  faWriteActionConst = 371;
+  faWriteActionNames = 372;
+  faWriteVersion1 = 373;
+  faWriteVersion2 = 374;
+  faWriteCode = 375;
+  faWriteDiff1 = 376;
+  faWriteDiffCode = 377;
+  faWriteDiffBin = 378;
+  faWriteBandInfo3 = 379;
+  faWriteBandInfo5 = 380;
+  faWriteEquationInfo = 381;
+  faWriteVirtual = 382;
+  faBlockTest = 383;
 
   { ReportOptions }
-  faSourcePascal = 366;
-  faSourceMaxima = 367;
-  faSourceMaple = 368;
-  faSourceMathematica = 369;
+  faSourcePascal = 384;
+  faSourceMaxima = 385;
+  faSourceMaple = 386;
+  faSourceMathematica = 387;
 
   { CopyImage }
-  faCopyScreenshot = 370;
-  faCopyBitmap3D = 371;
-  faCopyTextureBitmap = 372;
-  faCopyImprintedBitmap = 373;
-  faCopyImprintedBitmapTest = 374;
+  faCopyScreenshot = 388;
+  faCopyBitmap3D = 389;
+  faCopyTextureBitmap = 390;
+  faCopyImprintedBitmap = 391;
+  faCopyImprintedBitmapTest = 392;
 
   { CopyOptions }
-  faToggleHardCopy = 375;
-  faHardCopyOn = 376;
-  faHardCopyOff = 377;
-  faTogglePngCopy = 378;
-  faPngCopyOn = 379;
-  faPngCopyOff = 380;
-  faToggleNoCopy = 381;
-  faNoCopyOn = 382;
-  faNoCopyOff = 383;
+  faToggleHardCopy = 393;
+  faHardCopyOn = 394;
+  faHardCopyOff = 395;
+  faTogglePngCopy = 396;
+  faPngCopyOn = 397;
+  faPngCopyOff = 398;
+  faToggleNoCopy = 399;
+  faNoCopyOn = 400;
+  faNoCopyOff = 401;
 
   { GraphOptions }
-  faToggleDiameter = 384;
-  faToggleProbe = 385;
+  faToggleDiameter = 402;
+  faToggleProbe = 403;
 
   { Bahn }
-  faNorthCap = 386;
-  faSouthCap = 387;
-  faEastCap = 388;
-  faWestCap = 389;
-  faParamCapValue = 390;
-  faParamBahnRadius = 391;
-  faParamBahnPositionX = 392;
-  faParamBahnPositionY = 393;
-  faParamBahnAngle = 394;
-  faParamBahnCylinderD = 395;
-  faParamBahnCylinderZ = 396;
+  faNorthCap = 404;
+  faSouthCap = 405;
+  faEastCap = 406;
+  faWestCap = 407;
+  faParamCapValue = 408;
+  faParamBahnRadius = 409;
+  faParamBahnPositionX = 410;
+  faParamBahnPositionY = 411;
+  faParamBahnAngle = 412;
+  faParamBahnCylinderD = 413;
+  faParamBahnCylinderZ = 414;
 
   { ExampleData }
-  faExample01 = 397;
-  faExample02 = 398;
-  faExample03 = 399;
-  faExample04 = 400;
-  faExample05 = 401;
-  faExample06 = 402;
-  faExample07 = 403;
-  faExample08 = 404;
-  faExample09 = 405;
+  faExample01 = 415;
+  faExample02 = 416;
+  faExample03 = 417;
+  faExample04 = 418;
+  faExample05 = 419;
+  faExample06 = 420;
+  faExample07 = 421;
+  faExample08 = 422;
+  faExample09 = 423;
 
   { Repo }
-  faSwapBundle = 406;
-  faRepo010 = 407;
-  faRepo020 = 408;
-  faRepo050 = 409;
+  faSwapBundle = 424;
+  faRepo010 = 425;
+  faRepo020 = 426;
+  faRepo050 = 427;
 
   { SampleNavigation }
-  faLevelM = 410;
-  faLevelP = 411;
-  faHubM = 412;
-  faHubP = 413;
-  faSampleM = 414;
-  faSampleP = 415;
-  faGotoSample0 = 416;
-  faGotoSample1 = 417;
+  faLevelM = 428;
+  faLevelP = 429;
+  faHubM = 430;
+  faHubP = 431;
+  faSampleM = 432;
+  faSampleP = 433;
+  faGotoSample0 = 434;
+  faGotoSample1 = 435;
 
   { Help }
-  faToggleHelp = 418;
-  faToggleReport = 419;
-  faToggleButtonReport = 420;
-  faCycleHelpM = 421;
-  faCycleHelpP = 422;
-  faHelpCycle = 423;
-  faHelpList = 424;
-  faHelpHome = 425;
+  faToggleHelp = 436;
+  faToggleReport = 437;
+  faToggleButtonReport = 438;
+  faCycleHelpM = 439;
+  faCycleHelpP = 440;
+  faHelpCycle = 441;
+  faHelpList = 442;
+  faHelpHome = 443;
 
   { BtnLegendTablet }
-  faTL01 = 426;
-  faTL02 = 427;
-  faTL03 = 428;
-  faTL04 = 429;
-  faTL05 = 430;
-  faTL06 = 431;
-  faTR01 = 432;
-  faTR02 = 433;
-  faTR03 = 434;
-  faTR04 = 435;
-  faTR05 = 436;
-  faTR06 = 437;
-  faTR07 = 438;
-  faTR08 = 439;
-  faBL01 = 440;
-  faBL02 = 441;
-  faBL03 = 442;
-  faBL04 = 443;
-  faBL05 = 444;
-  faBL06 = 445;
-  faBL07 = 446;
-  faBL08 = 447;
-  faBR01 = 448;
-  faBR02 = 449;
-  faBR03 = 450;
-  faBR04 = 451;
-  faBR05 = 452;
-  faBR06 = 453;
+  faTL01 = 444;
+  faTL02 = 445;
+  faTL03 = 446;
+  faTL04 = 447;
+  faTL05 = 448;
+  faTL06 = 449;
+  faTR01 = 450;
+  faTR02 = 451;
+  faTR03 = 452;
+  faTR04 = 453;
+  faTR05 = 454;
+  faTR06 = 455;
+  faTR07 = 456;
+  faTR08 = 457;
+  faBL01 = 458;
+  faBL02 = 459;
+  faBL03 = 460;
+  faBL04 = 461;
+  faBL05 = 462;
+  faBL06 = 463;
+  faBL07 = 464;
+  faBL08 = 465;
+  faBR01 = 466;
+  faBR02 = 467;
+  faBR03 = 468;
+  faBR04 = 469;
+  faBR05 = 470;
+  faBR06 = 471;
 
   { BtnLegendPhone }
-  faMB01 = 454;
-  faMB02 = 455;
-  faMB03 = 456;
-  faMB04 = 457;
-  faMB05 = 458;
-  faMB06 = 459;
-  faMB07 = 460;
-  faMB08 = 461;
+  faMB01 = 472;
+  faMB02 = 473;
+  faMB03 = 474;
+  faMB04 = 475;
+  faMB05 = 476;
+  faMB06 = 477;
+  faMB07 = 478;
+  faMB08 = 479;
 
   { TouchBarLegend }
-  faTouchBarTop = 462;
-  faTouchBarBottom = 463;
-  faTouchBarLeft = 464;
-  faTouchBarRight = 465;
+  faTouchBarTop = 480;
+  faTouchBarBottom = 481;
+  faTouchBarLeft = 482;
+  faTouchBarRight = 483;
 
   { Reset }
-  faReset = 466;
-  faResetPosition = 467;
-  faResetRotation = 468;
-  faResetZoom = 469;
+  faReset = 484;
+  faResetPosition = 485;
+  faResetRotation = 486;
+  faResetZoom = 487;
 
   { Language }
-  faToggleLanguage = 470;
+  faToggleLanguage = 488;
 
   { CopyPaste }
-  faSave = 471;
-  faLoad = 472;
-  faOpen = 473;
-  faCopy = 474;
-  faPaste = 475;
+  faSave = 489;
+  faLoad = 490;
+  faOpen = 491;
+  faCopy = 492;
+  faPaste = 493;
 
   { ViewOptions }
-  faToggleMoveMode = 476;
-  faLinearMove = 477;
-  faExpoMove = 478;
-  faToggleOrbitMode = 479;
+  faToggleMoveMode = 494;
+  faLinearMove = 495;
+  faExpoMove = 496;
+  faToggleOrbitMode = 497;
 
   { BitmapCycle }
-  faCycleBitmapM = 480;
-  faCycleBitmapP = 481;
-  faRandom = 482;
-  faRandomWhite = 483;
-  faRandomBlack = 484;
-  faRandomBambu1 = 485;
-  faRandomBambu2 = 486;
-  faBitmapEscape = 487;
-  faBitmapOne = 488;
-  faToggleContour = 489;
+  faCycleBitmapM = 498;
+  faCycleBitmapP = 499;
+  faRandom = 500;
+  faRandomWhite = 501;
+  faRandomBlack = 502;
+  faRandomBambu1 = 503;
+  faRandomBambu2 = 504;
+  faBitmapEscape = 505;
+  faBitmapOne = 506;
+  faToggleContour = 507;
 
   { Layout0 }
-  faLayout0 = 490;
-  faLayout1 = 491;
-  faLayout2 = 492;
-  faLayout3 = 493;
-  faLayout4 = 494;
-  faLayout5 = 495;
-  faLayout6 = 496;
-  faLayout7 = 497;
-  faLayout8 = 498;
-  faLayout9 = 499;
+  faLayout0 = 508;
+  faLayout1 = 509;
+  faLayout2 = 510;
+  faLayout3 = 511;
+  faLayout4 = 512;
+  faLayout5 = 513;
+  faLayout6 = 514;
+  faLayout7 = 515;
+  faLayout8 = 516;
+  faLayout9 = 517;
 
   { Layout1 }
-  faLayout10 = 500;
-  faLayout11 = 501;
-  faLayout12 = 502;
-  faLayout13 = 503;
-  faLayout14 = 504;
-  faLayout15 = 505;
-  faLayout16 = 506;
-  faLayout17 = 507;
-  faLayout18 = 508;
-  faLayout19 = 509;
+  faLayout10 = 518;
+  faLayout11 = 519;
+  faLayout12 = 520;
+  faLayout13 = 521;
+  faLayout14 = 522;
+  faLayout15 = 523;
+  faLayout16 = 524;
+  faLayout17 = 525;
+  faLayout18 = 526;
+  faLayout19 = 527;
 
   { Layout2 }
-  faLayout20 = 510;
-  faLayout21 = 511;
-  faLayout22 = 512;
-  faLayout23 = 513;
-  faLayout24 = 514;
-  faLayout25 = 515;
-  faLayout26 = 516;
-  faLayout27 = 517;
-  faLayout28 = 518;
-  faLayout29 = 519;
+  faLayout20 = 528;
+  faLayout21 = 529;
+  faLayout22 = 530;
+  faLayout23 = 531;
+  faLayout24 = 532;
+  faLayout25 = 533;
+  faLayout26 = 534;
+  faLayout27 = 535;
+  faLayout28 = 536;
+  faLayout29 = 537;
 
   { Layout3 }
-  faLayout30 = 520;
-  faLayout31 = 521;
-  faLayout32 = 522;
-  faLayout33 = 523;
-  faLayout34 = 524;
-  faLayout35 = 525;
-  faLayout36 = 526;
-  faLayout37 = 527;
-  faLayout38 = 528;
-  faLayout39 = 529;
+  faLayout30 = 538;
+  faLayout31 = 539;
+  faLayout32 = 540;
+  faLayout33 = 541;
+  faLayout34 = 542;
+  faLayout35 = 543;
+  faLayout36 = 544;
+  faLayout37 = 545;
+  faLayout38 = 546;
+  faLayout39 = 547;
 
   { Layout4 }
-  faLayout40 = 530;
-  faLayout41 = 531;
-  faLayout42 = 532;
-  faLayout43 = 533;
-  faLayout44 = 534;
-  faLayout45 = 535;
-  faLayout46 = 536;
-  faLayout47 = 537;
-  faLayout48 = 538;
-  faLayout49 = 539;
+  faLayout40 = 548;
+  faLayout41 = 549;
+  faLayout42 = 550;
+  faLayout43 = 551;
+  faLayout44 = 552;
+  faLayout45 = 553;
+  faLayout46 = 554;
+  faLayout47 = 555;
+  faLayout48 = 556;
+  faLayout49 = 557;
 
   { Layout5 }
-  faLayout50 = 540;
-  faLayout51 = 541;
-  faLayout52 = 542;
-  faLayout53 = 543;
-  faLayout54 = 544;
-  faLayout55 = 545;
-  faLayout56 = 546;
-  faLayout57 = 547;
-  faLayout58 = 548;
-  faLayout59 = 549;
+  faLayout50 = 558;
+  faLayout51 = 559;
+  faLayout52 = 560;
+  faLayout53 = 561;
+  faLayout54 = 562;
+  faLayout55 = 563;
+  faLayout56 = 564;
+  faLayout57 = 565;
+  faLayout58 = 566;
+  faLayout59 = 567;
 
   { Layout6 }
-  faLayout60 = 550;
-  faLayout61 = 551;
-  faLayout62 = 552;
-  faLayout63 = 553;
-  faLayout64 = 554;
-  faLayout65 = 555;
-  faLayout66 = 556;
-  faLayout67 = 557;
-  faLayout68 = 558;
-  faLayout69 = 559;
+  faLayout60 = 568;
+  faLayout61 = 569;
+  faLayout62 = 570;
+  faLayout63 = 571;
+  faLayout64 = 572;
+  faLayout65 = 573;
+  faLayout66 = 574;
+  faLayout67 = 575;
+  faLayout68 = 576;
+  faLayout69 = 577;
 
   { Layout7 }
-  faLayout70 = 560;
-  faLayout71 = 561;
-  faLayout72 = 562;
-  faLayout73 = 563;
-  faLayout74 = 564;
-  faLayout75 = 565;
-  faLayout76 = 566;
-  faLayout77 = 567;
-  faLayout78 = 568;
-  faLayout79 = 569;
+  faLayout70 = 578;
+  faLayout71 = 579;
+  faLayout72 = 580;
+  faLayout73 = 581;
+  faLayout74 = 582;
+  faLayout75 = 583;
+  faLayout76 = 584;
+  faLayout77 = 585;
+  faLayout78 = 586;
+  faLayout79 = 587;
 
   { Layout8 }
-  faLayout80 = 570;
-  faLayout81 = 571;
-  faLayout82 = 572;
-  faLayout83 = 573;
-  faLayout84 = 574;
-  faLayout85 = 575;
-  faLayout86 = 576;
-  faLayout87 = 577;
-  faLayout88 = 578;
-  faLayout89 = 579;
+  faLayout80 = 588;
+  faLayout81 = 589;
+  faLayout82 = 590;
+  faLayout83 = 591;
+  faLayout84 = 592;
+  faLayout85 = 593;
+  faLayout86 = 594;
+  faLayout87 = 595;
+  faLayout88 = 596;
+  faLayout89 = 597;
 
   { Layout9 }
-  faLayout90 = 580;
-  faLayout91 = 581;
-  faLayout92 = 582;
-  faLayout93 = 583;
-  faLayout94 = 584;
-  faLayout95 = 585;
-  faLayout96 = 586;
-  faLayout97 = 587;
-  faLayout98 = 588;
-  faLayout99 = 589;
+  faLayout90 = 598;
+  faLayout91 = 599;
+  faLayout92 = 600;
+  faLayout93 = 601;
+  faLayout94 = 602;
+  faLayout95 = 603;
+  faLayout96 = 604;
+  faLayout97 = 605;
+  faLayout98 = 606;
+  faLayout99 = 607;
 
   { MenuNav }
-  faMenuXX = 590;
-  faMenu00 = 591;
-  faMenu10 = 592;
-  faMenu20 = 593;
-  faMenu30 = 594;
-  faMenu40 = 595;
-  faMenu50 = 596;
-  faMenu60 = 597;
-  faMenu70 = 598;
-  faMenu80 = 599;
-  faMenu90 = 600;
+  faMenuXX = 608;
+  faMenu00 = 609;
+  faMenu10 = 610;
+  faMenu20 = 611;
+  faMenu30 = 612;
+  faMenu40 = 613;
+  faMenu50 = 614;
+  faMenu60 = 615;
+  faMenu70 = 616;
+  faMenu80 = 617;
+  faMenu90 = 618;
 
   { FigureSize }
-  faFigureSizeXS = 601;
-  faFigureSizeS = 602;
-  faFigureSizeM = 603;
-  faFigureSizeL = 604;
-  faFigureSizeXL = 605;
+  faFigureSizeXS = 619;
+  faFigureSizeS = 620;
+  faFigureSizeM = 621;
+  faFigureSizeL = 622;
+  faFigureSizeXL = 623;
 
   { EyeSize }
-  faEyeSizeS = 606;
-  faEyeSizeM = 607;
-  faEyeSizeL = 608;
+  faEyeSizeS = 624;
+  faEyeSizeM = 625;
+  faEyeSizeL = 626;
 
   { LayerSelection }
-  faSelectLayer1 = 609;
-  faSelectLayer2 = 610;
-  faSelectLayer3 = 611;
-  faSelectLayer4 = 612;
-  faSelectLayer5 = 613;
-  faSelectLayer6 = 614;
-  faSelectLayer7 = 615;
+  faSelectLayer1 = 627;
+  faSelectLayer2 = 628;
+  faSelectLayer3 = 629;
+  faSelectLayer4 = 630;
+  faSelectLayer5 = 631;
+  faSelectLayer6 = 632;
+  faSelectLayer7 = 633;
 
   { ColorSelection }
-  faSelectColor1 = 616;
-  faSelectColor2 = 617;
-  faSelectColor3 = 618;
-  faSelectColor4 = 619;
+  faSelectColor1 = 634;
+  faSelectColor2 = 635;
+  faSelectColor3 = 636;
+  faSelectColor4 = 637;
 
   { ColorMapping }
-  faCLA = 620;
-  faMapColorToLayer = 621;
-  faSelectColorMapping1 = 622;
-  faSelectColorMapping2 = 623;
-  faSelectColorMapping3 = 624;
-  faSelectColorMapping4 = 625;
-  faSelectColorMapping5 = 626;
-  faSelectColorMapping6 = 627;
+  faCLA = 638;
+  faMapColorToLayer = 639;
+  faSelectColorMapping1 = 640;
+  faSelectColorMapping2 = 641;
+  faSelectColorMapping3 = 642;
+  faSelectColorMapping4 = 643;
+  faSelectColorMapping5 = 644;
+  faSelectColorMapping6 = 645;
 
-  faMax = 628;
+  faMax = 646;
 
 implementation
 

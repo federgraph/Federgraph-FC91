@@ -278,6 +278,8 @@ begin
     faBandSelection21: result := 'Band Selection 21';
 
     { MeshMode }
+    faOpenMesh: result := 'Open mesh';
+    faPolarMesh: result := 'Polar mesh';
     faReducedMesh: result := 'Reduced mesh';
     faReduceMode0: result := 'Reduce mode 0';
     faReduceMode1: result := 'Reduce mode 1';
@@ -294,6 +296,7 @@ begin
     faMeshSize256: result := 'MeshSize 256';
     faMeshSize316: result := 'MeshSize 316';
     faMeshSize512: result := 'MeshSize 512';
+    faMeshSize1024: result := 'MeshSize 1024';
 
     { MeshExport }
     faWantBottom: result := 'Want Bottom';
@@ -307,6 +310,10 @@ begin
     faExportCoordsBlender: result := 'ExportCoords Blender';
     faExportCoords3DV: result := 'ExportCoords 3DV';
     faExportCoords3DP: result := 'ExportCoords 3DP';
+
+    { MeshOptions }
+    faTextureJitt: result := 'Texture Jitter';
+    faTextureJack: result := 'Texture Jack';
 
     { ExporterOBJ }
     faWantAutoFolder: result := 'Want Auto Folder';
@@ -340,6 +347,7 @@ begin
     faToggleSlicePulling: result := 'Slice Pulling';
     faToggleTargetPulling: result := 'Target Pulling';
     faToggleRightPulling: result := 'Right Pulling';
+    faToggleCrackFixing: result := 'Crack Fixing';
 
     { MeshBuilderOptions }
     faToggleSolidFlip: result := 'Toggle SolidFlip';
@@ -349,9 +357,29 @@ begin
     faUniqueMode2: result := 'Unique Mode 2';
     faToggleUniqueVertices: result := 'Toggle UniqueVertices';
 
+    { Pin }
+    faTogglePin: result := 'Toggle Pin';
+    faPinOn: result := 'Pin AP On';
+    faPinOff: result := 'Pin AP Off';
+
+    { Norm }
+    faToggleNorm: result := 'Toggle Norm';
+    faNormOn: result := 'Norm On';
+    faNormOff: result := 'Norm Off';
+
+    { TextureNorm }
+    faTextureNormP: result := 'Texture Norm +';
+    faTextureNormM: result := 'Texture Norm -';
+    faTextureNorm0: result := 'Texture Norm 0';
+    faTextureNorm1: result := 'Texture Norm 1';
+    faTextureNorm2: result := 'Texture Norm 2';
+
     { TextureExport }
     faCopyBinCode: result := 'Copy Bin Code';
     faCopyBinCodeTest: result := 'Copy Bin Code Test';
+
+    { TextureImport }
+    faTextureClear: result := 'Reset Texture';
 
     { ColorMix }
     faColorMix0: result := 'Color Mix 0 (rgb)';

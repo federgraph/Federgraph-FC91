@@ -174,6 +174,8 @@ begin
 
     faToggleGleich: result := M.Gleich;
 
+    faOpenMesh: result := M.OpenMesh;
+    faPolarMesh: result := M.PolarMesh;
     faReducedMesh: result := M.ReducedMesh;
 
     faMeshSize4: result := M.FederModel.MeshSize = 4;
@@ -185,6 +187,7 @@ begin
     faMeshSize256: result := M.FederModel.MeshSize = 256;
     faMeshSize316: result := M.FederModel.MeshSize = 316;
     faMeshSize512: result := M.FederModel.MeshSize = 512;
+    faMeshSize1024: result := M.FederModel.MeshSize = 1024;
 
     faWheelFrequency1: result := M.WheelFrequency = 1;
     faWheelFrequency05: result := M.WheelFrequency = 2;
@@ -227,6 +230,10 @@ begin
     faToggleSlicePulling: result := M.SlicePulling;
     faToggleTargetPulling: result := M.TargetPulling;
     faToggleRightPulling: result := M.RightPulling;
+    faToggleCrackFixing: result := M.CrackFixing;
+
+    faTextureJitt: result := M.TextureJitt;
+    faTextureJack: result := M.TextureJack;
 
     faForceMode0: result := M.FederModel.ForceMode = 0;
     faForceMode1: result := M.FederModel.ForceMode = 1;
@@ -250,6 +257,13 @@ begin
     faColorMix3: result := M.RGBColorMix = 3;
     faColorMix4: result := M.RGBColorMix = 4;
     faColorMix5: result := M.RGBColorMix = 5;
+
+    faTogglePin: result := M.FederModel.Pin;
+    faToggleNorm: result := M.FederModel.Norm;
+
+    faTextureNorm0: result := M.FederModel.TextureNorm = 0;
+    faTextureNorm1: result := M.FederModel.TextureNorm = 1;
+    faTextureNorm2: result := M.FederModel.TextureNorm = 2;
 
     faPixelCount1: result := M.PixelCount = 1;
     faPixelCount2: result := M.PixelCount = 2;

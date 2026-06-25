@@ -124,6 +124,7 @@ begin
   fag.Add(faShowImage);
   fag.Add(faToggleColorPanel);
   fag.Add(faToggleColorSwat);
+  fag.Add(faOpen);
   if MainVar.AppTitle = '' then
     MainVar.AppTitle := 'App';
   AddGroup(MainVar.AppTitle, fag);
@@ -133,7 +134,35 @@ begin
   fag.Add(faPaste);
   fag.Add(faSourcePascal);
   fag.Add(faSourceMaxima);
+  fag.Add(faCopyBinCode);
+  fag.Add(faCopyBinCodeTest);
+  fag.Add(faCopyShortcutReport);
   AddGroup('Text', fag);
+
+  fag := TFederActionGroup.Create;
+  fag.Add(faScene1);
+  fag.Add(faScene2);
+  fag.Add(faScene3);
+  fag.Add(faScene4);
+  fag.Add(faScene5);
+  AddGroup('S', fag);
+
+  fag := TFederActionGroup.Create;
+  fag.Add(faGraph1);
+  fag.Add(faGraph2);
+  fag.Add(faGraph3);
+  fag.Add(faGraph4);
+  fag.Add(faGraph5);
+  AddGroup('G', fag);
+
+  fag := TFederActionGroup.Create;
+  fag.Add(faFigure1);
+  fag.Add(faFigure2);
+  fag.Add(faFigure3);
+  fag.Add(faFigure4);
+  fag.Add(faFigure5);
+  fag.Add(faFigure6);
+  AddGroup('F', fag);
 
   fag := TFederActionGroup.Create;
   fag.Add(faPlot0);
@@ -191,10 +220,10 @@ begin
   fag.Add(faParamCapValue);
   fag.Add(faParamL);
   fag.Add(faParamA);
-  fag.Add(faParamT1);
-  fag.Add(faParamT2);
-  fag.Add(faParamT3);
-  fag.Add(faParamT4);
+    fag.Add(faParamT1);
+    fag.Add(faParamT2);
+    fag.Add(faParamT3);
+    fag.Add(faParamT4);
   AddGroup('Param', fag);
 
   fag := TFederActionGroup.Create;
@@ -215,7 +244,25 @@ begin
   fag.Add(faShowCurrentBandT);
   fag.Add(faParamBandSelected);
   fag.Add(faBandWidthRelative);
+  fag.Add(faParamBandCount);
+  fag.Add(faParamBandDistributionX);
+  fag.Add(faParamBandDistributionY);
   AddGroup('Bands', fag);
+
+  fag := TFederActionGroup.Create;
+  fag.Add(faCycleHelpP);
+  fag.Add(faCycleHelpM);
+  fag.Add(faCyclePlotP);
+  fag.Add(faCycleK);
+  fag.Add(faCycleL);
+  fag.Add(faCycleO);
+  fag.Add(faCycleR);
+  fag.Add(faCycleT);
+  fag.Add(faCycleU);
+  fag.Add(faCycleX);
+  fag.Add(faCycleY);
+  fag.Add(faCycleZ);
+  AddGroup('Cycle', fag);
 
   fag := TFederActionGroup.Create;
   fag.Add(faWheelLeft);
@@ -251,10 +298,21 @@ begin
   AddGroup('Col', fag);
 
   fag := TFederActionGroup.Create;
+  fag.Add(faForceMode0);
+  fag.Add(faForceMode1);
+  fag.Add(faForceMode2);
+  fag.Add(faM1);
+  fag.Add(faM2);
+  fag.Add(faM3);
+  AddGroup('Force', fag);
+
+  fag := TFederActionGroup.Create;
   fag.Add(faSampleM);
   fag.Add(faSampleP);
   fag.Add(faHubM);
   fag.Add(faHubP);
+  fag.Add(faLevelM);
+  fag.Add(faLevelP);
   AddGroup('Sample', fag);
 end;
 

@@ -218,6 +218,7 @@ begin
 
     faShowInfo: rp := rpAppInfo;
 
+    faToggleCrackFixing,
     faToggleZeroPulling,
     faToggleLimitPulling: rp := rpMeshDataInfo;
 

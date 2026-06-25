@@ -278,6 +278,8 @@ begin
     faBandSelection21: result := 'b21';
 
     { MeshMode }
+    faOpenMesh: result := 'om';
+    faPolarMesh: result := 'pm';
     faReducedMesh: result := 'rm';
     faReduceMode0: result := 'rm0';
     faReduceMode1: result := 'rm1';
@@ -294,6 +296,7 @@ begin
     faMeshSize256: result := '256';
     faMeshSize316: result := '316';
     faMeshSize512: result := '512';
+    faMeshSize1024: result := '1K';
 
     { MeshExport }
     faWantBottom: result := 'wB';
@@ -307,6 +310,10 @@ begin
     faExportCoordsBlender: result := 'ecB';
     faExportCoords3DV: result := 'ecV';
     faExportCoords3DP: result := 'ecP';
+
+    { MeshOptions }
+    faTextureJitt: result := 'jtt';
+    faTextureJack: result := 'jck';
 
     { ExporterOBJ }
     faWantAutoFolder: result := 'wAF';
@@ -340,6 +347,7 @@ begin
     faToggleSlicePulling: result := 'wSP';
     faToggleTargetPulling: result := 'wTP';
     faToggleRightPulling: result := 'wRP';
+    faToggleCrackFixing: result := 'wCF';
 
     { MeshBuilderOptions }
     faToggleSolidFlip: result := 'thf';
@@ -349,9 +357,29 @@ begin
     faUniqueMode2: result := 'u2';
     faToggleUniqueVertices: result := 'tuv';
 
+    { Pin }
+    faTogglePin: result := 'pin';
+    faPinOn: result := 'pi1';
+    faPinOff: result := 'pi0';
+
+    { Norm }
+    faToggleNorm: result := 'nrm';
+    faNormOn: result := 'no1';
+    faNormOff: result := 'no0';
+
+    { TextureNorm }
+    faTextureNormP: result := 'tn+';
+    faTextureNormM: result := 'tn-';
+    faTextureNorm0: result := 'tn0';
+    faTextureNorm1: result := 'tn1';
+    faTextureNorm2: result := 'tn2';
+
     { TextureExport }
     faCopyBinCode: result := 'cbc';
     faCopyBinCodeTest: result := 'bct';
+
+    { TextureImport }
+    faTextureClear: result := 'tc';
 
     { ColorMix }
     faColorMix0: result := 'cm0';

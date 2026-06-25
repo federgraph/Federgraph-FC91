@@ -3,7 +3,7 @@
 (*
 -
 -     F
--    * *  *
+-    * * *
 -   *   *   G
 -  *     * *   *
 - E - - - H - - - I
@@ -46,6 +46,13 @@ type
 
     function GetFormat(idx: Integer): TSize;
 
+    procedure GotoNormal;
+    procedure GotoLandscape;
+    procedure GotoPortrait;
+    procedure GotoSquare;
+    procedure GotoLandscapeOld;
+    procedure GotoPortraitOld;
+
     property FormatIndex: Integer write SetFormatIndex;
     property Size: TSize read GetSize write SetSize;
     property WantClientFormat: Boolean read FWantClientFormat write SetWantClientFormat;
@@ -55,6 +62,7 @@ type
 implementation
 
 uses
+  FMX.Forms,
   FrmMain;
 
 constructor TFormatManager.Create;
@@ -139,8 +147,135 @@ begin
   end;
 end;
 
-procedure TFormatManager.SetSize(const Value: TSize);
+procedure TFormatManager.GotoNormal;
 begin
+  FormMain.Top := 10;
+  FormMain.ClientWidth := 600;
+  FormMain.ClientHeight := 600;
+end;
+
+procedure TFormatManager.GotoLandscapeOld;
+begin
+  WantClientFormat := True;
+  FormatIndex := 1;
+end;
+
+procedure TFormatManager.GotoPortraitOld;
+begin
+  WantClientFormat := True;
+  FormatIndex := 2;
+end;
+
+procedure TFormatManager.GotoLandscape;
+var
+  scale: single;
+begin
+  if FormMain.WindowState = TWindowState.wsMaximized then
+    FormMain.WindowState := TWindowState.wsNormal;
+
+  Screen.UpdateDisplayInformation;
+
+{$if CompilerVersion < 36}
+  scale := FormMain.Handle.Scale;
+{$else}
+  scale := 1;
+{$endif}
+
+//  GotoNormal;
+  if Screen.Width > Screen.Height then
+  begin
+    { normal screen }
+    FormMain.Height := Round(Screen.WorkAreaHeight * scale);
+    FormMain.ClientWidth := Round(FormMain.ClientHeight * 4 / 3);
+    FormMain.Top := 0;
+  end
+  else
+  begin
+    { portrait screen }
+    FormMain.Width := Round(Screen.WorkAreaWidth * scale);
+    FormMain.ClientHeight := Round(FormMain.ClientWidth * 3 / 4);
+    FormMain.Left := 0;
+  end;
+  FormMain.FormResizeEnd(nil);
+end;
+
+procedure TFormatManager.GotoPortrait;
+var
+  scale: single;
+begin
+  if FormMain.WindowState = TWindowState.wsMaximized then
+    FormMain.WindowState := TWindowState.wsNormal;
+
+  Screen.UpdateDisplayInformation;
+
+{$if CompilerVersion < 36}
+  scale := FormMain.Handle.Scale;
+{$else}
+  scale := 1;
+{$endif}
+
+  GotoNormal;
+  if Screen.Width > Screen.Height then
+  begin
+    { normal screen }
+    FormMain.Height := Round(Screen.WorkAreaHeight * scale);
+    FormMain.ClientWidth := Round(FormMain.ClientHeight * 3 / 4);
+    FormMain.Top := 0;
+  end
+  else
+  begin
+    { portrait screen }
+    FormMain.Width := Round(Screen.WorkAreaWidth * scale);
+    FormMain.ClientHeight := Round(FormMain.ClientWidth * 4 / 3);
+    FormMain.Left := 0;
+    FormMain.Top := 0;
+  end;
+  FormMain.FormResizeEnd(nil);
+end;
+
+procedure TFormatManager.GotoSquare;
+var
+  scale: single;
+begin
+  if FormMain.WindowState = TWindowState.wsMaximized then
+    FormMain.WindowState := TWindowState.wsNormal;
+
+  Screen.UpdateDisplayInformation;
+
+{$if CompilerVersion < 36}
+  scale := FormMain.Handle.Scale;
+{$else}
+  scale := 1;
+{$endif}
+
+  GotoNormal;
+  if Screen.Width > Screen.Height then
+  begin
+    { normal screen }
+    FormMain.Height := Round(Screen.WorkAreaHeight * scale);
+    FormMain.ClientWidth := Round(FormMain.ClientHeight);
+    FormMain.Top := 0;
+  end
+  else
+  begin
+    { portrait screen }
+    FormMain.Width := Round(Screen.WorkAreaWidth * scale);
+    FormMain.ClientHeight := Round(FormMain.ClientWidth);
+    FormMain.Left := 0
+  end;
+  FormMain.FormResizeEnd(nil);
+end;
+
+procedure TFormatManager.SetSize(const Value: TSize);
+var
+  scale: single;
+begin
+{$if CompilerVersion < 36}
+  scale := FormMain.Handle.Scale;
+{$else}
+  scale := 1;
+{$endif}
+
   if WantClientFormat then
   begin
     FormMain.ClientWidth := Value.Width;
@@ -149,8 +284,14 @@ begin
   else
   begin
     FormMain.Width := Value.Width;
+    if Value.Height = Round(Screen.WorkAreaHeight * scale) then
+    begin
+      { Workaround = reset to smaller value first. }
+      FormMain.Height := Value.Height - 1;
+    end;
     FormMain.Height := Value.Height;
   end;
+  FormMain.FormResizeEnd(nil);
 end;
 
 procedure TFormatManager.SetWantClientFormat(const Value: Boolean);

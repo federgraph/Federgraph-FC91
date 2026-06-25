@@ -63,11 +63,11 @@ begin
     faParamValueMinus10,
     faWheelDown: M.DoMouseWheel([ssCtrl], -1);
 
-    faScene1:  M.GotoScene(1);
-    faScene2:  M.GotoScene(2);
-    faScene3:  M.GotoScene(3);
-    faScene4:  M.GotoScene(4);
-    faScene5:  M.GotoScene(5);
+    faScene1: M.GotoScene(1);
+    faScene2: M.GotoScene(2);
+    faScene3: M.GotoScene(3);
+    faScene4: M.GotoScene(4);
+    faScene5: M.GotoScene(5);
 
     faGraph1: M.Graph := 1;
     faGraph2: M.Graph := 2;
@@ -145,6 +145,8 @@ begin
 
     faToggleGleich: M.Gleich := not M.Gleich;
 
+    faOpenMesh: M.OpenMesh := not M.OpenMesh;
+    faPolarMesh: M.PolarMesh := not M.PolarMesh;
     faReducedMesh: M.ReducedMesh := not M.ReducedMesh;
     faReduceMode0: M.ReduceMode := 0;
     faReduceMode1: M.ReduceMode := 1;
@@ -160,6 +162,7 @@ begin
     faMeshSize256: M.MeshSize := 256;
     faMeshSize316: M.MeshSize := 316;
     faMeshSize512: M.MeshSize := 512;
+    faMeshSize1024: M.MeshSize := 1024;
 
     faWheelFrequency1: M.WheelFrequency := 1;
     faWheelFrequency05: M.WheelFrequency := 2;
@@ -223,8 +226,7 @@ begin
     faToggleProbe: M.ToggleProbe;
     faToggleLabelText: M.FederScene.ToggleLabel;
 
-    faLayout0 .. faLayout9: M.TransitBarLayout := fa - faLayout0;
-    faLayout10 .. faLayout99: M.TransitBarLayout := fa - faLayout0;
+    faLayout0 .. faLayout99: M.TransitBarLayout := fa - faLayout0;
 
     faMenuXX: M.MenubarLayout := -1;
     faMenu00: M.MenubarLayout := 0;
@@ -275,6 +277,12 @@ begin
       M.CycleMX(3);
     end;
 
+    faTextureClear:
+    begin
+      //DropTargetVisible := False;
+      M.CloseBitmap;
+    end;
+
     faSave:
     begin
       M.FederText.FlashCaption := 'Ctrl s (Save)';
@@ -285,6 +293,12 @@ begin
     begin
       M.FederText.FlashCaption := 'Ctrl l (Load)';
       M.LoadAction;
+    end;
+
+    faOpen:
+    begin
+      M.FederText.FlashCaption := 'Ctrl o (Open)';
+      M.OpenBundle;
     end;
 
     faCopy:
@@ -396,6 +410,10 @@ begin
     faToggleSlicePulling: M.ToggleSlicePulling(0);
     faToggleTargetPulling: M.ToggleTargetPulling;
     faToggleRightPulling: M.ToggleRightPulling;
+    faToggleCrackFixing: M.ToggleCrackFixing;
+
+    faTextureJitt: M.ToggleTextureJitt;
+    faTextureJack: M.ToggleTextureJack;
 
     faParamL1X: M.ParamManager.ChangeParam(fpL1X);
     faParamL1Y: M.ParamManager.ChangeParam(fpL1Y);
@@ -494,6 +512,20 @@ begin
 
     faColorMixP: M.CycleColorMixP;
     faColorMixM: M.CycleColorMixM;
+
+    faTogglePin: M.FederModel.Pin := not M.FederModel.Pin;
+    faPinOn: M.FederModel.Pin := True;
+    faPinOff: M.FederModel.Pin := False;
+
+    faToggleNorm: M.FederModel.Norm := not M.FederModel.Norm;
+    faNormOn: M.FederModel.Norm := True;
+    faNormOff: M.FederModel.Norm := False;
+
+    faTextureNormP: M.CycleTextureNormP;
+    faTextureNormM: M.CycleTextureNormM;
+    faTextureNorm0: M.FederModel.TextureNorm := 0;
+    faTextureNorm1: M.FederModel.TextureNorm := 1;
+    faTextureNorm2: M.FederModel.TextureNorm := 2;
 
     faApplyRingColor: M.ApplyPaletteColor;
 

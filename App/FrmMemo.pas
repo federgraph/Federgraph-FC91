@@ -125,9 +125,14 @@ type
     procedure WriteShortcuts(Sender: TObject);
     procedure WriteZOrder(Sender: TObject);
     procedure WriteLog(Sender: TObject);
+    procedure MeshReport1BtnClick(Sender: TObject);
+    procedure MeshReport2BtnClick(Sender: TObject);
+    procedure MeshReport3BtnClick(Sender: TObject);
+    procedure MeshReport4BtnClick(Sender: TObject);
     procedure WriteSelectedColors(Sender: TObject);
     procedure WriteColorMapping(Sender: TObject);
     procedure WriteRingInfo(Sender: TObject);
+    procedure WriteOBJStats(Sender: TObject);
   private
     SL: TStringList;
     MemoActionList: TMemoActionList;
@@ -233,12 +238,11 @@ end;
 
 procedure TFormMemo.V1SaveNativeBtnClick(Sender: TObject);
 begin
-  NotImplemented;
-//  MemoBeginUpdate;
-//  Main.WriteVersion1Txt(Memo.Lines);
-//  MemoEndUpdate;
+  MemoBeginUpdate;
+  Main.WriteVersion1Txt(Memo.Lines);
+  MemoEndUpdate;
   AutoUpdateOff;
-//  AutoUpdateID := V1SaveNative;
+  AutoUpdateID := V1SaveNative;
 end;
 
 procedure TFormMemo.SaveVirtualClick(Sender: TObject);
@@ -252,12 +256,11 @@ end;
 
 procedure TFormMemo.V1DiffBtnClick(Sender: TObject);
 begin
-  NotImplemented;
-//  MemoBeginUpdate;
-//  Main.WriteVersion1Diff(Memo.Lines);
-//  MemoEndUpdate;
+  MemoBeginUpdate;
+  Main.WriteVersion1Diff(Memo.Lines);
+  MemoEndUpdate;
   AutoUpdateOff;
-//  AutoUpdateID := V1Diff;
+  AutoUpdateID := V1Diff;
 end;
 
 procedure TFormMemo.WriteCode(Sender: TObject);
@@ -271,19 +274,17 @@ end;
 
 procedure TFormMemo.ColorInfo3BtnClick(Sender: TObject);
 begin
-  NotImplemented;
-//  MemoBeginUpdate;
-//  Main.SaveColorInfoCode(Memo.Lines, 4);
-//  MemoEndUpdate;
+  MemoBeginUpdate;
+  Main.SaveColorInfoCode(Memo.Lines, 4);
+  MemoEndUpdate;
   AutoUpdateOff;
 end;
 
 procedure TFormMemo.ColorInfo5BtnClick(Sender: TObject);
 begin
-  NotImplemented;
-//  MemoBeginUpdate;
-//  Main.SaveColorInfoCode(Memo.Lines, 6);
-//  MemoEndUpdate;
+  MemoBeginUpdate;
+  Main.SaveColorInfoCode(Memo.Lines, 6);
+  MemoEndUpdate;
   AutoUpdateOff;
 end;
 
@@ -308,22 +309,20 @@ end;
 
 procedure TFormMemo.TestBtnClick(Sender: TObject);
 begin
-  NotImplemented;
-//  MemoBeginUpdate;
-//  Main.WriteDiffBinTest(Memo.Lines);
-//  MemoEndUpdate;
+  MemoBeginUpdate;
+  Main.WriteDiffBinTest(Memo.Lines);
+  MemoEndUpdate;
   AutoUpdateOff;
-//  AutoUpdateID := Test;
+  AutoUpdateID := Test;
 end;
 
 procedure TFormMemo.BinBtnClick(Sender: TObject);
 begin
-  NotImplemented;
-//  MemoBeginUpdate;
-//  Main.WriteDiffBin(Memo.Lines);
-//  MemoEndUpdate;
+  MemoBeginUpdate;
+  Main.WriteDiffBin(Memo.Lines);
+  MemoEndUpdate;
   AutoUpdateOff;
-//  AutoUpdateID := Bin;
+  AutoUpdateID := Bin;
 end;
 
 procedure TFormMemo.WriteEquationText(Sender: TObject);
@@ -535,6 +534,42 @@ begin
   AutoUpdateOff;
 end;
 
+procedure TFormMemo.MeshReport1BtnClick(Sender: TObject);
+begin
+  MemoBeginUpdate;
+  Main.MeshBuilder.GetMeshDataMatrixReport(Memo.Lines, 1);
+  MemoEndUpdate;
+  AutoUpdateOff;
+  AutoUpdateID := MeshReport1;
+end;
+
+procedure TFormMemo.MeshReport2BtnClick(Sender: TObject);
+begin
+  MemoBeginUpdate;
+  Main.MeshBuilder.GetMeshDataMatrixReport(Memo.Lines, 2);
+  MemoEndUpdate;
+  AutoUpdateOff;
+  AutoUpdateID := MeshReport2;
+end;
+
+procedure TFormMemo.MeshReport3BtnClick(Sender: TObject);
+begin
+  MemoBeginUpdate;
+  Main.MeshBuilder.GetMeshDataMatrixReport(Memo.Lines, 3);
+  MemoEndUpdate;
+  AutoUpdateOff;
+  AutoUpdateID := MeshReport3;
+end;
+
+procedure TFormMemo.MeshReport4BtnClick(Sender: TObject);
+begin
+  MemoBeginUpdate;
+  Main.MeshBuilder.GetMeshDataMatrixReport(Memo.Lines, 4);
+  MemoEndUpdate;
+  AutoUpdateOff;
+  AutoUpdateID := MeshReport4;
+end;
+
 procedure TFormMemo.WriteSelectedColors(Sender: TObject);
 begin
   MemoBeginUpdate;
@@ -561,43 +596,52 @@ begin
   AutoUpdateOff;
 end;
 
+procedure TFormMemo.WriteOBJStats(Sender: TObject);
+begin
+  MemoBeginUpdate;
+  Main.ExporterOBJ.AddStats(Memo.Lines);
+  MemoEndUpdate;
+  AutoUpdateOff;
+end;
+
 procedure TFormMemo.InitList;
 begin
-//  MemoActionList.AddMemoAction('Save Virtual', SaveVirtualClick);
+  MemoActionList.AddMemoAction('Save Virtual', SaveVirtualClick);
 
   MemoActionList.AddMemoAction('Selected Colors', WriteSelectedColors);
   MemoActionList.AddMemoAction('Color Mapping', WriteColorMapping);
   MemoActionList.AddMemoAction('Ring Info', WriteRingInfo);
+  MemoActionList.AddMemoAction('OBJ Stats', WriteOBJStats);
   MemoActionList.AddMemoAction('Equation Text', WriteEquationText);
   MemoActionList.AddMemoAction('Z-Order', WriteZOrder);
   MemoActionList.AddMemoAction('Log', WriteLog);
   MemoActionList.AddMemoAction('Code', WriteCode);
   MemoActionList.AddMemoAction('Diff Code', WriteDiffCode);
 
-//  MemoActionList.AddMemoAction('MeshData LineTag', MeshReport1BtnClick);
-//  MemoActionList.AddMemoAction('MeshData IsPulled', MeshReport2BtnClick);
-//  MemoActionList.AddMemoAction('MeshData PullDirection', MeshReport3BtnClick);
-//  MemoActionList.AddMemoAction('MeshData LoopCounter', MeshReport4BtnClick);
+  MemoActionList.AddMemoAction('MeshData LineTag', MeshReport1BtnClick);
+  MemoActionList.AddMemoAction('MeshData IsPulled', MeshReport2BtnClick);
+  MemoActionList.AddMemoAction('MeshData PullDirection', MeshReport3BtnClick);
+  MemoActionList.AddMemoAction('MeshData LoopCounter', MeshReport4BtnClick);
 
-//  MemoActionList.AddMemoAction('Write Version 1 Text', V1SaveNativeBtnClick);
-//  MemoActionList.AddMemoAction('Write Version 1 Diff', V1DiffBtnClick);
-//  MemoActionList.AddMemoAction('Write Diff Bin', BinBtnClick);
-//  MemoActionList.AddMemoAction('Write Diff Bin Test', TestBtnClick);
+  MemoActionList.AddMemoAction('Write Version 1 Text', V1SaveNativeBtnClick);
+  MemoActionList.AddMemoAction('Write Version 1 Diff', V1DiffBtnClick);
+  MemoActionList.AddMemoAction('Write Diff Bin', BinBtnClick);
+  MemoActionList.AddMemoAction('Write Diff Bin Test', TestBtnClick);
 //  MemoActionList.AddMemoAction('Write Html', HtmlBtnClick);
 //  MemoActionList.AddMemoAction('Write Json', JsonBtnClick);
 
-//  MemoActionList.AddMemoAction('Color Info 3', ColorInfo3BtnClick);
-//  MemoActionList.AddMemoAction('Color Info 5', ColorInfo5BtnClick);
+  MemoActionList.AddMemoAction('Color Info 3', ColorInfo3BtnClick);
+  MemoActionList.AddMemoAction('Color Info 5', ColorInfo5BtnClick);
 
 //  MemoActionList.AddMemoAction('Help for Input', InputHelpTextBtnClick);
 //  MemoActionList.AddMemoAction('Help for Output', OutputHelpTextBtnClick);
-//  MemoActionList.AddMemoAction('Keyboard Help Cycle', HelpCycleClick);
+  MemoActionList.AddMemoAction('Keyboard Help Cycle', HelpCycleClick);
   MemoActionList.AddMemoAction('Help Text', HelpTextBtnClick);
   MemoActionList.AddMemoAction('Write Shortcuts', WriteShortcuts);
 
 {$ifdef MSWINDOWS}
-//  MemoActionList.AddMemoAction('Write Sample Diff', DiffBtnClick);
-//  MemoActionList.AddMemoAction('Write All Sapmple Diff', AllDiffBtnClick);
+  MemoActionList.AddMemoAction('Write Sample Diff', DiffBtnClick);
+  MemoActionList.AddMemoAction('Write All Sapmple Diff', AllDiffBtnClick);
 {$endif}
 
 {$ifdef MSWINDOWS}
@@ -610,8 +654,8 @@ begin
 {$ifdef MSWINDOWS}
   MemoActionList.AddMemoAction('Action Test', ActionTestBtnClick);
   MemoActionList.AddMemoAction('Write Action Const', WriteActionConstBtnClick);
-//  MemoActionList.AddMemoAction('Write New Action Const', WriteNewActionConstBtnClick);
-//  MemoActionList.AddMemoAction('Write Action Names', WriteActionNamesBtnClick);
+  MemoActionList.AddMemoAction('Write New Action Const', WriteNewActionConstBtnClick);
+  MemoActionList.AddMemoAction('Write Action Names', WriteActionNamesBtnClick);
   MemoActionList.AddMemoAction('Write Action Short', WriteActionShortBtnClick);
   MemoActionList.AddMemoAction('Write Action Long', WriteActionLongBtnClick);
 //  MemoActionList.AddMemoAction('Debug Output', DebugBtnClick);
@@ -703,6 +747,11 @@ procedure TFormMemo.AutoUpdate;
 begin
   case AutoUpdateID of
     ZOrderInfo: WriteZOrder(nil);
+
+    MeshReport1: MeshReport1BtnClick(nil);
+    MeshReport2: MeshReport2BtnClick(nil);
+    MeshReport3: MeshReport3BtnClick(nil);
+    MeshReport4: MeshReport4BtnClick(nil);
 
     SaveVirtual: SaveVirtualClick(nil);
     Code: WriteCode(nil);

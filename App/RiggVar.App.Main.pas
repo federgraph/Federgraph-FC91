@@ -117,7 +117,7 @@ begin
   ShiftState := [];
 
   AppIsClosing := False;
-  AppTitle := 'FC91K'; // sometimes initialized in FormMain, from Application.Title set in dpr
+  AppTitle := 'FC91H'; // sometimes initialized in FormMain, from Application.Title set in dpr
   AppFolder := 'FC';
   BatchStopRequested := False;
   WantTextureRepeat := False;

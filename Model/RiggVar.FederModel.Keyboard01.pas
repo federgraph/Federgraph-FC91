@@ -187,9 +187,9 @@ begin
 //      result := faSliceOff
 
     else if KeyChar = '~' then
-//      result := faOpenMesh
+      result := faOpenMesh
     else if KeyChar = 'µ' then
-//      result := faPolarMesh
+      result := faPolarMesh
     else if KeyChar = '@' then
       result := faParamT1
     else if KeyChar = '€' then
@@ -315,7 +315,7 @@ begin
     else if KeyChar = 'p' then
       result := faTogglePCap
     else if KeyChar = 'P' then
-//      result := faPolarMesh
+      result := faPolarMesh
 
     else if KeyChar = 'q' then
       result := faParamTRX
@@ -373,7 +373,7 @@ begin
         result := faLabelBatchP
 
     else if Key = vkDelete then
-//      result := faTextureClear
+      result := faTextureClear
 
     else if Key = vkReturn then
       result := faToggleShowEdges
@@ -387,12 +387,12 @@ begin
     else if Key = vkF4 then
       result := faScene4
     else if Key = vkF5 then
-      result := faScene5
+      result := faToggleMarker
 
     else if KeyChar = ';' then
-      result := faExample01
+      result := faLevelM
     else if KeyChar = ':' then
-      result := faExample09
+      result := faLevelP
     else if KeyChar = '_' then
       result := faParamCapValue
 

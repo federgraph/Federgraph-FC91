@@ -64,7 +64,7 @@ uses
 constructor TActionMapPhone.Create;
 begin
   inherited;
-  FPageCount := 21;
+  FPageCount := 24;
   FEscapeIndex := 6;
   TestName := 'Phone Page';
 end;
@@ -91,7 +91,7 @@ var
   claExample: TAlphaColor;
   claEyeSize: TAlphaColor;
   claSample: TAlphaColor;
-//  claExporter: TAlphaColor;
+  claExporter: TAlphaColor;
 begin
   cla := claGray;
   claNoop := claWhite;
@@ -105,7 +105,7 @@ begin
   claEyeSize := claPlum;
   claColorMapping := claDarkkhaki;
   claSample := claAquamarine;
-//  claExporter := claOrange;
+  claExporter := claOrange;
 
 {
 [9]----[10]
@@ -342,6 +342,21 @@ begin
 
     15:
     begin
+      CurrentPageCaptionPhone := 'Polar Mesh';
+      IAC(1, faPolarMesh, claOption);
+      IAC(2, faTogglePCap, claOption);
+      IAC(3, faCycleO, claParam);
+
+      IAC(4, faToggleShowEdges, claBeige);
+      IAC(5, faCopy, cla);
+      IAC(6, faPaste, cla);
+
+      IAC(7, faGotoSample1, claSample);
+      IAC(8, faActionPageX, claPage);
+    end;
+
+    16:
+    begin
       CurrentPageCaptionPhone := 'Cap Value';
       IAC(1, faParamCapValue, claParam);
       IAC(2, faReducedMesh, claOption);
@@ -355,7 +370,7 @@ begin
       IAC(8, faPlot10, cla);
     end;
 
-    16:
+    17:
     begin
       CurrentPageCaptionPhone := 'Extra Option';
       IAC(1, faM1, cla);
@@ -370,7 +385,7 @@ begin
       IAC(8, faActionPage3, claPage);
     end;
 
-    17:
+    18:
     begin
       CurrentPageCaptionPhone := 'Sample Bundle';
       IAC(1, faSwapBundle, claSample);
@@ -385,7 +400,37 @@ begin
       IAC(8, faHubP, claSample);
     end;
 
-    18:
+    19:
+    begin
+      CurrentPageCaptionPhone := 'Mesh Options';
+      IAC(1, faNoop, claNoop);
+      IAC(2, faNoop, claNoop);
+      IAC(3, faMeshSize64, cla);
+
+      IAC(4, faTogglePCap, cla);
+      IAC(5, faPolarMesh, cla);
+      IAC(6, faOpenMesh, cla);
+
+      IAC(7, faActionPage1, cla);
+      IAC(8, faMeshSize128, cla);
+    end;
+
+    20:
+    begin
+      CurrentPageCaptionPhone := 'Mesh Export';
+      IAC(1, faNoop, claNoop);
+      IAC(2, faNoop, claNoop);
+      IAC(3, faMeshSize64, cla);
+
+      IAC(4, faNoop, claNoop);
+      IAC(5, faExportObj, claExporter);
+      IAC(6, faExportMtl, claExporter);
+
+      IAC(7, faActionPage1, cla);
+      IAC(8, faMeshSize128, cla);
+    end;
+
+    21:
     begin
       CurrentPageCaptionPhone := 'Color Play';
       IAC(1, faColor1, cla);
@@ -400,7 +445,7 @@ begin
       IAC(8, faColorMix0, cla);
     end;
 
-    19:
+    22:
     begin
       CurrentPageCaptionPhone := 'Plot Cycle';
       IAC(1, faCyclePlotP, cla);
@@ -415,7 +460,7 @@ begin
       IAC(8, faMeshSize128, cla);
     end;
 
-    20:
+    23:
     begin
       CurrentPageCaptionPhone := 'Texture Params';
       IAC(1, faParamT1, claParam);
@@ -430,7 +475,7 @@ begin
       IAC(8, faActionPageE, claPage);
     end;
 
-    21:
+    24:
     begin
       CurrentPageCaptionPhone := 'Param Value';
       IAC(1, faParamValuePlus10, cla);
