@@ -480,13 +480,6 @@ begin
     faStepCZM: result := fagStepCZM;
     faStepCZP: result := fagStepCZP;
 
-    { Keyboard }
-    faKeyboard01: result := fagKeyboard01;
-    faKeyboard02: result := fagKeyboard02;
-    faSetShift: result := fagSetShift;
-    faSetCtrl: result := fagSetCtrl;
-    faClearShift: result := fagClearShift;
-
     { UI }
     faParamLabelTextX: result := fagParamLabelTextX;
     faParamLabelTextY: result := fagParamLabelTextY;

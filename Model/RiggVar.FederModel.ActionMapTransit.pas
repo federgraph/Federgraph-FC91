@@ -905,16 +905,16 @@ begin
       InitA(5, faNoop);
     end;
 
-    82:
-    begin
-      result.Caption := 'Keyboard and Flags';
-      InitA(0, faSetShift);
-      InitA(1, faSetCtrl);
-      InitA(2, faClearShift);
-      InitA(3, faNoop);
-      InitA(4, faKeyboard01);
-      InitA(5, faKeyboard02);
-    end;
+//    82:
+//    begin
+//      result.Caption := 'Keyboard and Flags';
+//      InitA(0, faSetShift);
+//      InitA(1, faSetCtrl);
+//      InitA(2, faClearShift);
+//      InitA(3, faNoop);
+//      InitA(4, faKeyboard01);
+//      InitA(5, faKeyboard02);
+//    end;
 
     83:
     begin

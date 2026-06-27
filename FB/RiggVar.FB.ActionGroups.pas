@@ -146,7 +146,6 @@ begin
   AddSpecial(ActionGroupColorScheme, 'ColorScheme');
   AddSpecial(ActionGroupAnimatedRotations, 'AnimatedRotations');
   AddSpecial(ActionGroupStep, 'Step');
-  AddSpecial(ActionGroupKeyboard, 'Keyboard');
   AddSpecial(ActionGroupUI, 'UI');
   AddSpecial(ActionGroupLocks, 'Locks');
   AddSpecial(ActionGroupOpacity, 'Opacity');

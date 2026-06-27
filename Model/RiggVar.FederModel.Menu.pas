@@ -386,14 +386,6 @@ begin
   AddGroup('Sample', fag);
 
   fag := TFederActionGroup.Create;
-  fag.Add(faSetShift);
-  fag.Add(faSetCtrl);
-  fag.Add(faClearShift);
-  fag.Add(faKeyboard01);
-  fag.Add(faKeyboard02);
-  AddGroup('Flag', fag);
-
-  fag := TFederActionGroup.Create;
   fag.Add(faConnect);
   fag.Add(faDisconnect);
   fag.Add(faDownload);

@@ -466,13 +466,6 @@ const
   fagStepCZM = 522;
   fagStepCZP = 523;
 
-  { Keyboard }
-  fagKeyboard01 = 524;
-  fagKeyboard02 = 525;
-  fagSetShift = 526;
-  fagSetCtrl = 527;
-  fagClearShift = 528;
-
   { UI }
   fagParamLabelTextX = 529;
   fagParamLabelTextY = 530;

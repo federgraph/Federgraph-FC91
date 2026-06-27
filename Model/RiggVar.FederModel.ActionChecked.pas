@@ -197,13 +197,6 @@ begin
     faWheelFrequency001: result := M.WheelFrequency = 5;
     faWheelFrequency0001: result := M.WheelFrequency = 6;
 
-    faSetShift: result := ssShift in MainVar.ShiftState;
-    faSetCtrl: result := ssCtrl in MainVar.ShiftState;
-    faClearShift: result := MainVar.ShiftState = [];
-
-    faKeyboard01: result := M.KeyBinding = 1;
-    faKeyboard02: result := M.KeyBinding = 2;
-
     faAutoSend: result := M.AutoSend = faAutoSendOn;
     faToggleShirtColor: result := M.HasShirtColor;
     faShirtColorOn: result := M.HasShirtColor;

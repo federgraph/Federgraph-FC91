@@ -473,13 +473,6 @@ const
     faStepCZM,
     faStepCZP];
 
-  ActionGroupKeyboard: TActionGroup = [
-    faKeyboard01,
-    faKeyboard02,
-    faSetShift,
-    faSetCtrl,
-    faClearShift];
-
   ActionGroupUI: TActionGroup = [
     faParamLabelTextX,
     faParamLabelTextY,

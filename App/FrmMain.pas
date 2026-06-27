@@ -770,10 +770,6 @@ begin
     faToggleColorPanel,
     faToggleColorSwat,
 
-    faSetShift,
-    faSetCtrl,
-    faClearShift,
-
     faTogglePngCopy,
     faPngCopyOn,
     faPngCopyOff,

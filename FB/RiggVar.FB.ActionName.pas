@@ -476,13 +476,6 @@ begin
     faStepCZM: result := 'faStepCZM';
     faStepCZP: result := 'faStepCZP';
 
-    { Keyboard }
-    faKeyboard01: result := 'faKeyboard01';
-    faKeyboard02: result := 'faKeyboard02';
-    faSetShift: result := 'faSetShift';
-    faSetCtrl: result := 'faSetCtrl';
-    faClearShift: result := 'faClearShift';
-
     { UI }
     faParamLabelTextX: result := 'faParamLabelTextX';
     faParamLabelTextY: result := 'faParamLabelTextY';

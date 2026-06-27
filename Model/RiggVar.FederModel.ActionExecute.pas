@@ -181,10 +181,6 @@ begin
     faWheelFrequency001: M.WheelFrequency := 5;
     faWheelFrequency0001: M.WheelFrequency := 6;
 
-    faSetShift: MainVar.ShiftState := [ssShift];
-    faSetCtrl: MainVar.ShiftState := [ssCtrl];
-    faClearShift: MainVar.ShiftState := [];
-
     faParamT1: M.ParamManager.ChangeParam(fpt1);
     faParamT2: M.ParamManager.ChangeParam(fpt2);
     faParamT3: M.ParamManager.ChangeParam(fpt3);
@@ -352,9 +348,6 @@ begin
     faCopyScreenshot: M.CopyScreenshot;
     faCopyBitmap3D: M.CopyBitmap3D;
     faCopyTextureBitmap: M.CopyTextureBitmap;
-
-    faKeyboard01: M.KeyBinding := 1;
-    faKeyboard02: M.KeyBinding := 2;
 
     faReset: M.DoReset;
     faResetPosition: M.DoResetPosition;

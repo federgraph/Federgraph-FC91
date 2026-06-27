@@ -476,13 +476,6 @@ begin
     faStepCZM: result := 'Zoom step cz-';
     faStepCZP: result := 'Zoom step cz+';
 
-    { Keyboard }
-    faKeyboard01: result := 'Keyboard 1';
-    faKeyboard02: result := 'Keyboard 2';
-    faSetShift: result := '[Shift]';
-    faSetCtrl: result := '[Control]';
-    faClearShift: result := '[]';
-
     { UI }
     faParamLabelTextX: result := 'Label Text X';
     faParamLabelTextY: result := 'Label Text Y';
