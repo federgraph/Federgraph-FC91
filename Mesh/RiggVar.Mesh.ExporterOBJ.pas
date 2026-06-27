@@ -687,6 +687,8 @@ begin
 end;
 
 function TExporterOBJ.GetName: string;
+var
+  dt: string;
 begin
   if WantSimpleName then
   begin
@@ -694,7 +696,7 @@ begin
   Exit;
   end;
 
-  var dt := FormatDateTime('yyyy-mm-dd', Now);
+  dt := FormatDateTime('yyyy-mm-dd', Now);
 
   result := Format('%s-%s', [dt, FName]);
 
